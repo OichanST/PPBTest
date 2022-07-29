@@ -93,16 +93,17 @@
 		//必須項目に何か変更が加えられたら（＝入力されたら）、check関数が作動する
 		$('#confButton').prop("disabled", true);
 		
-		$('input[name="aaa"]').change( function(){
+		$('input[name="aaa"]').change(function(){
 			reqCheck();
-		})
-		$('#inqTextInput').change( function(){
+		});
+		
+		$('#inqTextInput').change(function(){
 			reqCheck();
 		});
 		
 		$('#cbdConfButton').prop("disabled", true);
 
-		$('#cbdTextInput').change( function(){
+		$('#cbdTextInput').change(function(){
 			cbdReqCheck();
 		});
 		
