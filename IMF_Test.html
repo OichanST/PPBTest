@@ -401,6 +401,33 @@
 	
 	// 画面ID
 	const screenNameList = ['inquiryForm','detailsScreen','inqInputScreen','inqConfirmScreen','replyInputScreen','replyConfirmScreen','compScreen'];
+	
+	/**
+	 * 初期表示処理
+	 */
+	$(function(){
+	
+		console.log("ver 1.04");
+		
+		// 連携文字列取得
+		const linkedStr = $('input[name="SFConnectParam"]').val();
+		// ホーム画面を表示
+		document.getElementById('inquiryForm').style.display = 'block';
+		// それ以外を非表示
+		document.getElementById('detailsScreen').style.display = 'none';
+		document.getElementById('inqInputScreen').style.display = 'none';
+		document.getElementById('inqConfirmScreen').style.display = 'none';
+		document.getElementById('replyInputScreen').style.display = 'none';
+		document.getElementById('replyConfirmScreen').style.display = 'none';
+		document.getElementById('compScreen').style.display = 'none';
+		
+		$("#outputCbdTemp").on("click", ".contbrd-cont", function(){
+			$(this).toggleClass("open");
+		});
+		
+		responseApexData();
+	}
+	
 	/***
 	 * 画面の表示非表示切り替え
 	 * 引数：遷移先画面(div)Id
@@ -843,32 +870,6 @@
 		const minute = (`0` + (newDate.getMinutes())).slice(-2);
 		// 値を返却
 		return `${year}/${month}/${day} ${hour}:${minute}`;
-	}
-			
-	/**
-	 * 初期表示処理
-	 */
-	$(function(){
-	
-		console.log("ver 1.03");
-		
-		// 連携文字列取得
-		const linkedStr = $('input[name="SFConnectParam"]').val();
-		// ホーム画面を表示
-		document.getElementById('inquiryForm').style.display = 'block';
-		// それ以外を非表示
-		document.getElementById('detailsScreen').style.display = 'none';
-		document.getElementById('inqInputScreen').style.display = 'none';
-		document.getElementById('inqConfirmScreen').style.display = 'none';
-		document.getElementById('replyInputScreen').style.display = 'none';
-		document.getElementById('replyConfirmScreen').style.display = 'none';
-		document.getElementById('compScreen').style.display = 'none';
-		
-		$("#outputCbdTemp").on("click", ".contbrd-cont", function(){
-			$(this).toggleClass("open");
-		});
-		
-		responseApexData();
 	}
 	
 	function init(){
