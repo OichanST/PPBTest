@@ -376,16 +376,6 @@
 			<div class="blk">
 				<div class="blkCont">
 					<p class="compDescription"><span class="compDescriptionIcon">受付完了しました</span></p>
-					</div>
-					<div class="blkCont mt-24">
-						<p>受付完了のメールを送信しました。</p>
-						<p class="faqLink"><a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a></p>
-						<p>当社からの回答は原則翌営業日にメールでお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
-						<div class="contbrd-btnArea-box">
-							<p><input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム"></p>
-							<p class="mt-16"><input type="submit" id="" class="btn btn03 btnL" value="Welcome Page"></p>
-						</div>
-					</div>
 				</div>
 			</div>
 			
@@ -394,20 +384,20 @@
 /*** ### USE ### ***/
 			
 	// 通信先URL　※環境に併せて変更する必要あり！
-	const REQUEST_DOMAIN = 'https://paypay-bank--pt49.sandbox.my.salesforce.com';
+	const REQUEST_DOMAIN = "https://paypay-bank--pt49.sandbox.my.salesforce.com";
 
 	// 通信処理結果を退避するための変数
 	let res;
 	
 	// エラー格納用
 	let errorInfo = {
-		data: '', // データ
-		errorThrown: '', // 例外情報
-		status: '' // エラー情報
+		data: null, // データ
+		errorThrown: null, // 例外情報
+		status: null // エラー情報
 	};
 			
 	// 画面ID
-	const screenNameList = ['inquiryForm','detailsScreen','inqInputScreen','inqConfirmScreen','replyInputScreen','replyConfirmScreen','compScreen'];
+	const screenNameList = ["inquiryForm","detailsScreen","inqInputScreen","inqConfirmScreen","replyInputScreen","replyConfirmScreen","compScreen"];
 	
 	/**
 	 * 初期表示処理
@@ -462,9 +452,9 @@
 			dataType: 'json',
 			cache :false,
 			data : {
-				"grant_type":"refresh_token",
-				"client_id":"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
-				"refresh_token":"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
+				grant_type:"refresh_token",
+				client_id:"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
+				refresh_token:"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
 			},
 			success : function (connectData) {
 				var accToken = 'Bearer ' + connectData.access_token;
@@ -508,9 +498,9 @@
 			dataType: 'json',
 			cache :false,
 			data : {
-				"grant_type":"refresh_token",
-				"client_id":"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
-				"refresh_token":"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
+				grant_type:"refresh_token",
+				client_id:"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
+				refresh_token:"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
 			},
 			success : function (connectData) {
 				var accToken = 'Bearer ' + connectData.access_token;
