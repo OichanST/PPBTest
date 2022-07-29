@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.13");
+		console.log("ver 1.14");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -492,9 +492,9 @@
 	}
 	function getContentVersions(fileIdList, resolve){
 		console.log("getContentVersions Call");
-		for(let i = 0; i < fileIdList.length; i++){
-			getContentVersion(fileIdList[i], resolve, i == (fileIdList.length - 1));
-		}
+		//for(let i = 0; i < fileIdList.length; i++){
+			getContentVersion(fileIdList[0], resolve, i == (fileIdList.length - 1));
+		//}
 	}
 	/***
 	 * コンテンツバージョン（ファイル）取得処理
@@ -521,7 +521,7 @@
 					crossOrigin:true,
 					url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion/" + fileId + "/VersionData",
 					cache:false,
-					headers:{"Authorization":accToken},
+					headers:{Authorization:accToken},
 					xhrFields:{responseType:'blob'},
 					success:function(fileContent){
 						console.log("getContentVersion Ajax Successeded");
