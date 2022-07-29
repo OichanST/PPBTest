@@ -447,9 +447,7 @@
 					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
 					headers: {"Authorization" : accToken},
 					success : function (argRes) {
-						res = argRes;
-						
-						initDisplay();
+						return argRes;
 					},
 					error : function (data, errorThrown,status) {
 						console.log(data);
@@ -874,16 +872,8 @@
 		document.getElementById('replyConfirmScreen').style.display = 'none';
 		document.getElementById('compScreen').style.display = 'none';
 		
-		// お問い合わせ一覧取得処理結果取得
-		responseApexData();
-	});
-	
-	function initDisplay(){
-		
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
-		
-			console.log(res);
 			
 			// エラー格納用
 			let errorInfo = {
@@ -891,6 +881,11 @@
 				errorThrown: '', // 例外情報
 				status: '' // エラー情報
 			};
+			
+			// お問い合わせ一覧取得処理結果取得
+			res = responseApexData();
+
+			console.log(res);
 
 			// エラーが起きたとき
 			if(errorInfo.status == 'error'){
