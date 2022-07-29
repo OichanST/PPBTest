@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.11");
+		console.log("ver 1.12");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -455,7 +455,7 @@
 			type:'POST',
 			crossOrigin:true,
 			url:REQUEST_DOMAIN + '/services/oauth2/token',
-			dataType: 'json',
+			dataType:'json',
 			cache:false,
 			data:{
 				grant_type:"refresh_token",
@@ -465,12 +465,12 @@
 			success:function (connectData) {
 				const accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
-					type: 'GET',
+					type:'GET',
 					crossOrigin: true,
 					url: REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
-					dataType: 'json',
-					cache :false,
-					data: {inquiry:linkedStr},
+					dataType:'json',
+					cache:false,
+					data:{inquiry:linkedStr},
 					headers:{"Authorization":accToken},
 					success:function (response) {
 						res = response;
@@ -504,25 +504,25 @@
 	function getContentVersion(fileId, resolve, resolveCall){
 		console.log("getContentVersion Call " + fileId + ":" + resolveCall);
 		$.ajax({
-			type: 'POST',
-			crossOrigin: true,
-			url: REQUEST_DOMAIN + '/services/oauth2/token',
-			dataType: 'json',
+			type:'POST',
+			crossOrigin:true,
+			url:REQUEST_DOMAIN + '/services/oauth2/token',
+			dataType:'json',
 			cache:false,
 			data:{
 				grant_type:"refresh_token",
 				client_id:CLIENT_ID, 
 				refresh_token:REFLESH_TOKEN
 			},
-			success:function (connectData) {
+			success:function(connectData){
 				const accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
 					type:'GET',
 					crossOrigin:true,
 					url:REQUEST_DOMAIN + '/services/data/v54.0/sobjects/ContentVersion/' + fileId + '/VersionData',
 					cache:false,
-					headers:{"Authorization" : accToken},
-					xhrFields:{responseType : 'blob'},
+					headers:{"Authorization":accToken},
+					xhrFields:{responseType:'blob'},
 					success:function(fileContent){
 						console.log("getContentVersion Ajax Successeded");
 						// ケースのリストサイズが0でない
@@ -563,6 +563,11 @@
 							console.log("resolve Called");
 							resolve();
 						}
+					},
+					error:function(data, errorThrown, status){
+						console.log(data);
+						console.log(errorThrown);
+						console.log(status);
 					}
 				})
 			},
