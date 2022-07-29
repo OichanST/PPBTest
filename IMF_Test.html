@@ -426,7 +426,7 @@
 	/**
 	 * 初期表示時データ取得
 	 */
-	function responseApexData(){		
+	function responseApexData(){
 		// アクセストークン取得（リフレッシュトークンフロー） Ajax
 		$.ajax({
 			type: 'POST',
@@ -440,6 +440,7 @@
 				"refresh_token":"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
 			},
 			success : function (connectData) {
+				console.log("Ajax Success");
 				var accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
 					type: 'GET',
