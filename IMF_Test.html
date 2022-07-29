@@ -823,9 +823,7 @@
 	 * 返却値：なし
 	 ***/
 	function replyInputScreenTransition(caseId){
-		if(caseId){
-			location.href = './IMF_IndividualInquiryReply_InputScreen.html';
-		}
+
 	}
 	
 	$(function(){
@@ -860,6 +858,9 @@
 	 * 初期表示処理
 	 */
 	$(function(){
+	
+		console.log("ver 1.1");
+		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
 		// ホーム画面を表示
