@@ -450,9 +450,8 @@
 					cache :false,
 					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
 					headers: {"Authorization" : accToken},
-					success : function (res) {
-						return res;
-						console.log(res);
+					success : function (argRes) {
+						res = argRes;
 					},
 					error : function (data, errorThrown,status) {
 						
