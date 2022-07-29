@@ -823,12 +823,6 @@
 
 	}
 	
-	$(function(){
-		$("#outputCbdTemp").on("click", ".contbrd-cont", function(){
-			$(this).toggleClass("open");
-		});
-	});
-	
 	/*** 
 	 * 日付をJSTに変換する処理
 	 * 引数　：2022-06-06T04:43:08.000+0000
@@ -869,6 +863,10 @@
 		document.getElementById('replyInputScreen').style.display = 'none';
 		document.getElementById('replyConfirmScreen').style.display = 'none';
 		document.getElementById('compScreen').style.display = 'none';
+		
+		$("#outputCbdTemp").on("click", ".contbrd-cont", function(){
+			$(this).toggleClass("open");
+		});
 		
 		responseApexData();
 	}
@@ -1045,7 +1043,7 @@
 				}
 			});
 		});
-	});
+	}
 /*** ### USE ### ***/
 		</script>
 	</body>
