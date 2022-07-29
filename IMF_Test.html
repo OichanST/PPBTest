@@ -385,9 +385,14 @@
 			
 	// 通信先URL　※環境に併せて変更する必要あり！
 	const REQUEST_DOMAIN = "https://paypay-bank--pt49.sandbox.my.salesforce.com";
+	const CLIENT_ID = "3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ";
+	const REFLESH_TOKEN = "5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu";
 
 	// 通信処理結果を退避するための変数
 	let res;
+	
+	let linkedStr;
+	
 	
 	// エラー格納用
 	let errorInfo = {
@@ -404,10 +409,11 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.10");
+		console.log("ver 1.11");
 		
 		// 連携文字列取得
-		const linkedStr = $('input[name="SFConnectParam"]').val();
+//		linkedStr = $('input[name="SFConnectParam"]').val();
+		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef";
 		// ホーム画面を表示
 		document.getElementById('inquiryForm').style.display = 'block';
 		// それ以外を非表示
@@ -446,38 +452,38 @@
 	function responseApexData(){
 		// アクセストークン取得（リフレッシュトークンフロー） Ajax
 		$.ajax({
-			type: 'POST',
-			crossOrigin: true,
-			url: REQUEST_DOMAIN + '/services/oauth2/token',
+			type:'POST',
+			crossOrigin:true,
+			url:REQUEST_DOMAIN + '/services/oauth2/token',
 			dataType: 'json',
-			cache :false,
-			data : {
+			cache:false,
+			data:{
 				grant_type:"refresh_token",
-				client_id:"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
-				refresh_token:"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
+				client_id:CLIENT_ID, 
+				refresh_token:REFLESH_TOKEN
 			},
-			success : function (connectData) {
-				var accToken = 'Bearer ' + connectData.access_token;
+			success:function (connectData) {
+				const accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
 					type: 'GET',
 					crossOrigin: true,
 					url: REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
 					dataType: 'json',
 					cache :false,
-					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
-					headers: {"Authorization" : accToken},
-					success : function (response) {
+					data: {inquiry:linkedStr},
+					headers:{"Authorization":accToken},
+					success:function (response) {
 						res = response;
 						init();
 					},
-					error : function (data, errorThrown,status) {
+					error:function (data, errorThrown,status) {
 						console.log(data);
 						console.log(errorThrown);
 						console.log(status);
 					}
 				})
 			},
-			error : function (data, errorThrown,status) {
+			error:function(data, errorThrown,status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
@@ -502,22 +508,22 @@
 			crossOrigin: true,
 			url: REQUEST_DOMAIN + '/services/oauth2/token',
 			dataType: 'json',
-			cache :false,
-			data : {
+			cache:false,
+			data:{
 				grant_type:"refresh_token",
-				client_id:"3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ", 
-				refresh_token:"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
+				client_id:CLIENT_ID, 
+				refresh_token:REFLESH_TOKEN
 			},
-			success : function (connectData) {
-				var accToken = 'Bearer ' + connectData.access_token;
+			success:function (connectData) {
+				const accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
-					type: 'GET',
-					crossOrigin: true,
-					url: REQUEST_DOMAIN + '/services/data/v54.0/sobjects/ContentVersion/' + fileId + '/VersionData',
-					cache :false,
-					headers: {"Authorization" : accToken},
-					xhrFields : {responseType : 'blob'},
-					success : function (fileContent) {
+					type:'GET',
+					crossOrigin:true,
+					url:REQUEST_DOMAIN + '/services/data/v54.0/sobjects/ContentVersion/' + fileId + '/VersionData',
+					cache:false,
+					headers:{"Authorization" : accToken},
+					xhrFields:{responseType : 'blob'},
+					success:function(fileContent){
 						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
 						
@@ -559,7 +565,7 @@
 					}
 				})
 			},
-			error : function (data, errorThrown,status) {
+			error:function (data, errorThrown,status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
