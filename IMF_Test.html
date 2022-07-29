@@ -530,8 +530,6 @@
 					headers:{Authorization:accToken},
 //					xhrFields:{responseType:"blob"},
 					success:function(fileContent){
-						console.log("getContentVersion Ajax Successeded");
-						/*
 						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
 						
@@ -570,7 +568,6 @@
 							console.log("resolve Called");
 							resolve();
 						}
-						*/
 					},
 					error:function(data, errorThrown, status){
 						console.log(data);
