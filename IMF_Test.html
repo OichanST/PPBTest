@@ -440,7 +440,6 @@
 				"refresh_token":"5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu"
 			},
 			success : function (connectData) {
-				console.log("Success1");
 				var accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
 					type: 'GET',
@@ -451,7 +450,7 @@
 					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
 					headers: {"Authorization" : accToken},
 					success : function (argRes) {
-						console.log("Success2");
+						console.log(argRes);
 						res = argRes;
 					},
 					error : function (data, errorThrown,status) {
