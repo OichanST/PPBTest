@@ -496,7 +496,7 @@
 					headers: {"Authorization" : accToken},
 					xhrFields : {responseType : 'blob'},
 					success : function (fileContent) {
-						console.log(JSON.stringify(fileContent))
+						console.log(JSON.stringify(fileContent));
 						return fileContent;
 					}
 				})
@@ -865,8 +865,6 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-	
-		console.log("START");
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
 		// ホーム画面を表示
@@ -889,8 +887,8 @@
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
 		
-			console.log("Case Promise START");
-		
+			console.log(res);
+			
 			// エラー格納用
 			let errorInfo = {
 				data: '', // データ
@@ -898,7 +896,6 @@
 				status: '' // エラー情報
 			};
 
-			console.log(res);
 			// エラーが起きたとき
 			if(errorInfo.status == 'error'){
 /* TODO:動かないので一時コメントアウト
