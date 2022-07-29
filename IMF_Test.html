@@ -404,7 +404,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.09");
+		console.log("ver 1.10");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -431,7 +431,7 @@
 	 ***/
 	function changeDisp(nextScreen){
 
-		for(i = 0; i < screenNameList.length; i++){
+		for(let i = 0; i < screenNameList.length; i++){
 			if(screenNameList[i] == nextScreen){
 				document.getElementById(screenNameList[i]).style.display = 'block';
 			}else{
@@ -551,8 +551,9 @@
 								}
 							}
 						}
+						console.log("resolve Call=" + resolveCall);
 						if(resolveCall){
-							console.log("resolve Call");
+							console.log("resolve Called");
 							resolve();
 						}
 					}
