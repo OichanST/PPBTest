@@ -370,7 +370,10 @@
 	 * 引数　：コンテンツバージョンId
 	 * 返却値：ファイルの中身
 	 ***/
-	function getContentVersion(fileId, resolve, index){
+	function getContentVersion(fileIdList, resolve, index){
+		
+		const fileId = fileIdList[index];
+	
 		$.ajax({
 			type:'POST',
 			crossOrigin: true,
