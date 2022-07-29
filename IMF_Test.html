@@ -404,7 +404,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.07");
+		console.log("ver 1.08");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -484,13 +484,17 @@
 			}
 		});
 	}
-	
+	function getContentVersions(fileIdList, resolve){
+		for(let i = 0; i < fileIdList.length;i ++){
+			getContentVersion(fileIdList[i], resolve, i == fileIdList.length - 1);
+		}
+	}
 	/***
 	 * コンテンツバージョン（ファイル）取得処理
 	 * 引数　：コンテンツバージョンId
 	 * 返却値：ファイルの中身
 	 ***/
-	function getContentVersion(fileId){
+	function getContentVersion(fileId, resolve, resolveCall){
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -544,6 +548,9 @@
 									break;
 								}
 							}
+						}
+						if(resolveCall){
+							resolve();
 						}
 					}
 				})
@@ -893,171 +900,166 @@
 	}
 	
 	function init(){
-		// ケースを取得(Promise)
-		const casePromise = new Promise((resolve) => {
-			
 
-			console.log(res);
 
-			// エラーが起きたとき
-			if(errorInfo.status == 'error'){
+		// エラーが起きたとき
+		if(errorInfo.status == 'error'){
 /* TODO:動かないので一時コメントアウト
-				// ホーム画面（履歴あり）を非表示
-				document.getElementById('contents').style.display = 'none';
-				// 共通エラー画面を表示
-				document.getElementById('commonError').style.display = 'block';
+			// ホーム画面（履歴あり）を非表示
+			document.getElementById('contents').style.display = 'none';
+			// 共通エラー画面を表示
+			document.getElementById('commonError').style.display = 'block';
 */
-				return;
-			}
-			if(!res){
+			return;
+		}
+		if(!res){
 /* TODO:動かないので一時コメントアウト
-				// ホーム画面（履歴あり）を非表示
-				document.getElementById('contents').style.display = 'none';
-				// ホーム画面（履歴なし）を表示
-				document.getElementById('noInq').style.display = 'block';
+			// ホーム画面（履歴あり）を非表示
+			document.getElementById('contents').style.display = 'none';
+			// ホーム画面（履歴なし）を表示
+			document.getElementById('noInq').style.display = 'block';
 */
-				return;
-			}
-			// thenをコール
-			resolve();
-		// promise処理がすべて完了してから実行
-		}).then(() => {
-			// コンテンツバーション取得のためのPromise生成
-			const fileGetPromise = new Promise((resolve) => {
-				// ケースのリストサイズが0でない
-				if(res.caseList.length != 0){
-					// ケースをループ
-					for(i = 0; i < res.caseList.length; i++){
-						// コンタクトボード明細を取得
-						const cbdFileList = res.caseList[i].cbdFileList;
-						// コンタクトボード明細をループ
-						for(j = 0; j < cbdFileList.length; j++){
-							// 添付ファイルをループ
-							for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
-								// 要素をインスタンス化
-								const cv = cbdFileList[j].contentVersions[k];
-								if(cv){
-									getContentVersion(cv.Id);
-								}
-							}
-						}
-					}
-				}
-				// thenをコール
-				resolve();
-			// promise処理がすべて完了してから実行
-			}).then(() => {
-				// Cookie取得処理を呼び出す
-				const cookieList = getCookie();
-				
-				console.log("cookieList:" + cookieList);
-				
-				// NEW付与対象のIDを格納する配列
-				let newTargetList = [];
+			return;
+		}
+
+		// コンテンツバーション取得のためのPromise生成
+		const fileGetPromise = new Promise((resolve) => {
+		
+			const fileIdList = new Array();
+			// ケースのリストサイズが0でない
+			if(res.caseList.length != 0){
 				// ケースをループ
-				for(let c = 0; c < res.caseList.length; c++){
+				for(i = 0; i < res.caseList.length; i++){
 					// コンタクトボード明細を取得
-					const cbdFileList = res.caseList[c].cbdFileList;
+					const cbdFileList = res.caseList[i].cbdFileList;
 					// コンタクトボード明細をループ
-					for(let i = 0; i < cbdFileList.length; i++){
-						// NEW表示フラグをtrueで初期化
-						let newDisplayFlag = true;
-						// 1ヶ月前の日付用変数に現在日を取得して-1ヶ月する
-						let nowDateTime = new Date();
-						// 現在年を取得
-						const year = nowDateTime.getFullYear();
-						// 月を取得して、1ヶ月増やして
-						const month = nowDateTime.getMonth() + 1;
-						// 日を取得する
-						const date = nowDateTime.getDate();
-						// 先頭文字列'0'に、1）から時間(h)を取得して結合した値を最後から2文字までを変数に格納
-						const hour = (`0` + (nowDateTime.getHours())).slice(-2);
-						// 先頭文字列'0'に、1）から分(m)を取得して結合した値を最後から2文字までを変数に格納
-						const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
-						// Dateに変換
-						nowDateTIme = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
-						// コンタクトボード明細の時間
-						let cbdDateTime = new Date(cbdFileList[i].CreatedDate);
-						// コンタクトボード明細の最終更新日が現在日時-1ヶ月より古い（値を含む）場合
-						if(cbdDateTime >= nowDateTIme){
-							// CookieのCbdIdの件数分
-							for(j = 0; j < cookieList.length; j++){
-								// コンタクトボード明細のIDとCookieのIDが一致している場合
-								if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "問い合わせ"){
-									// NEW表示フラグをfalseに設定
-									newDisplayFlag = false;
-								}
+					for(j = 0; j < cbdFileList.length; j++){
+						// 添付ファイルをループ
+						for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
+							// 要素をインスタンス化
+							const cv = cbdFileList[j].contentVersions[k];
+							if(cv){
+								fileIdList.push(cv.Id);
 							}
-						}else{
-							// NEW表示フラグをfalseに設定
-							newDisplayFlag = false;
-						}
-						// コンタクトボード明細のレコ―ドにNEWアイコン制御用のプロパティがある場合
-						if("newIconDisp" in cbdFileList[i]){
-							// NEWアイコン制御用のプロパティに値を追加
-							cbdFileList[i].newIconDisp = newDisplayFlag;
-						// プロパティがない場合
-						}else{
-							// NEWアイコン制御用のプロパティを付与し、値を設定
-							cbdFileList[i]["newIconDisp"] = newDisplayFlag;
 						}
 					}
 				}
-				/*** タグを生成 ***/
-				// Case template要素を取得
-				let caseTemplate = document.getElementById('caseTemplate');
-				// newIcon template要素を取得
-				let iconTemplate = document.getElementById('newIconTemplate');
-				// ケースのリストの件数分
-				for(let i = 0; i < res.caseList.length; i++){
-					// 要素を取得
-					const c = res.caseList[i];
-					// case template要素の内容を複製
-					let clone = caseTemplate.content.cloneNode(true);
-					// お問い合わせ内容を取得
-					let content = c.content;
-					// お問い合わせ詳細がnullでない
-					if(content != null){
-						// 12文字を超える場合
-						if(content.length > 30){
-							// 省略する
-							content = content.substring(0, 30) + "...";
+			}
+			
+			getContentVersions(fileIdList, resolve);
+			
+		// promise処理がすべて完了してから実行　※resolveのコールはgetContentVersions内で行う
+		}).then(() => {
+			// Cookie取得処理を呼び出す
+			const cookieList = getCookie();
+			
+			console.log("cookieList:" + cookieList);
+			
+			// NEW付与対象のIDを格納する配列
+			let newTargetList = [];
+			// ケースをループ
+			for(let c = 0; c < res.caseList.length; c++){
+				// コンタクトボード明細を取得
+				const cbdFileList = res.caseList[c].cbdFileList;
+				// コンタクトボード明細をループ
+				for(let i = 0; i < cbdFileList.length; i++){
+					// NEW表示フラグをtrueで初期化
+					let newDisplayFlag = true;
+					// 1ヶ月前の日付用変数に現在日を取得して-1ヶ月する
+					let nowDateTime = new Date();
+					// 現在年を取得
+					const year = nowDateTime.getFullYear();
+					// 月を取得して、1ヶ月増やして
+					const month = nowDateTime.getMonth() + 1;
+					// 日を取得する
+					const date = nowDateTime.getDate();
+					// 先頭文字列'0'に、1）から時間(h)を取得して結合した値を最後から2文字までを変数に格納
+					const hour = (`0` + (nowDateTime.getHours())).slice(-2);
+					// 先頭文字列'0'に、1）から分(m)を取得して結合した値を最後から2文字までを変数に格納
+					const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
+					// Dateに変換
+					nowDateTIme = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
+					// コンタクトボード明細の時間
+					let cbdDateTime = new Date(cbdFileList[i].CreatedDate);
+					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より古い（値を含む）場合
+					if(cbdDateTime >= nowDateTIme){
+						// CookieのCbdIdの件数分
+						for(j = 0; j < cookieList.length; j++){
+							// コンタクトボード明細のIDとCookieのIDが一致している場合
+							if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "問い合わせ"){
+								// NEW表示フラグをfalseに設定
+								newDisplayFlag = false;
+							}
 						}
+					}else{
+						// NEW表示フラグをfalseに設定
+						newDisplayFlag = false;
 					}
-					// 複製したtemplate要素にデータを挿入
-					// ケースのIdを設定
-					clone.querySelector('.inq-id').dataset.cId = c.record.Id;
-					// ケース番号を設定する
-					clone.querySelector('.inq-title').textContent = 'No.' + c.record.CaseNumber;
-					// お問い合わせ内容を設定する
-					clone.querySelector('.cbd-content').textContent = content;
-					// ケースの作成日をJST日付かつスラッシュに変換して、設定
-					clone.querySelector('.inq-createdate').textContent = changeSlashDate(c.record.CreatedDate);
-					// お問い合わせ種類を設定する
-					clone.querySelector('.inq-type').textContent = c.record.SubjectIMF__c;
-					// ケースのステータスを設定する
-					clone.querySelector('.inq-status').textContent = c.record.StatusClient__c;
-					// 
-					clone.querySelector('.inq-outputNew').id = c.record.Id;
-					// caseを画面に出力
-					document.getElementById('listQa').appendChild(clone);
-					// コンタクトボード明細を取得
-					const cbdFileList = c.cbdFileList;
-					// ケースのNEWアイコン非表示用プロパティがfalseの場合、NEWアイコンを表示する
-					// コンタクトボード明細の件数分
-					for(let j = 0; j < cbdFileList.length; j++){
-						// NewがTrueの場合
-						if(cbdFileList[j].newIconDisp){
-							// newIcon template要素を複製
-							let newIconClone = newIconTemplate.content.cloneNode(true);
-							// newIconを画面に出力
-							document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
-							// 以後処理不要
-							break;
-						}
+					// コンタクトボード明細のレコ―ドにNEWアイコン制御用のプロパティがある場合
+					if("newIconDisp" in cbdFileList[i]){
+						// NEWアイコン制御用のプロパティに値を追加
+						cbdFileList[i].newIconDisp = newDisplayFlag;
+					// プロパティがない場合
+					}else{
+						// NEWアイコン制御用のプロパティを付与し、値を設定
+						cbdFileList[i]["newIconDisp"] = newDisplayFlag;
 					}
 				}
-			});
+			}
+			/*** タグを生成 ***/
+			// Case template要素を取得
+			let caseTemplate = document.getElementById('caseTemplate');
+			// newIcon template要素を取得
+			let iconTemplate = document.getElementById('newIconTemplate');
+			// ケースのリストの件数分
+			for(let i = 0; i < res.caseList.length; i++){
+				// 要素を取得
+				const c = res.caseList[i];
+				// case template要素の内容を複製
+				let clone = caseTemplate.content.cloneNode(true);
+				// お問い合わせ内容を取得
+				let content = c.content;
+				// お問い合わせ詳細がnullでない
+				if(content != null){
+					// 12文字を超える場合
+					if(content.length > 30){
+						// 省略する
+						content = content.substring(0, 30) + "...";
+					}
+				}
+				// 複製したtemplate要素にデータを挿入
+				// ケースのIdを設定
+				clone.querySelector('.inq-id').dataset.cId = c.record.Id;
+				// ケース番号を設定する
+				clone.querySelector('.inq-title').textContent = 'No.' + c.record.CaseNumber;
+				// お問い合わせ内容を設定する
+				clone.querySelector('.cbd-content').textContent = content;
+				// ケースの作成日をJST日付かつスラッシュに変換して、設定
+				clone.querySelector('.inq-createdate').textContent = changeSlashDate(c.record.CreatedDate);
+				// お問い合わせ種類を設定する
+				clone.querySelector('.inq-type').textContent = c.record.SubjectIMF__c;
+				// ケースのステータスを設定する
+				clone.querySelector('.inq-status').textContent = c.record.StatusClient__c;
+				// 
+				clone.querySelector('.inq-outputNew').id = c.record.Id;
+				// caseを画面に出力
+				document.getElementById('listQa').appendChild(clone);
+				// コンタクトボード明細を取得
+				const cbdFileList = c.cbdFileList;
+				// ケースのNEWアイコン非表示用プロパティがfalseの場合、NEWアイコンを表示する
+				// コンタクトボード明細の件数分
+				for(let j = 0; j < cbdFileList.length; j++){
+					// NewがTrueの場合
+					if(cbdFileList[j].newIconDisp){
+						// newIcon template要素を複製
+						let newIconClone = newIconTemplate.content.cloneNode(true);
+						// newIconを画面に出力
+						document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
+						// 以後処理不要
+						break;
+					}
+				}
+			}
 		});
 	}
 /*** ### USE ### ***/
