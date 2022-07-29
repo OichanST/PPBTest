@@ -85,7 +85,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.12");
+		console.log("ver 1.13");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef";
@@ -808,11 +808,15 @@
 			<div class="note">
 				<p>お問い合わせの回答目安は原則、翌営業日です。</p>
 			</div>
-			<p class="txtR mt-16"><a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a></p>
+			<p class="txtR mt-16">
+				<a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a>
+			</p>
 			<div class="list-qa">
 				<dl id="listQa"></dl>
 			</div>
-			<p><a href="javascript:commonSubmit('ln0001')" title="Welcome Pageに戻る" class="btn btn02 btnL">Welcome Page</a></p>
+			<p>
+				<a href="javascript:commonSubmit('ln0001')" title="Welcome Pageに戻る" class="btn btn02 btnL">Welcome Page</a>
+			</p>
 		</div>
 	</div>
 </div>
@@ -821,37 +825,41 @@
 <div id="noInq" class="contents contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont bdrT0">
-			<p class="contbrd-formBtn"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a></p>
+			<p class="contbrd-formBtn">
+				<a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a>
+			</p>
 			<p class="contbrd-formTitle">お問い合わせフォームの使い方</p>
 			<div class="stepCont">
 				<div class="stepBox">
 					<dl>
 						<dt>STEP1</dt>
-					<dd>
-						<div class="img"><img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192"></div>
-						<p class="stepTxt">［新規お問い合わせ］<br class="smtOnlyBr">より投稿</p>
-						<p>※Visaデビット・ローン・FX・投資信託・外貨預金は対象外です</p>
-					</dd>
+						<dd>
+							<div class="img"><img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192"></div>
+							<p class="stepTxt">［新規お問い合わせ］<br class="smtOnlyBr">より投稿</p>
+							<p>※Visaデビット・ローン・FX・投資信託・外貨預金は対象外です</p>
+						</dd>
 					</dl>
 					<dl>
 						<dt>STEP2</dt>
-					<dd>
-						<div class="img"><img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192"></div>
-						<p class="stepTxt">回答が投稿されたら<br>メールでお知らせ</p>
-						<p>原則、翌営業日に回答します</p>
-					</dd>
+						<dd>
+							<div class="img"><img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192"></div>
+							<p class="stepTxt">回答が投稿されたら<br>メールでお知らせ</p>
+							<p>原則、翌営業日に回答します</p>
+						</dd>
 					</dl>
 					<dl>
 						<dt>STEP3</dt>
-					<dd>
-						<div class="img"><img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192"></div>
-						<p class="stepTxt">ログインして回答を確認</p>
-						<p>好きなタイミングで回答を確認できます</p>
-					</dd>
+						<dd>
+							<div class="img"><img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192"></div>
+							<p class="stepTxt">ログインして回答を確認</p>
+							<p>好きなタイミングで回答を確認できます</p>
+						</dd>
 					</dl>
 				</div>
 			</div>
-			<p><a href="javascript:commonSubmit('ln0001')" title="Welcome Page" class="btn btn02 btnL">Welcome Page</a></p>
+			<p>
+				<a href="javascript:commonSubmit('ln0001')" title="Welcome Page" class="btn btn02 btnL">Welcome Page</a>
+			</p>
 		</div>
 	</div>
 </div>
@@ -868,8 +876,12 @@
 		<div class="contents">
 			<div class="blk">
 				<div class="blkCont bdrT0 contbrd-btnArea-box">
-					<p><a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen')" title="投稿する" class="btn btn01 btnL">投稿する</a></p>
-					<p class="mt-16"><a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="戻る" class="btn btn03 btnL">戻る</a></p>
+					<p>
+						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen')" title="投稿する" class="btn btn01 btnL">投稿する</a>
+					</p>
+					<p class="mt-16">
+						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="戻る" class="btn btn03 btnL">戻る</a>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -882,10 +894,12 @@
 		<div class="blkCont layout-form layout-form-normal">
 			<div>
 				<p class="input-title">お問い合わせ種類</p>
-				<p class="inputSelectWrap pulldown"><a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">選択してください</a></p>
+				<p class="inputSelectWrap pulldown">
+					<a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">選択してください</a>
+				</p>
 				<div class="modalWrap pulldown modalWrap-aaa">
-				<div class="modalOuter">
-					<div class="modal__headArea">お問い合わせ種類</div>
+					<div class="modalOuter">
+						<div class="modal__headArea">お問い合わせ種類</div>
 						<div class="modal__bodyArea">
 							<ul id="aaa" class="wrap-label-list">
 								<li name="aaa"><label class="label-radio" for="aaa01"><input type="radio" name="aaa" value="1" id="aaa01" class="x-data-aaa"><span>登録情報の変更</span></label></li>
@@ -903,8 +917,11 @@
 								<li name="aaa"><label class="label-radio" for="aaa13"><input type="radio" name="aaa" value="13" id="aaa13" class="x-data-aaa"><span>その他</span></label></li>
 							</ul>
 						</div><!--/modal__bodyArea-->
-					<p><a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">閉じる</a></p>
-				</div><!--/modalOuter-->
+						<p>
+							<a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">閉じる</a>
+						</p>
+					</div><!--/modalOuter-->
+				</div>
 			</div><!--/modalWrap-->
 		</div>
 	</div>
@@ -941,9 +958,7 @@
 				<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
 				<input type="text" id="fileText" name="fileText" value="">
 			</label>
-			<div id="">
-
-			</div>
+			<div id=""></div>
 			<!--
 			<p class="upfile-text"><a>aaaaaaaaaaaaa.pdf</a><span class="InputClear inputClear">×</span></p>
 			-->
@@ -965,7 +980,9 @@
 	
 	<div class="modalWrap_error error-type2">
 		<div class="modalOuter_error">
-			<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
+			<div class="modal__headArea">
+				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
+			</div>
 			<div class="modal__bodyArea">
 				<p class="fBold">入力された内容が失われます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 			</div><!--/modal__bodyArea-->
@@ -978,7 +995,9 @@
 	
 	<div class="modalWrap_error error-type3">
 		<div class="modalOuter_error">
-			<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
+			<div class="modal__headArea">
+				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
+			</div>
 			<div class="modal__bodyArea">
 				<p class="fBold">アップロードしたファイルが削除されます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 			</div><!--/modal__bodyArea-->
@@ -993,38 +1012,42 @@
 		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');outputValueInqConf();" class="btn btn01 btnL" value="確認する"></p>
 		<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inquiryForm')" class="btn btn03 btnL prevBtn">戻る</a></p>
 	</div>
-	
 </div>
 
 <!-- NewInquiry_ConfirmationScreen -->
 <div id="inqConfirmScreen" class="contents no-title-h1" style="display:none;">
 
 	<div class="blk">
-		<div class="blkTitle"><h2 id="inqConfType" class="h201">お問い合わせ種類</h2></div>
+		<div class="blkTitle">
+			<h2 id="inqConfType" class="h201">お問い合わせ種類</h2>
+		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfTypeText"></p>
 		</div>
-		
-		<div class="blkTitle"><h2 id="inqConfDtails" class="h201">お問い合わせ詳細</h2></div>
+		<div class="blkTitle">
+			<h2 id="inqConfDtails" class="h201">お問い合わせ詳細</h2>
+		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfDtailsText"></p>
 		</div>
-		
-		<div class="blkTitle"><h2 class="h201">メールアドレス</h2></div>
+		<div class="blkTitle">
+			<h2 class="h201">メールアドレス</h2>
+		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfMailText"></p>
 		</div>
-		<div class="blkTitle"><h2 class="h201">ファイルアップロード</h2></div>
-			<div class="blkCont bdrT0">
-				<p>なし</p>
-				<p></p>
-				<p></p>
-				<p></p>
-				<p></p>
-				<div class="contbrd-btnArea-box">
-					<p><a href="javascript:void(0);" onclick="changeDisp('compScreen')" class="btn btn01 btnL">投稿する</a></p>
-					<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">戻る</a></p>
-				</div>
+		<div class="blkTitle">
+			<h2 class="h201">ファイルアップロード</h2>
+		</div>
+		<div class="blkCont bdrT0">
+			<p>なし</p>
+			<p></p>
+			<p></p>
+			<p></p>
+			<p></p>
+			<div class="contbrd-btnArea-box">
+				<p><a href="javascript:void(0);" onclick="changeDisp('compScreen')" class="btn btn01 btnL">投稿する</a></p>
+				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">戻る</a></p>
 			</div>
 		</div>
 	</div>
@@ -1056,10 +1079,11 @@
 						-->
 					</div>
 				</div>
-				
 				<div class="modalWrap_error error-type1">
 					<div class="modalOuter_error">
-						<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
+						<div class="modal__headArea">
+							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
+						</div>
 						<div class="modal__bodyArea">
 							<p class="fBold">入力した内容は失われます。<br>よろしいですか？</p>
 						</div><!--/modal__bodyArea-->
@@ -1072,7 +1096,9 @@
 				
 				<div class="modalWrap_error error-type2">
 					<div class="modalOuter_error">
-						<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
+						<div class="modal__headArea">
+							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
+						</div>
 						<div class="modal__bodyArea">
 							<p class="fBold">入力された内容が失われます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 						</div><!--/modal__bodyArea-->
@@ -1085,7 +1111,9 @@
 				
 				<div class="modalWrap_error error-type3">
 					<div class="modalOuter_error">
-						<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
+						<div class="modal__headArea">
+							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
+						</div>
 						<div class="modal__bodyArea">
 							<p class="fBold">アップロードしたファイルが削除されます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 						</div><!--/modal__bodyArea-->
@@ -1097,8 +1125,12 @@
 				</div><!--/modalWrap_error-->
 				
 				<div class="contbrd-btnArea-box">
-					<p class="mt-24"><input type="button" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled></p>
-					<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('detailsScreen')" class="btn btn03 btnL prevBtn">戻る</a></p>
+					<p class="mt-24">
+						<input type="button" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled>
+					</p>
+					<p class="mt-16">
+						<a href="javascript:void(0);" onclick="changeDisp('detailsScreen')" class="btn btn03 btnL prevBtn">戻る</a>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -1117,8 +1149,12 @@
 			<p>bbbb.jpg</p>
 			-->
 			<div class="contbrd-btnArea-box">
-				<p><input type="submit" id="" onclick="changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する"></p>
-				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a></p>
+				<p>
+					<input type="submit" id="" onclick="changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
+				</p>
+				<p class="mt-16">
+					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -1128,16 +1164,17 @@
 <div id="compScreen" class="contents no-title-h1 contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont">
-			<p class="compDescription"><span class="compDescriptionIcon">受付完了しました</span></p>
-			</div>
-			<div class="blkCont mt-24">
-				<p>受付完了のメールを送信しました。</p>
-				<p class="faqLink"><a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a></p>
-				<p>当社からの回答は原則翌営業日にメールでお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
-				<div class="contbrd-btnArea-box">
-					<p><input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム"></p>
-					<p class="mt-16"><input type="submit" id="" class="btn btn03 btnL" value="Welcome Page"></p>
-				</div>
+			<p class="compDescription">
+				<span class="compDescriptionIcon">受付完了しました</span>
+			</p>
+		</div>
+		<div class="blkCont mt-24">
+			<p>受付完了のメールを送信しました。</p>
+			<p class="faqLink"><a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a></p>
+			<p>当社からの回答は原則翌営業日にメールでお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
+			<div class="contbrd-btnArea-box">
+				<p><input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム"></p>
+				<p class="mt-16"><input type="submit" id="" class="btn btn03 btnL" value="Welcome Page"></p>
 			</div>
 		</div>
 	</div>
