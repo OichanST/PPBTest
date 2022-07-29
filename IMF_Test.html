@@ -399,6 +399,13 @@
 	// 通信処理結果を退避するための変数
 	let res;
 	
+	// エラー格納用
+	let errorInfo = {
+		data: '', // データ
+		errorThrown: '', // 例外情報
+		status: '' // エラー情報
+	};
+			
 	// 画面ID
 	const screenNameList = ['inquiryForm','detailsScreen','inqInputScreen','inqConfirmScreen','replyInputScreen','replyConfirmScreen','compScreen'];
 	
@@ -407,7 +414,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.04");
+		console.log("ver 1.05");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -515,7 +522,8 @@
 					headers: {"Authorization" : accToken},
 					xhrFields : {responseType : 'blob'},
 					success : function (fileContent) {
-						console.log(JSON.stringify(fileContent));
+						console.log("fileContent=");
+						console.log(fileContent);
 						return fileContent;
 					}
 				})
@@ -607,14 +615,6 @@
 		sendDetailsScreen(caseId);
 		changeDisp("detailsScreen");
 	}
-	/***
-	 * Welcome Page画面の遷移処理（画面のタグにベタ）
-	 * 引数　：なし
-	 * 返却値：なし
-	 ***/
-	function welcomePageScreenTransition(){
-		commonSubmit('ln0002');
-	}
 	/*** /InquiryForm(USE) ***/
 	
 	/*** DetailsScreen(USE) ***/
@@ -677,7 +677,7 @@
 						newDisplayFlag = false;
 					}
 					// コンタクトボード明細のレコ―ドにNEWアイコン制御用のプロパティがある場合
-					if('newIconDisp' in cbdFileList[j]){
+					if("newIconDisp" in cbdFileList[j]){
 						// NEWアイコン制御用のプロパティに値を追加
 						cbdFileList[j].newIconDisp = newDisplayFlag;
 					// プロパティがない場合
@@ -690,9 +690,9 @@
 		}
 
 		// コンタクトボード明細templateを取得
-		let caseTemplate = document.getElementById('cbdTemplate');
+		let caseTemplate = document.getElementById("cbdTemplate");
 		// newIcon template要素を取得
-		let iconTemplate = document.getElementById('newIconTemplate');
+		let iconTemplate = document.getElementById("newIconTemplate");
 		// コンタクトボード明細のリストの件数分
 		for(let i = 0; i < cbdFileList.length; i++){
 			// 要素を取得
@@ -703,13 +703,13 @@
 			let clone = cbdTemplate.content.cloneNode(true);
 			// 複製したtemplate要素にデータを挿入	
 			// レコード種別が、お客さまの場合
-			if(cbd.Classification__c == '問い合わせ'){
+			if(cbd.Classification__c == "問い合わせ"){
 				// お客さまクラスを付与
-				clone.querySelector('.contbrd-head').classList.add('customer');
+				clone.querySelector(".contbrd-head").classList.add("customer");
 				// アクター名を「お客さま」に設定
-				clone.querySelector('.actor-text').textContent = 'お客さま';
+				clone.querySelector(".actor-text").textContent = "お客さま";
 				// コンタクトボード明細の投稿内容をそのまま設定
-				clone.querySelector('.contbrd-content').textContent = cbd.Content__c;
+				clone.querySelector(".contbrd-content").textContent = cbd.Content__c;
 			// PayPay銀行の場合
 			}else{
 				// 回答クラスを付与
@@ -876,13 +876,7 @@
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
 			
-			// エラー格納用
-			let errorInfo = {
-				data: '', // データ
-				errorThrown: '', // 例外情報
-				status: '' // エラー情報
-			};
-			
+
 			console.log(res);
 
 			// エラーが起きたとき
@@ -922,6 +916,7 @@
 							for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
 								// 要素をインスタンス化
 								const cv = cbdFileList[j].contentVersions[k];
+								console.log("getContentVersion call");
 								// IDを条件に添付ファイルのBlobデータを取得
 								cbdFileList[j].contentVersions[k]["versionData"] = getContentVersion(cv.Id);
 							}
