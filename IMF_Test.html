@@ -414,7 +414,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.05");
+		console.log("ver 1.06");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -522,8 +522,7 @@
 					headers: {"Authorization" : accToken},
 					xhrFields : {responseType : 'blob'},
 					success : function (fileContent) {
-						console.log("fileContent=");
-						console.log(fileContent);
+						console.log("fileContent get Success");
 						return fileContent;
 					}
 				})
