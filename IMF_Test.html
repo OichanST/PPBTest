@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.14");
+		console.log("ver 1.15");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -452,10 +452,10 @@
 	function responseApexData(){
 		// アクセストークン取得（リフレッシュトークンフロー） Ajax
 		$.ajax({
-			type:'POST',
+			type:"POST",
 			crossOrigin:true,
-			url:REQUEST_DOMAIN + '/services/oauth2/token',
-			dataType:'json',
+			url:REQUEST_DOMAIN + "/services/oauth2/token",
+			dataType:"json",
 			cache:false,
 			data:{
 				grant_type:"refresh_token",
@@ -463,15 +463,15 @@
 				refresh_token:REFLESH_TOKEN
 			},
 			success:function (connectData) {
-				const accToken = 'Bearer ' + connectData.access_token;
+				const accToken = "Bearer " + connectData.access_token;
 				$.ajax({
-					type:'GET',
+					type:"GET",
 					crossOrigin: true,
-					url: REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
-					dataType:'json',
+					url: REQUEST_DOMAIN + "/services/apexrest/IMF_Case",
+					dataType:"json",
 					cache:false,
 					data:{inquiry:linkedStr},
-					headers:{"Authorization":accToken},
+					headers:{Authorization:accToken},
 					success:function (response) {
 						res = response;
 						init();
@@ -493,7 +493,8 @@
 	function getContentVersions(fileIdList, resolve){
 		console.log("getContentVersions Call");
 		//for(let i = 0; i < fileIdList.length; i++){
-			getContentVersion(fileIdList[0], resolve, i == (fileIdList.length - 1));
+//			getContentVersion(fileIdList[0], resolve, i == (fileIdList.length - 1));
+			getContentVersion(fileIdList[0]);
 		//}
 	}
 	/***
@@ -501,8 +502,10 @@
 	 * 引数　：コンテンツバージョンId
 	 * 返却値：ファイルの中身
 	 ***/
-	function getContentVersion(fileId, resolve, resolveCall){
-		console.log("getContentVersion Call " + fileId + ":" + resolveCall);
+//	function getContentVersion(fileId, resolve, resolveCall){
+	function getContentVersion(fileId){
+		//console.log("getContentVersion Call " + fileId + ":" + resolveCall);
+		console.log("getContentVersion Call " + fileId);
 		$.ajax({
 			type:"POST",
 			crossOrigin:true,
@@ -522,7 +525,7 @@
 					url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion/" + fileId + "/VersionData",
 					cache:false,
 					headers:{Authorization:accToken},
-					xhrFields:{responseType:'blob'},
+					xhrFields:{responseType:"blob"},
 					success:function(fileContent){
 						console.log("getContentVersion Ajax Successeded");
 						/*
@@ -573,7 +576,7 @@
 					}
 				})
 			},
-			error:function (data, errorThrown,status) {
+			error:function (data, errorThrown, status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
