@@ -450,8 +450,9 @@
 					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
 					headers: {"Authorization" : accToken},
 					success : function (argRes) {
-						console.log(argRes);
 						res = argRes;
+						
+						initDisplay();
 					},
 					error : function (data, errorThrown,status) {
 						console.log(data);
@@ -866,7 +867,8 @@
 	$(function(){
 	
 		console.log("START");
-		
+		// 連携文字列取得
+		const linkedStr = $('input[name="SFConnectParam"]').val();
 		// ホーム画面を表示
 		document.getElementById('inquiryForm').style.display = 'block';
 		// それ以外を非表示
@@ -877,8 +879,12 @@
 		document.getElementById('replyConfirmScreen').style.display = 'none';
 		document.getElementById('compScreen').style.display = 'none';
 		
-		// 連携文字列取得
-		const linkedStr = $('input[name="SFConnectParam"]').val();
+		// お問い合わせ一覧取得処理結果取得
+		responseApexData();
+	});
+	
+	function initDisplay(){
+
 		
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
@@ -891,8 +897,7 @@
 				errorThrown: '', // 例外情報
 				status: '' // エラー情報
 			};
-			// お問い合わせ一覧取得処理結果取得
-			res = responseApexData();
+
 			console.log(res);
 			// エラーが起きたとき
 			if(errorInfo.status == 'error'){
