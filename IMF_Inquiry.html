@@ -333,9 +333,13 @@
 	 ***/
 	function changeDisp(nextScreen){
 		for(i = 0; i < screenNameList.length; i++){
+			console.log(screenNameList[i]);
+			console.log(nextScreen);
 			if(screenNameList[i] == nextScreen){
+				console.log("block");
 				document.getElementById(screenNameList[i]).style.display = 'block';
 			}else{
+				console.log("none");
 				document.getElementById(screenNameList[i]).style.display = 'none';
 			}
 		}
