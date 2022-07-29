@@ -862,6 +862,9 @@
 	 * 初期表示処理
 	 */
 	$(function(){
+	
+		console.log("START");
+		
 		// ホーム画面を表示
 		document.getElementById('inquiryForm').style.display = 'block';
 		// それ以外を非表示
@@ -877,6 +880,9 @@
 		
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
+		
+			console.log("Case Promise START");
+		
 			// エラー格納用
 			let errorInfo = {
 				data: '', // データ
