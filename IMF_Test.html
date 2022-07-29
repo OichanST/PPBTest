@@ -495,7 +495,7 @@
 		console.log("getContentVersions Call");
 		
 		for(let i = 0; i < fileIdList.length; i++){
-			getContentVersion(fileIdList[0], resolve, i == (fileIdList.length - 1));
+			getContentVersion(fileIdList[i], resolve, i == (fileIdList.length - 1));
 		}
 	}
 	/***
