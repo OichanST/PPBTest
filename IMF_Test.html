@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.19");
+		console.log("ver 1.20");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -494,18 +494,16 @@
 		
 		console.log("getContentVersions Call");
 		
-		for(let i = 0; i < fileIdList.length; i++){
-			getContentVersion(fileIdList[i], resolve, i == (fileIdList.length - 1));
-		}
+		getContentVersion(fileIdList, resolve, 0);
 	}
 	/***
 	 * コンテンツバージョン（ファイル）取得処理
 	 * 引数　：コンテンツバージョンId
 	 * 返却値：ファイルの中身
 	 ***/
-	function getContentVersion(fileId, resolve, resolveCall){
+	function getContentVersion(fileIdList, resolve, index){
 	
-		console.log("getContentVersion Call " + fileId + ":" + resolveCall);
+		console.log("getContentVersion Call " + fileIdList[index]);
 
 		$.ajax({
 			type:"POST",
@@ -564,9 +562,11 @@
 							}
 						}
 						console.log("resolve Call=" + resolveCall);
-						if(resolveCall){
+						if(fileIdList.length - 1 == index){
 							console.log("resolve Called");
 							resolve();
+						}else{
+							getContentVersion(fileIdList, resolve, index + 1);
 						}
 					},
 					error:function(data, errorThrown, status){
