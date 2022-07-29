@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.21");
+		console.log("ver 1.22");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -503,8 +503,10 @@
 	 ***/
 	function getContentVersion(fileIdList, resolve, index){
 	
-		console.log("getContentVersion Call " + fileIdList[index]);
-
+		const fileId = fileIdList[index];
+	
+		console.log("getContentVersion Call " + fileId);
+		
 		$.ajax({
 			type:"POST",
 			crossOrigin:true,
@@ -523,7 +525,7 @@
 				$.ajax({
 					type:"GET",
 					crossOrigin:true,
-					url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion/" + fileIdList[index] + "/VersionData",
+					url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion/" + fileId + "/VersionData",
 					cache:false,
 					headers:{Authorization:accToken},
 //					xhrFields:{responseType:"blob"},
