@@ -409,7 +409,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.16");
+		console.log("ver 1.17");
 		
 		// 連携文字列取得
 //		linkedStr = $('input[name="SFConnectParam"]').val();
@@ -528,7 +528,7 @@
 					url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion/" + fileId + "/VersionData",
 					cache:false,
 					headers:{Authorization:accToken},
-					xhrFields:{responseType:"blob"},
+					xhrFields:{responseType:"document"},
 					success:function(fileContent){
 						/*
 						console.log("getContentVersion Ajax Successeded");
