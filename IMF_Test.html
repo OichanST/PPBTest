@@ -415,14 +415,14 @@
 //		linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef";
 		// ホーム画面を表示
-		document.getElementById('inquiryForm').style.display = 'block';
+		document.getElementById("inquiryForm").style.display = "block";
 		// それ以外を非表示
-		document.getElementById('detailsScreen').style.display = 'none';
-		document.getElementById('inqInputScreen').style.display = 'none';
-		document.getElementById('inqConfirmScreen').style.display = 'none';
-		document.getElementById('replyInputScreen').style.display = 'none';
-		document.getElementById('replyConfirmScreen').style.display = 'none';
-		document.getElementById('compScreen').style.display = 'none';
+		document.getElementById("detailsScreen").style.display = "none";
+		document.getElementById("inqInputScreen").style.display = "none";
+		document.getElementById("inqConfirmScreen").style.display = "none";
+		document.getElementById("replyInputScreen").style.display = "none";
+		document.getElementById("replyConfirmScreen").style.display = "none";
+		document.getElementById("compScreen").style.display = "none";
 		
 		$("#outputCbdTemp").on("click", ".contbrd-cont", function(){
 			$(this).toggleClass("open");
@@ -439,9 +439,9 @@
 
 		for(let i = 0; i < screenNameList.length; i++){
 			if(screenNameList[i] == nextScreen){
-				document.getElementById(screenNameList[i]).style.display = 'block';
+				document.getElementById(screenNameList[i]).style.display = "block";
 			}else{
-				document.getElementById(screenNameList[i]).style.display = 'none';
+				document.getElementById(screenNameList[i]).style.display = "none";
 			}
 		}
 	}
@@ -527,8 +527,8 @@
 					headers:{Authorization:accToken},
 					xhrFields:{responseType:"blob"},
 					success:function(fileContent){
-						console.log("getContentVersion Ajax Successeded");
 						/*
+						console.log("getContentVersion Ajax Successeded");
 						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
 						
@@ -574,7 +574,7 @@
 						console.log(errorThrown);
 						console.log(status);
 					}
-				})
+				});
 			},
 			error:function (data, errorThrown, status) {
 				console.log(data);
