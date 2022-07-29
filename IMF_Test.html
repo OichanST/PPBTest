@@ -404,7 +404,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.08");
+		console.log("ver 1.09");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -485,8 +485,9 @@
 		});
 	}
 	function getContentVersions(fileIdList, resolve){
+		console.log("getContentVersions Call");
 		for(let i = 0; i < fileIdList.length;i ++){
-			getContentVersion(fileIdList[i], resolve, i == fileIdList.length - 1);
+			getContentVersion(fileIdList[i], resolve, i == (fileIdList.length - 1));
 		}
 	}
 	/***
@@ -495,6 +496,7 @@
 	 * 返却値：ファイルの中身
 	 ***/
 	function getContentVersion(fileId, resolve, resolveCall){
+		console.log("getContentVersion Call");
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -550,6 +552,7 @@
 							}
 						}
 						if(resolveCall){
+							console.log("resolve Call");
 							resolve();
 						}
 					}
@@ -900,7 +903,8 @@
 	}
 	
 	function init(){
-
+		
+		console.log("init call");
 
 		// エラーが起きたとき
 		if(errorInfo.status == 'error'){
@@ -924,7 +928,9 @@
 
 		// コンテンツバーション取得のためのPromise生成
 		const fileGetPromise = new Promise((resolve) => {
-		
+			
+			console.log("Promise Call");
+			
 			const fileIdList = new Array();
 			// ケースのリストサイズが0でない
 			if(res.caseList.length != 0){
@@ -945,8 +951,11 @@
 					}
 				}
 			}
-			
-			getContentVersions(fileIdList, resolve);
+			if(fileIdList.length > 0){
+				getContentVersions(fileIdList, resolve);
+			}else{
+				resolve();
+			}
 			
 		// promise処理がすべて完了してから実行　※resolveのコールはgetContentVersions内で行う
 		}).then(() => {
