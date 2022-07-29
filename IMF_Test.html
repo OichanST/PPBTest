@@ -404,7 +404,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.06");
+		console.log("ver 1.07");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -512,8 +512,39 @@
 					headers: {"Authorization" : accToken},
 					xhrFields : {responseType : 'blob'},
 					success : function (fileContent) {
-						console.log("fileContent get Success");
-						return fileContent;
+						// ケースのリストサイズが0でない
+						if(res.caseList.length != 0){
+						
+							let fileAttached = false;
+							
+							// ケースをループ
+							for(i = 0; i < res.caseList.length; i++){
+								// コンタクトボード明細を取得
+								const cbdFileList = res.caseList[i].cbdFileList;
+								// コンタクトボード明細をループ
+								for(j = 0; j < cbdFileList.length; j++){
+									// 添付ファイルをループ
+									for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
+										// 要素をインスタンス化
+										const cv = cbdFileList[j].contentVersions[k];
+										
+										if(cv.Id == fileId){
+											// IDを条件に添付ファイルのBlobデータを取得
+											res.caseList[i].cbdFileList[j].contentVersions[k]["versionData"] = fileContent;
+											
+											fileAttached = true;
+											break;
+										}
+									}
+									if(fileAttached){
+										break;
+									}
+								}
+								if(fileAttached){
+									break;
+								}
+							}
+						}
 					}
 				})
 			},
@@ -905,9 +936,9 @@
 							for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
 								// 要素をインスタンス化
 								const cv = cbdFileList[j].contentVersions[k];
-								console.log("getContentVersion call");
-								// IDを条件に添付ファイルのBlobデータを取得
-								cbdFileList[j].contentVersions[k]["versionData"] = getContentVersion(cv.Id);
+								if(cv){
+									getContentVersion(cv.Id);
+								}
 							}
 						}
 					}
