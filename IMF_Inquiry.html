@@ -55,6 +55,8 @@
 	let res;
 	// 連携用文字列
 	let linkedStr;
+	// メール
+	let eMail;
 	
 	// エラー格納用
 	let errorInfo = {
@@ -729,13 +731,6 @@
 		return `${year}/${month}/${day} ${hour}:${minute}`;
 	}
 	
-	// お問い合わせ種類
-	let inqType;
-	// お問い合わせ詳細
-	let inqDetails;
-	// メール
-	let eMail;
-
 	//入力画面で入力された情報を確認画面の要素に反映
 	function outputValueInqConf(){
 		inqRegistData.EncryptedData = linkedStr;
