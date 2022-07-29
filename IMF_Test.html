@@ -442,8 +442,9 @@
 					cache :false,
 					data: {inquiry : 'd5b8d90ceb5ff5f3505dd311e1e74f6e3f87d028ddac9c3c4c18ede46409e0ef'},
 					headers: {"Authorization" : accToken},
-					success : function (argRes) {
-						return argRes;
+					success : function (response) {
+						res = response;
+						init();
 					},
 					error : function (data, errorThrown,status) {
 						console.log(data);
@@ -636,7 +637,7 @@
 					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より新しい（値を含む）場合
 					if(cbdDateTime >= nowDateTime){
 						// CookieのCbdIdの件数分
-						for(k=0; k < CookieList.length; k++){
+						for(k = 0; k < CookieList.length; k++){
 							// コンタクトボード明細のIDとCookieのIDが一致している場合
 							if(cbdFileList[j].Id == CookieList[k]){
 								// NEW表示フラグをfalseに設定
@@ -855,7 +856,7 @@
 	 */
 	$(function(){
 	
-		console.log("ver 1.02");
+		console.log("ver 1.03");
 		
 		// 連携文字列取得
 		const linkedStr = $('input[name="SFConnectParam"]').val();
@@ -869,6 +870,10 @@
 		document.getElementById('replyConfirmScreen').style.display = 'none';
 		document.getElementById('compScreen').style.display = 'none';
 		
+		responseApexData();
+	}
+	
+	function init(){
 		// ケースを取得(Promise)
 		const casePromise = new Promise((resolve) => {
 			
@@ -879,9 +884,6 @@
 				status: '' // エラー情報
 			};
 			
-			// お問い合わせ一覧取得処理結果取得
-			res = responseApexData();
-
 			console.log(res);
 
 			// エラーが起きたとき
