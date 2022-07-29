@@ -62,7 +62,20 @@
 		errorThrown: '', // 例外情報
 		status: '' // エラー情報
 	};
-			
+	
+	const inqRegistData = {
+		EncryptedData:null,
+		Subject:null,
+		Content:null,
+		LinkedDial:null
+	};
+	
+	const cbdRegistData = {
+		EncryptedData:null,
+		CaseId:null,	
+		Content:null
+	};
+	
 	// 画面ID
 	const screenNameList = ['inquiryForm','noInq','detailsScreen','inqInputScreen','inqConfirmScreen','replyInputScreen','replyConfirmScreen','compScreen'];
 	
@@ -725,23 +738,37 @@
 
 	//入力画面で入力された情報を確認画面の要素に反映
 	function outputValueInqConf(){
+		inqRegistData.EncryptedData = linkedStr;
+		inqRegistData.Subject = document.getElementById('Modal-aaa').innerHTML;
+		inqRegistData.Content = document.getElementById('textInput').value;
+//		inqRegistData.LinkedDial:null
+		
+		console.log(inqRegistData);
+		
 		// メールアドレス設定
 		document.getElementById('inqConfMailText').innerHTML = eMail;
-		// お問い合わせ種類
-		inqType = JSON.stringify(document.getElementById('Modal-aaa').innerHTML);
+		document.getElementById('inqConfTypeText').innerHTML = inqRegistData.Subject;
+		document.getElementById('inqConfDtailsText').innerHTML = inqRegistData.Content;
+	}
+	
+	function outputValueCbdConf(){
+	
+		cbdRegistData.EncryptedData = linkedStr;
+		cbdRegistData.CaseId = document.getElementById('replyButton').dataset.cId;
+		cbdRegistData.Content = document.getElementById('cbdTextInput').value;
+		
+		console.log(cbdRegistData);
+		
 		// お問い合わせ詳細
-		inqDetails = JSON.stringify(document.getElementById('textInput').value);
-		console.log(inqType)
-		console.log(inqDetails)
-		document.getElementById('inqConfTypeText').innerHTML = JSON.parse(inqType);
-		document.getElementById('inqConfDtailsText').innerHTML = JSON.parse(inqDetails);
-		document.getElementById('inqConfMailText').innerHTML = eMail;
+		document.getElementById('cbdConfDtailsText').innerHTML = cbdRegistData.Content;
 	}
 	
 	//check
-	function reqCheck () {
+	function reqCheck(){
+	
 		const itype_flg = ($('#input[name="aaa"]').val() === "") ? false : true;
 		const idtail_flg = ($('#inqTextInput').val() === "") ? false : true;
+		
 		let inqButtonActive;
 		
 		if(itype_flg && idtail_flg){
@@ -759,7 +786,9 @@
 	
 	//check
 	function cbdReqCheck () {
-		const cdtail_flg = ( $('#cbdTextInput').val() === "" ) ? false : true
+	
+		const cdtail_flg = ( $('#cbdTextInput').val() === "" ) ? false : true;
+		
 		let cbdButtonActive;
 		
 		if(cdtail_flg){
