@@ -91,14 +91,19 @@
 		
 		/*** 確認するボタン活性処理 ***/
 		//必須項目に何か変更が加えられたら（＝入力されたら）、check関数が作動する
-		let buttonActive = false;
 		$('#confButton').prop("disabled", true);
 		
-		$('#Modal-aaa').change(function(){
+		$('input[name="aaa"]').change( function(){
+			reqCheck();
+		})
+		$('#inqTextInput').change( function(){
 			reqCheck();
 		});
-		$('#textInput').change(function(){
-			reqCheck();
+		
+		$('#cbdConfButton').prop("disabled", true);
+
+		$('#cbdTextInput').change( function(){
+			cbdReqCheck();
 		});
 		
 		/*
@@ -474,7 +479,6 @@
 				document.getElementById('contbrdTitle').textContent = 'お問い合わせ番号：No.' + rec.CaseNumber;
 				
 				cbdFileList = res.caseList[i].cbdFileList;
-										
 				// コンタクトボード明細レコードとファイルの組み合わせリストの件数分
 				for(j = 0; j < cbdFileList.length; j++){
 				
@@ -523,7 +527,6 @@
 				}
 			}
 		}
-
 		// コンタクトボード明細templateを取得
 		let caseTemplate = document.getElementById('cbdTemplate');
 		// newIcon template要素を取得
@@ -736,19 +739,38 @@
 	
 	//check
 	function reqCheck () {
-		itype_flg   = ( $('#Modal-aa').val() === "" ) ? false : true
-		idtail_flg    = ( $('#textInput').val() === "" ) ? false : true
-
-		if( itype_flg && idtail_flg ) {
-			buttonActive = true
+		const itype_flg = ($('#input[name="aaa"]').val() === "") ? false : true;
+		const idtail_flg = ($('#inqTextInput').val() === "") ? false : true;
+		let inqButtonActive;
+		
+		if(itype_flg && idtail_flg){
+			inqButtonActive = true;
 		}else{
-			buttonActive = false
+			inqButtonActive = false;
 		}
 
-		if( buttonActive ) {
+		if(inqButtonActive){
 			$('#confButton').prop("disabled", false);
 		}else{
 			$('#confButton').prop("disabled", true);
+		}
+	}
+	
+	//check
+	function cbdReqCheck () {
+		const cdtail_flg = ( $('#cbdTextInput').val() === "" ) ? false : true
+		let cbdButtonActive;
+		
+		if(cdtail_flg){
+			cbdButtonActive = true;
+		}else{
+			cbdButtonActive = false;
+		}
+
+		if(cbdButtonActive){
+			$('#cbdConfButton').prop("disabled", false);
+		}else{
+			$('#cbdConfButton').prop("disabled", true);
 		}
 	}
 </script>
@@ -896,7 +918,9 @@
 			<div id="">
 
 			</div>
+			<!--
 			<p class="upfile-text"><a>aaaaaaaaaaaaa.pdf</a><span class="InputClear inputClear">×</span></p>
+			-->
 		</div>
 	</div>
 	
@@ -1002,8 +1026,10 @@
 							<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
 							<input type="text" id="fileText" name="fileText" value="">
 						</label>
+						<!--
 						<p class="upfile-text"><a>aaaaaaaaaaaaa.pdf</a><span class="InputClear inputClear">×</span></p>
 						<p class="upfile-text"><a>bbbb.jpg</a><span class="InputClear inputClear">×</span></p>
+						-->
 					</div>
 				</div>
 				
@@ -1062,8 +1088,10 @@
 			<p class="contbrd-title">投稿内容</p>
 			<p>手順どおり対応すると、無事アプリを使えるようになりました。<br>この度はご丁寧にありがとうございました。<br>助かりました。一生ついてきます！</p>
 			<h3 class="h301 mt-24">ファイルアップロード</h3>
+			<!--
 			<p>aaaaaaaaaaaa.pdf</p>
 			<p>bbbb.jpg</p>
+			-->
 			<div class="contbrd-btnArea-box">
 				<p><input type="submit" id="" onclick="changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する"></p>
 				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a></p>
