@@ -989,7 +989,7 @@
 	</div><!--/modalWrap_error-->
 	
 	<div class="blkCont contbrd-btnArea-box">
-		<p><input id="confButton" type="button" onclick="changeDisp('inqConfirmScreen');outputValueInqConf()" class="btn btn01 btnL" value="確認する"></p>
+		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');outputValueInqConf();" class="btn btn01 btnL" value="確認する"></p>
 		<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inquiryForm')" class="btn btn03 btnL prevBtn">戻る</a></p>
 	</div>
 	
@@ -1098,7 +1098,7 @@
 				</div><!--/modalWrap_error-->
 				
 				<div class="contbrd-btnArea-box">
-					<p class="mt-24"><input type="button" onclick="changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled></p>
+					<p class="mt-24"><input type="button" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled></p>
 					<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('detailsScreen')" class="btn btn03 btnL prevBtn">戻る</a></p>
 				</div>
 			</div>
