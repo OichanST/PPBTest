@@ -492,7 +492,7 @@
 	}
 	function getContentVersions(fileIdList, resolve){
 		console.log("getContentVersions Call");
-		for(let i = 0; i < fileIdList.length;i ++){
+		for(let i = 0; i < fileIdList.length; i++){
 			getContentVersion(fileIdList[i], resolve, i == (fileIdList.length - 1));
 		}
 	}
@@ -502,7 +502,7 @@
 	 * 返却値：ファイルの中身
 	 ***/
 	function getContentVersion(fileId, resolve, resolveCall){
-		console.log("getContentVersion Call");
+		console.log("getContentVersion Call " + fileId + ":" + resolveCall);
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -524,19 +524,20 @@
 					headers:{"Authorization" : accToken},
 					xhrFields:{responseType : 'blob'},
 					success:function(fileContent){
+						console.log("getContentVersion Ajax Successeded");
 						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
 						
 							let fileAttached = false;
 							
 							// ケースをループ
-							for(i = 0; i < res.caseList.length; i++){
+							for(let i = 0; i < res.caseList.length; i++){
 								// コンタクトボード明細を取得
 								const cbdFileList = res.caseList[i].cbdFileList;
 								// コンタクトボード明細をループ
-								for(j = 0; j < cbdFileList.length; j++){
+								for(let j = 0; j < cbdFileList.length; j++){
 									// 添付ファイルをループ
-									for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
+									for(let k = 0; k < cbdFileList[j].contentVersions.length; k++){
 										// 要素をインスタンス化
 										const cv = cbdFileList[j].contentVersions[k];
 										
