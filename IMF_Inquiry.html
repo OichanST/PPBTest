@@ -88,7 +88,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.25");
+		console.log("ver 1.26");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -172,9 +172,9 @@
 				const spFile = baseFile.split(",");
 				inputFile = spFile[1];
 			}
-			const f = file.files[0];
-			fileName = file.name;
-			reader.readAsDataURL(file);
+			const f = document.getElementById("fileName").files[0];
+			fileName = f.name;
+			reader.readAsDataURL(f);
 		});
 		
 		// AjaxによりSalesforceから表示データを取得
