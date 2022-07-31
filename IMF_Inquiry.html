@@ -85,7 +85,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.19");
+		console.log("ver 1.20");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e12c18719dd8af44475fd97931da7af50";
@@ -412,6 +412,50 @@
 					dataType:'json',
 					cache:false,
 					data:JSON.stringify(inqRegistData),
+					headers: {"Authorization":accToken, "Content-Type":"application/json"},
+					success:function(response){
+
+					},
+					error:function (data, errorThrown,status) {
+						console.log(data);
+						console.log(errorThrown);
+						console.log(status);
+					}
+				})
+			},
+			error:function (data, errorThrown,status) {
+				console.log(data);
+				console.log(errorThrown);
+				console.log(status);
+			}
+		});
+	}
+	
+	/**
+	 * 初期表示時データ取得
+	 */
+	function registContactBoard(){
+		// アクセストークン取得（リフレッシュトークンフロー） Ajax
+		$.ajax({
+			type: 'POST',
+			crossOrigin: true,
+			url: REQUEST_DOMAIN + '/services/oauth2/token',
+			dataType: 'json',
+			cache :false,
+			data : {
+				"grant_type":"refresh_token",
+				"client_id":CLIENT_ID, 
+				"refresh_token":REFLESH_TOKEN
+			},
+			success : function (connectData) {
+				var accToken = 'Bearer ' + connectData.access_token;
+				$.ajax({
+					type:'POST',
+					crossOrigin:true,
+					url:REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
+					dataType:'json',
+					cache:false,
+					data:JSON.stringify(cbdRegistData),
 					headers: {"Authorization":accToken, "Content-Type":"application/json"},
 					success:function(response){
 
@@ -782,9 +826,6 @@
 		inqRegistData.Subject = document.getElementById('Modal-aaa').innerHTML;
 		inqRegistData.Content = document.getElementById('inqTextInput').value;
 //		inqRegistData.LinkedDial:null
-		
-		console.log(inqRegistData);
-		
 		// メールアドレス設定
 		document.getElementById('inqConfMailText').innerHTML = eMail;
 		document.getElementById('inqConfTypeText').innerHTML = inqRegistData.Subject;
@@ -878,25 +919,43 @@
 					<dl>
 						<dt>STEP1</dt>
 						<dd>
-							<div class="img"><img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192"></div>
-							<p class="stepTxt">［新規お問い合わせ］<br class="smtOnlyBr">より投稿</p>
-							<p>※Visaデビット・ローン・FX・投資信託・外貨預金は対象外です</p>
+							<div class="img">
+								<img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192">
+							</div>
+							<p class="stepTxt">
+								［新規お問い合わせ］<br class="smtOnlyBr">より投稿
+							</p>
+							<p>
+								※Visaデビット・ローン・FX・投資信託・外貨預金は対象外です
+							</p>
 						</dd>
 					</dl>
 					<dl>
 						<dt>STEP2</dt>
 						<dd>
-							<div class="img"><img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192"></div>
-							<p class="stepTxt">回答が投稿されたら<br>メールでお知らせ</p>
-							<p>原則、翌営業日に回答します</p>
+							<div class="img">
+								<img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192">
+							</div>
+							<p class="stepTxt">
+								回答が投稿されたら<br>メールでお知らせ
+							</p>
+							<p>
+								原則、翌営業日に回答します
+							</p>
 						</dd>
 					</dl>
 					<dl>
 						<dt>STEP3</dt>
 						<dd>
-							<div class="img"><img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192"></div>
-							<p class="stepTxt">ログインして回答を確認</p>
-							<p>好きなタイミングで回答を確認できます</p>
+							<div class="img">
+								<img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192">
+							</div>
+							<p class="stepTxt">
+								ログインして回答を確認
+							</p>
+							<p>
+								好きなタイミングで回答を確認できます
+							</p>
 						</dd>
 					</dl>
 				</div>
@@ -1186,7 +1245,7 @@
 	<div class="blk">
 		<div class="blkCont bdrT0">
 			<p class="contbrd-title">投稿内容</p>
-			<p>手順どおり対応すると、無事アプリを使えるようになりました。<br>この度はご丁寧にありがとうございました。<br>助かりました。一生ついてきます！</p>
+			<p id="cbdConfDtailsText"></p>
 			<h3 class="h301 mt-24">ファイルアップロード</h3>
 			<!--
 			<p>aaaaaaaaaaaa.pdf</p>
@@ -1194,7 +1253,7 @@
 			-->
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
+					<input type="submit" id="" onclick="registContactBoard();changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
 				</p>
 				<p class="mt-16">
 					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a>
@@ -1214,11 +1273,17 @@
 		</div>
 		<div class="blkCont mt-24">
 			<p>受付完了のメールを送信しました。</p>
-			<p class="faqLink"><a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a></p>
+			<p class="faqLink">
+				<a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a>
+			</p>
 			<p>当社からの回答は原則翌営業日にメールでお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
 			<div class="contbrd-btnArea-box">
-				<p><input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム"></p>
-				<p class="mt-16"><input type="submit" id="" class="btn btn03 btnL" value="Welcome Page"></p>
+				<p>
+					<input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム">
+				</p>
+				<p class="mt-16">
+					<input type="submit" id="" class="btn btn03 btnL" value="Welcome Page">
+				</p>
 			</div>
 		</div>
 	</div>
