@@ -174,12 +174,29 @@
 		*/
 		
 // PPB側ソースから移植して一部改変
-		$("#fileName").change(function(){
+		$("#inqFileName").change(function(){
 			console.log("filechange trigger");
-			var file = document.getElementById("fileName").value;
-			document.getElementById("fileText").value = file;
-			$("#fileText").css({display:"block"});
-			$("#fileText").next(".inputClear").css("pacity", 1);
+			var file = document.getElementById("inqFileName").value;
+			document.getElementById("inqFileText").value = file;
+			$("#inqFileText").css({display:"block"});
+			$("#inqFileText").next(".inputClear").css("pacity", 1);
+			// ここからUSE追加処理
+			const reader = new FileReader();
+			reader.onload = function(){
+				const baseFile = this.result;
+				const spFile = baseFile.split(",");
+				inputFile = spFile[1];
+			}
+			const f = document.getElementById("fileName").files[0];
+			fileName = f.name;
+			reader.readAsDataURL(f);
+		});
+		$("#cbdFileName").change(function(){
+			console.log("filechange trigger");
+			var file = document.getElementById("cbdFileName").value;
+			document.getElementById("cbdFileText").value = file;
+			$("#cbdFileText").css({display:"block"});
+			$("#cbdFileText").next(".inputClear").css("pacity", 1);
 			// ここからUSE追加処理
 			const reader = new FileReader();
 			reader.onload = function(){
@@ -1243,8 +1260,8 @@
 		<div class="wrap-input upfile-wrap">
 			<label class="input-title">ファイルアップロード（任意）
 				<span class="upfileLink">ファイルを選択（24MBまで）</span>
-				<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
-				<input type="text" id="fileText" name="fileText" value="">
+				<input type="file" name="fileName" id="inqFileName" class="dn" multiple="multiple">
+				<input type="text" id="inqFileText" name="fileText" value="">
 			</label>
 			<p class="upfile-text"><span class="InputClear inputClear">×</span></p>
 		</div>
@@ -1355,8 +1372,8 @@
 					<div class="wrap-input upfile-wrap">
 						<label class="input-title">ファイルアップロード（任意）
 							<span class="upfileLink">ファイルを選択（24MBまで）</span>
-							<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
-							<input type="text" id="fileText" name="fileText" value="">
+							<input type="file" name="fileName" id="cbdFileName" class="dn" multiple="multiple">
+							<input type="text" id="cbdFileText" name="fileText" value="">
 						</label>
 						<p class="upfile-text"><span class="InputClear inputClear">×</span></p>
 						-->
