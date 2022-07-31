@@ -192,7 +192,7 @@
 		var defValueMsg = "選択してください";
 		if(defValue == defValueMsg){
 			if(!$("#Modal-" + id).hasClass("reqEntry")){
-				$("#Modal-" + id).addClass("reqEntry")removeClass("inputSelectItem-on data-on");
+				$("#Modal-" + id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");
 			}
 		}else if(defValue == ""){
 			$("#Modal-" + id).add().html("選択してください");
