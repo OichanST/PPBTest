@@ -85,7 +85,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.14");
+		console.log("ver 1.15");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e12c18719dd8af44475fd97931da7af50";
@@ -922,7 +922,7 @@
 			<div class="blk">
 				<div class="blkCont bdrT0 contbrd-btnArea-box">
 					<p>
-						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen')" title="投稿する" class="btn btn01 btnL">投稿する</a>
+						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen');" title="投稿する" class="btn btn01 btnL">投稿する</a>
 					</p>
 					<p class="mt-16">
 						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="戻る" class="btn btn03 btnL">戻る</a>
@@ -1054,7 +1054,7 @@
 	</div><!--/modalWrap_error-->
 	
 	<div class="blkCont contbrd-btnArea-box">
-		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');outputValueInqConf();" class="btn btn01 btnL" value="確認する"></p>
+		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');" class="btn btn01 btnL" value="確認する"></p>
 		<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inquiryForm')" class="btn btn03 btnL prevBtn">戻る</a></p>
 	</div>
 </div>
@@ -1091,7 +1091,7 @@
 			<p></p>
 			<p></p>
 			<div class="contbrd-btnArea-box">
-				<p><a href="javascript:void(0);" onclick="changeDisp('compScreen')" class="btn btn01 btnL">投稿する</a></p>
+				<p><a href="javascript:void(0);" onclick="registInquery();schangeDisp('compScreen')" class="btn btn01 btnL">投稿する</a></p>
 				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">戻る</a></p>
 			</div>
 		</div>
