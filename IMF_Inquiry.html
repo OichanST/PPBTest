@@ -85,7 +85,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.17");
+		console.log("ver 1.18");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e12c18719dd8af44475fd97931da7af50";
@@ -412,7 +412,7 @@
 					dataType:'json',
 					cache:false,
 					data:inqRegistData,
-					headers: {"Authorization":accToken},
+					headers: {"Authorization":accToken, "Content-Type":"application/json"},
 					success:function(response){
 
 					},
