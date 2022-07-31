@@ -88,7 +88,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.27");
+		console.log("ver 1.28");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -126,6 +126,9 @@
 			cbdReqCheck();
 		});
 		
+		$(".x-data-aaa").change(function(){
+			SelectRadio(selectId);
+		});
 		/*
 		//const jinkakuCode = $('input[name="JinkakuCode"]').val();
 		const jinkakuCode = '個人';
@@ -180,6 +183,33 @@
 		// AjaxによりSalesforceから表示データを取得
 		responseApexData();
 	});
+	
+	function SelectRadio(id){
+		var childName = $("#" + id).children("li").attr("name");
+		var selectValue = $("input[name='" + childName + "']:checked").next().html();
+		$("$Modal-" + id).html(selectValue);
+		var defValue = $("#Modal-" + id).html();
+		var defValueMsg = "選択してください";
+		if(defValue == defValueMsg){
+			if(!$("#Modal-" + id).hasClass("reqEntry")){
+				$("#Modal-" + id).addClass("reqEntry")removeClass("inputSelectItem-on data-on");
+			}
+		}else if(defValue == ""){
+			$("#Modal-" + id).add().html("選択してください");
+		}else{
+			$("#Modal-" + id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
+		}
+		NextBtnActivity();
+	}
+	
+	function NextBtnActivity(){
+		if(!($("body").find(".reqEntry").length)){
+			$("p").find("#nextBtn").prop("desabled", false);
+		}else{
+			$("p").find("#nextBtn").prop("desabled", true);
+		}
+	}
+	
 	/**
 	 * 初期処理
 	 */
