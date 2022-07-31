@@ -88,7 +88,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.31");
+		console.log("ver 1.32");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -491,7 +491,8 @@
 										headers: {"Authorization":accToken, "Content-Type":"application/json"},
 										success : function(res){
 											const records = res.records;
-											const cdId = records.ContentDocumentId;
+											const cdId = records[0].ContentDocumentId;
+											console.log(cdId);
 											const linkJson = {
 												ContentDocumentId:cdId,
 												LinkedEntityId:cbdId,
