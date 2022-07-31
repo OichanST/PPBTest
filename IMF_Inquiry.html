@@ -95,7 +95,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.33");
+		console.log("ver 1.34");
 		// 連携文字列取得　TODO:PPB提供時には要切り替え
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -811,7 +811,7 @@
 					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より新しい（値を含む）場合
 					if(cbdDateTime >= nowDateTime){
 						// CookieのCbdIdの件数分
-						for(k=0; k < CookieList.length; k++){
+						for(k = 0; k < CookieList.length; k++){
 							// コンタクトボード明細のIDとCookieのIDが一致している場合
 							if(cbdFileList[j].Id == CookieList[k]){
 								// NEW表示フラグをfalseに設定
@@ -958,18 +958,12 @@
 	 * 返却値：cbdIdリスト
 	 ***/
 	function getCookie(){
-		// Cookieを分割して格納する配列
-		let tempIdList = [];
-		// Cookieを格納する配列
-		let cbdIdList = [];
-		// 結果返却用配列
-		let resultCbdIdList = [];
 		// Cookieを取得
-		let nowCookie = document.cookie;
+		const nowCookie = document.cookie;
 		// Cookieがnullもしくはundefinedでない場合
 		if(nowCookie){
 			// 値を ';' で分割して1）の配列に格納
-			tempIdList = nowCookie.split(';');
+			const tempIdList = nowCookie.split(';');
 			// 値の件数分
 			tempIdList.forEach(data => {
 				// 値を '=' で分割
@@ -977,22 +971,12 @@
 				// Keyの値がお問い合わせフォーム用のKeyの場合
 				if(data[0] == 'IMFCookie'){
 					// 値をJSON文字列からJavascriptオブジェクトに変換、配列に格納
-					resultCbdIdList = JSON.parse(data[1]);
-/*					
-					// 配列の値の要素の数分
-					Object.keys(cbdIdList).forEach(key => {
-						// Keyの配列の値の件数分
-						cbdIdList[key].forEach(elem => {
-							// 結果返却用配列に追加
-							resultCbdIdList.push(elem);
-						})
-					}
-*/
-				})
+					return JSON.parse(data[1]);
+				}
 			})
 		}
 		// 結果を返却
-		return resultCbdIdList;
+		return null;
 	}
 	/***
 	 * 個別問い合わせ 詳細画面の遷移処理
