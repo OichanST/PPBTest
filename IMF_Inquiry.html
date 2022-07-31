@@ -187,7 +187,7 @@
 	function SelectRadio(id){
 		var childName = $("#" + id).children("li").attr("name");
 		var selectValue = $("input[name='" + childName + "']:checked").next().html();
-		$("$Modal-" + id).html(selectValue);
+		$("#Modal-" + id).html(selectValue);
 		var defValue = $("#Modal-" + id).html();
 		var defValueMsg = "選択してください";
 		if(defValue == defValueMsg){
