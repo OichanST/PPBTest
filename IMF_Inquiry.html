@@ -95,7 +95,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.35.00");
+		console.log("ver 1.35.01");
 		// 連携文字列取得　TODO:PPB提供時には要切り替え
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -187,7 +187,7 @@
 				const spFile = baseFile.split(",");
 				inputFile = spFile[1];
 			}
-			const f = document.getElementById("fileName").files[0];
+			const f = document.getElementById("inqFileName").files[0];
 			fileName = f.name;
 			reader.readAsDataURL(f);
 		});
@@ -204,7 +204,7 @@
 				const spFile = baseFile.split(",");
 				inputFile = spFile[1];
 			}
-			const f = document.getElementById("fileName").files[0];
+			const f = document.getElementById("cbdFileName").files[0];
 			fileName = f.name;
 			reader.readAsDataURL(f);
 		});
