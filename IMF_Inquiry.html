@@ -387,6 +387,51 @@
 		});
 	}
 	
+    /**
+	 * 初期表示時データ取得
+	 */
+	function registInquery(){
+		// アクセストークン取得（リフレッシュトークンフロー） Ajax
+		$.ajax({
+			type: 'POST',
+			crossOrigin: true,
+			url: REQUEST_DOMAIN + '/services/oauth2/token',
+			dataType: 'json',
+			cache :false,
+			data : {
+				"grant_type":"refresh_token",
+				"client_id":CLIENT_ID, 
+				"refresh_token":REFLESH_TOKEN
+			},
+			success : function (connectData) {
+				var accToken = 'Bearer ' + connectData.access_token;
+				$.ajax({
+					type:'POST',
+					crossOrigin:true,
+					url:REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
+					dataType:'json',
+					cache:false,
+					data:inqRegistData,
+					headers: {"Authorization":accToken},
+					success:function(response){
+						res = response;
+						init();
+					},
+					error:function (data, errorThrown,status) {
+						console.log(data);
+						console.log(errorThrown);
+						console.log(status);
+					}
+				})
+			},
+			error:function (data, errorThrown,status) {
+				console.log(data);
+				console.log(errorThrown);
+				console.log(status);
+			}
+		});
+	}
+	
 	/***
 	 * コンテンツバージョン（ファイル）取得処理
 	 * 引数　：コンテンツバージョンId
@@ -1150,7 +1195,7 @@
 			-->
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
+					<input type="submit" id="" onclick="registInquery();changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
 				</p>
 				<p class="mt-16">
 					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a>
