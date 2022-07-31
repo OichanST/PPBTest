@@ -85,7 +85,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.20");
+		console.log("ver 1.21");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "d5b8d90ceb5ff5f3505dd311e1e74f6e12c18719dd8af44475fd97931da7af50";
@@ -1229,7 +1229,7 @@
 				
 				<div class="contbrd-btnArea-box">
 					<p class="mt-24">
-						<input type="button" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled>
+						<input type="button" id="cbdConfButton" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled>
 					</p>
 					<p class="mt-16">
 						<a href="javascript:void(0);" onclick="changeDisp('detailsScreen')" class="btn btn03 btnL prevBtn">戻る</a>
