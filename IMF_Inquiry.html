@@ -44,7 +44,6 @@
 	<p><a class="fileLink"></a></p>
 </template>
 
-
 <script type="text/javascript">
 	// 通信先URL　※環境に併せて変更する必要あり！
 	const REQUEST_DOMAIN = 'https://paypay-bank--pt49.sandbox.my.salesforce.com';
@@ -55,44 +54,51 @@
 	let res;
 	// 連携用文字列
 	let linkedStr;
-	// メール
+	// メールアドレス
 	let eMail;
-	
+	// ファイルアップロード用ファイル
 	let inputFile;
+	// ファイルアップロード用ファイル名
 	let fileName;
-	
 	// エラー格納用
 	let errorInfo = {
 		data: '', // データ
 		errorThrown: '', // 例外情報
 		status: '' // エラー情報
 	};
-	
+	// 新規投稿用データハッシュ
 	const inqRegistData = {
 		EncryptedData:null,
 		Subject:null,
 		Content:null,
 		LinkedDial:null
 	};
-	
+	// 追加投稿用データハッシュ
 	const cbdRegistData = {
 		EncryptedData:null,
 		CaseId:null,	
 		Content:null
 	};
-	
 	// 画面ID
-	const screenNameList = ['inquiryForm','noInq','detailsScreen','inqInputScreen','inqConfirmScreen','replyInputScreen','replyConfirmScreen','compScreen'];
+	const screenNameList = [
+		'inquiryForm',
+		'noInq',
+		'detailsScreen',
+		'inqInputScreen',
+		'inqConfirmScreen',
+		'replyInputScreen',
+		'replyConfirmScreen',
+		'compScreen'
+	];
 	
 	/**
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.32");
-		// 連携文字列取得
+		console.log("ver 1.33");
+		// 連携文字列取得　TODO:PPB提供時には要切り替え
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
-		
 		// ホーム画面を表示
 		document.getElementById('inquiryForm').style.display = 'block';
 		// それ以外を非表示
@@ -113,11 +119,11 @@
 		$('#confButton').prop("disabled", true);
 		
 		$('input[name="aaa"]').change(function(){
-			reqCheck();
+			inqReqCheck();
 		});
 		
 		$('#inqTextInput').change(function(){
-			reqCheck();
+			inqReqCheck();
 		});
 		
 		$('#cbdConfButton').prop("disabled", true);
@@ -126,9 +132,12 @@
 			cbdReqCheck();
 		});
 		
+// PPB側ソースから移植
 		$(".x-data-aaa").change(function(){
 			SelectRadio("aaa");
 		});
+// PPB側ソースから移植
+
 		/*
 		//const jinkakuCode = $('input[name="JinkakuCode"]').val();
 		const jinkakuCode = '個人';
@@ -164,11 +173,13 @@
 		}
 		*/
 		
+// PPB側ソースから移植して一部改変
 		$("#fileName").change(function(){
 			var file = document.getElementById("fileName").value;
 			document.getElementById("fileText").value = file;
 			$("#fileText").css({display:"block"});
 			$("#fileText").next(".inputClear").css("pacity", 1);
+			// ここからUSE追加処理
 			const reader = new FileReader();
 			reader.onload = function(){
 				const baseFile = this.result;
@@ -179,11 +190,12 @@
 			fileName = f.name;
 			reader.readAsDataURL(f);
 		});
-		
+// PPB側ソースから移植して一部改変
 		// AjaxによりSalesforceから表示データを取得
-		responseApexData();
+		getAllCase();
 	});
 	
+// PPB側ソースから移植
 	function SelectRadio(id){
 		var childName = $("#" + id).children("li").attr("name");
 		var selectValue = $("input[name='" + childName + "']:checked").next().html();
@@ -209,6 +221,7 @@
 			$("p").find("#nextBtn").prop("desabled", true);
 		}
 	}
+// PPB側ソースから移植
 	
 	/**
 	 * 初期処理
@@ -232,10 +245,9 @@
 		eMail = res.accMail;
 		// 新規入力画面に反映
 		document.getElementById('newInqMail').innerHTML = eMail;
-
 		// コンテンツバーション取得のためのPromise生成
 		const fileGetPromise = new Promise((resolve) => {
-		
+			// ファイルIDのリスト
 			const fileIdList = new Array();
 			// ケースのリストサイズが0でない
 			if(res.caseList.length != 0){
@@ -249,8 +261,9 @@
 						for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
 							// 要素をインスタンス化
 							const cv = cbdFileList[j].contentVersions[k];
-							
+							// 取得できている場合
 							if(cv){
+								// IDをリストに退避
 								fileIdList.push(cv.Id);
 							}
 						}
@@ -383,20 +396,24 @@
 	 * 引数：遷移先画面(div)Id
 	 ***/
 	function changeDisp(nextScreen){
+		// 画面IDリストループ
 		for(i = 0; i < screenNameList.length; i++){
+			// 指定IDの場合
 			if(screenNameList[i] == nextScreen){
+				// 表示
 				document.getElementById(screenNameList[i]).style.display = 'block';
+			// それ以外
 			}else{
+				// 非表示
 				document.getElementById(screenNameList[i]).style.display = 'none';
 			}
 		}
 	}
-
+	
 	/**
 	 * 初期表示時データ取得
 	 */
-	function responseApexData(){
-		// アクセストークン取得（リフレッシュトークンフロー） Ajax
+	function getAllCase(){
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -422,14 +439,14 @@
 						res = response;
 						init();
 					},
-					error:function (data, errorThrown,status) {
+					error:function (data, errorThrown, status) {
 						console.log(data);
 						console.log(errorThrown);
 						console.log(status);
 					}
 				})
 			},
-			error:function (data, errorThrown,status) {
+			error:function (data, errorThrown, status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
@@ -459,13 +476,12 @@
 					type:'POST',
 					crossOrigin:true,
 					url:REQUEST_DOMAIN + '/services/apexrest/IMF_Case',
-					dataType:'json',
 					cache:false,
-					data:JSON.stringify(inqRegistData),
 					headers: {"Authorization":accToken, "Content-Type":"application/json"},
+					dataType:'json',
+					data:JSON.stringify(inqRegistData),
 					success:function(response){
 						const cbdId = response.cbdId;
-						console.log(cbdId);
 						if(inputFile){
 							const cvJson = {
 								Title:fileName,
@@ -481,18 +497,16 @@
 								data:JSON.stringify(cvJson),
 								success:function(cv){
 									const cvId = cv.id;
-									console.log(cvId);
 									const query = "SELECT+ContentDocumentId+FROM+ContentVersion+WHERE+Id+=+'" + cvId + "'";
 									$.ajax({
 										type:"GET",
 										crossOrigin:true,
 										url:REQUEST_DOMAIN + "/services/data/v54.0/query/?q=" + query,
 										cache:false,
-										headers: {"Authorization":accToken, "Content-Type":"application/json"},
+										headers: {"Authorization":accToken},
 										success : function(res){
 											const records = res.records;
 											const cdId = records[0].ContentDocumentId;
-											console.log(cdId);
 											const linkJson = {
 												ContentDocumentId:cdId,
 												LinkedEntityId:cbdId,
@@ -507,7 +521,7 @@
 												dataType:"json",
 												data:JSON.stringify(linkJson),
 												success:function(res){
-													console.log("添付ファイル登録完了");
+													//console.log("添付ファイル登録完了");
 												},
 												error:function(data, errorThrown,status) {
 													console.log(data);
@@ -517,14 +531,14 @@
 											});
 										
 										},
-										error:function(data, errorThrown,status) {
+										error:function(data, errorThrown, status) {
 											console.log(data);
 											console.log(errorThrown);
 											console.log(status);
 										}
 									});
 								},
-								error:function(data, errorThrown,status) {
+								error:function(data, errorThrown, status) {
 									console.log(data);
 									console.log(errorThrown);
 									console.log(status);
@@ -532,14 +546,14 @@
 							});
 						}
 					},
-					error:function (data, errorThrown,status) {
+					error:function (data, errorThrown, status) {
 						console.log(data);
 						console.log(errorThrown);
 						console.log(status);
 					}
 				})
 			},
-			error:function (data, errorThrown,status) {
+			error:function (data, errorThrown, status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
@@ -569,21 +583,87 @@
 					type:'POST',
 					crossOrigin:true,
 					url:REQUEST_DOMAIN + '/services/apexrest/IMF_ContactBoardDetail',
-					dataType:'json',
 					cache:false,
-					data:JSON.stringify(cbdRegistData),
 					headers: {"Authorization":accToken, "Content-Type":"application/json"},
+					dataType:'json',
+					data:JSON.stringify(cbdRegistData),
 					success:function(response){
-
+						const cbdId = response.cbdId;
+						console.log(cbdId);
+						if(inputFile){
+							const cvJson = {
+								Title:fileName,
+								PathOnClient:fileName,
+								VersionData:inputFile
+							}
+							$.ajax({
+								type:"POST",
+								url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion",
+								cache:false,
+								headers:{"Authorization":accToken, "Content-Type":"application/json"},
+								dataType:"json",
+								data:JSON.stringify(cvJson),
+								success:function(cv){
+									const cvId = cv.id;
+									console.log(cvId);
+									const query = "SELECT+ContentDocumentId+FROM+ContentVersion+WHERE+Id+=+'" + cvId + "'";
+									$.ajax({
+										type:"GET",
+										crossOrigin:true,
+										url:REQUEST_DOMAIN + "/services/data/v54.0/query/?q=" + query,
+										cache:false,
+										headers: {"Authorization":accToken},
+										success : function(res){
+											const records = res.records;
+											const cdId = records[0].ContentDocumentId;
+											console.log(cdId);
+											const linkJson = {
+												ContentDocumentId:cdId,
+												LinkedEntityId:cbdId,
+												Visibility:"AllUsers"
+											};
+											$.ajax({
+												type:"POST",
+												crossOrigin:true,
+												url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentDocumentLink",
+												cache:false,
+												headers:{"Authorization":accToken, "Content-Type":"application/json"},
+												dataType:"json",
+												data:JSON.stringify(linkJson),
+												success:function(res){
+													console.log("添付ファイル登録完了");
+												},
+												error:function(data, errorThrown,status) {
+													console.log(data);
+													console.log(errorThrown);
+													console.log(status);
+												}
+											});
+										
+										},
+										error:function(data, errorThrown, status) {
+											console.log(data);
+											console.log(errorThrown);
+											console.log(status);
+										}
+									});
+								},
+								error:function(data, errorThrown, status) {
+									console.log(data);
+									console.log(errorThrown);
+									console.log(status);
+								}
+							});
+						}
 					},
-					error:function (data, errorThrown,status) {
+					error:function (data, errorThrown, status) {
 						console.log(data);
 						console.log(errorThrown);
 						console.log(status);
 					}
 				})
 			},
-			error:function (data, errorThrown,status) {
+			error:function (data, errorThrown, status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
@@ -614,18 +694,17 @@
 			success : function (connectData) {
 				var accToken = 'Bearer ' + connectData.access_token;
 				$.ajax({
-					type: 'GET',
-					crossOrigin: true,
-					url: REQUEST_DOMAIN + '/services/data/v54.0/sobjects/ContentVersion/' + fileId + '/VersionData',
-					cache :false,
-					headers: {"Authorization" : accToken},
-					xhrFields : {responseType : 'blob'},
-					success : function (fileContent) {
+					type:'GET',
+					crossOrigin:true,
+					url:REQUEST_DOMAIN + '/services/data/v54.0/sobjects/ContentVersion/' + fileId + '/VersionData',
+					cache:false,
+					headers:{"Authorization":accToken},
+					xhrFields:{responseType:'blob'},
+					success:function(fileContent){
 						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
-						
+							// ファイルの紐付け有無
 							let fileAttached = false;
-							
 							// ケースをループ
 							for(let i = 0; i < res.caseList.length; i++){
 								// コンタクトボード明細を取得
@@ -640,35 +719,43 @@
 										if(cv.Id == fileId){
 											// IDを条件に添付ファイルのBlobデータを取得
 											res.caseList[i].cbdFileList[j].contentVersions[k]["versionData"] = fileContent;
-											
+											// 紐付け済にする
 											fileAttached = true;
+											// 以後処理不要
 											break;
 										}
 									}
+									// 紐付け済の場合
 									if(fileAttached){
+										// 以後処理不要
 										break;
 									}
 								}
+								// 紐付け済の場合
 								if(fileAttached){
+									// 以後処理不要
 									break;
 								}
 							}
 						}
-						
+						// 全て紐付け終わったら
 						if(fileIdList.length - 1 == index){
+							// 次の処理を呼ぶ
 							resolve();
+						// まだ終わってない場合
 						}else{
+							// 再帰実行する
 							getContentVersion(fileIdList, resolve, index + 1);
 						}
 					},
-					error : function (data, errorThrown,status) {
+					error:function (data, errorThrown, status) {
 						console.log(data);
 						console.log(errorThrown);
 						console.log(status);
 					}
 				});
 			},
-			error : function (data, errorThrown,status) {
+			error:function (data, errorThrown, status) {
 				console.log(data);
 				console.log(errorThrown);
 				console.log(status);
@@ -680,7 +767,7 @@
 	 * 初期表示処理（コンタクトボード明細）
 	 */
 	function sendDetailsScreen(selectedCaseId){
-	
+		// 画面内容をクリアする
 		document.getElementById('outputCbdTemp').innerHTML = null;
 		// 投稿するボタンにケースIdを設定
 		document.getElementById('replyButton').dataset.cId = selectedCaseId;
@@ -887,18 +974,20 @@
 			tempIdList.forEach(data => {
 				// 値を '=' で分割
 				data = data.split('=');
-				// 値をJSON文字列からJavascriptオブジェクトに変換、配列に格納
-				cbdIdList[data[0]] = JSON.parse(data[1]);
-				// 配列の値の要素の数分
-				Object.keys(cbdIdList).forEach(key => {
-					// Keyの値がお問い合わせフォーム用のKeyの場合
-					if(key == 'IMFCookie'){
+				// Keyの値がお問い合わせフォーム用のKeyの場合
+				if(data[0] == 'IMFCookie'){
+					// 値をJSON文字列からJavascriptオブジェクトに変換、配列に格納
+					resultCbdIdList = JSON.parse(data[1]);
+/*					
+					// 配列の値の要素の数分
+					Object.keys(cbdIdList).forEach(key => {
 						// Keyの配列の値の件数分
 						cbdIdList[key].forEach(elem => {
 							// 結果返却用配列に追加
 							resultCbdIdList.push(elem);
 						})
 					}
+*/
 				})
 			})
 		}
@@ -936,69 +1025,64 @@
 		return `${year}/${month}/${day} ${hour}:${minute}`;
 	}
 	
-	//入力画面で入力された情報を確認画面の要素に反映
+	/**
+	 * 入力画面で入力された情報を確認画面の要素に反映
+	 */
 	function outputValueInqConf(){
 		inqRegistData.EncryptedData = linkedStr;
 		inqRegistData.Subject = document.getElementById('Modal-aaa').innerHTML;
 		inqRegistData.Content = document.getElementById('inqTextInput').value;
 //		inqRegistData.LinkedDial:null
-		// メールアドレス設定
 		document.getElementById('inqConfMailText').innerHTML = eMail;
 		document.getElementById('inqConfTypeText').innerHTML = inqRegistData.Subject;
 		document.getElementById('inqConfDtailsText').innerHTML = inqRegistData.Content;
 	}
 	
+	/**
+	 * 入力画面で入力された情報を確認画面の要素に反映
+	 */
 	function outputValueCbdConf(){
-	
 		cbdRegistData.EncryptedData = linkedStr;
 		cbdRegistData.CaseId = document.getElementById('replyButton').dataset.cId;
 		cbdRegistData.Content = document.getElementById('cbdTextInput').value;
-		
-		console.log(cbdRegistData);
-		
-		// お問い合わせ詳細
 		document.getElementById('cbdConfDtailsText').innerHTML = cbdRegistData.Content;
 	}
 	
-	//check
-	function reqCheck(){
+	/**
+	 * 入力されたらボタンを活性化する
+	 */
+	function inqReqCheck(){
 	
 		const itype_flg = ($('#input[name="aaa"]').val() === "") ? false : true;
 		const idtail_flg = ($('#inqTextInput').val() === "") ? false : true;
 		
-		let inqButtonActive;
+		let isBtnActive;
 		
 		if(itype_flg && idtail_flg){
-			inqButtonActive = true;
+			isBtnActive = true;
 		}else{
-			inqButtonActive = false;
+			isBtnActive = false;
 		}
-
-		if(inqButtonActive){
-			$('#confButton').prop("disabled", false);
-		}else{
-			$('#confButton').prop("disabled", true);
-		}
+		
+		$('#confButton').prop("disabled", !isBtnActive);
 	}
 	
-	//check
+	/**
+	 * 入力されたらボタンを活性化する
+	 */	
 	function cbdReqCheck () {
 	
 		const cdtail_flg = ( $('#cbdTextInput').val() === "" ) ? false : true;
 		
-		let cbdButtonActive;
+		let isBtnActive;
 		
 		if(cdtail_flg){
-			cbdButtonActive = true;
+			isBtnActive = true;
 		}else{
-			cbdButtonActive = false;
+			isBtnActive = false;
 		}
-
-		if(cbdButtonActive){
-			$('#cbdConfButton').prop("disabled", false);
-		}else{
-			$('#cbdConfButton').prop("disabled", true);
-		}
+		
+		$('#cbdConfButton').prop("disabled", !isBtnActive);
 	}
 </script>
 
@@ -1177,10 +1261,7 @@
 				<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
 				<input type="text" id="fileText" name="fileText" value="">
 			</label>
-			<div id=""></div>
-			<!--
-			<p class="upfile-text"><a>aaaaaaaaaaaaa.pdf</a><span class="InputClear inputClear">×</span></p>
-			-->
+			<p class="upfile-text"><span class="InputClear inputClear">×</span></p>
 		</div>
 	</div>
 	
@@ -1292,9 +1373,7 @@
 							<input type="file" name="fileName" id="fileName" class="dn" multiple="multiple">
 							<input type="text" id="fileText" name="fileText" value="">
 						</label>
-						<!--
-						<p class="upfile-text"><a>aaaaaaaaaaaaa.pdf</a><span class="InputClear inputClear">×</span></p>
-						<p class="upfile-text"><a>bbbb.jpg</a><span class="InputClear inputClear">×</span></p>
+						<p class="upfile-text"><span class="InputClear inputClear">×</span></p>
 						-->
 					</div>
 				</div>
