@@ -88,7 +88,7 @@
 	 * 初期表示処理
 	 */
 	$(function(){
-		console.log("ver 1.26");
+		console.log("ver 1.27");
 		// 連携文字列取得
 		//linkedStr = $('input[name="SFConnectParam"]').val();
 		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
@@ -434,7 +434,70 @@
 					data:JSON.stringify(inqRegistData),
 					headers: {"Authorization":accToken, "Content-Type":"application/json"},
 					success:function(response){
-
+						const cbdId = response.cbdId;
+						console.log(cbdId);
+						if(inputFile){
+							const cvJson = {
+								Title:fileName,
+								PathOnClient:fileName,
+								VersionData:inputFile
+							}
+							$.ajax({
+								type:"POST",
+								url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion",
+								cache:false,
+								headers:{"Authorization":accToken, "Content-Type":"application/json"},
+								dataType:"json",
+								success:function(cv){
+									const cvId = cv.Id;
+									const query = "SELECT+ContentDocumentId+FROM+ContentVersion+WHERE+Id+=+'" + cvId + "'";
+									$.ajax({
+										type:"GET",
+										crossOrigin:true,
+										url:REQUEST_DOMAIN + "/services/data/v54.0/query/?q=" + query,
+										cache:false,
+										headers: {"Authorization":accToken, "Content-Type":"application/json"},
+										success : function(res){
+											const records = res.records;
+											const cdId = records.ContentDocumentId;
+											const linkJson = {
+												ContentDocumentId:cdId,
+												LinkedEntityId:cbdId,
+												Visibility:"AllUsers"
+											};
+											$,ajax({
+												type:"POST",
+												crossOrigin:true,
+												url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentDocumentLink",
+												cache:false,
+												headers:{"Authorization":accToken, "Content-Type":"application/json"},
+												dataType:"json",
+												data:JSON.stringify(linkJson),
+												success:function(res){
+													console.log("添付ファイル登録完了");
+												},
+												error:function(data, errorThrown,status) {
+													console.log(data);
+													console.log(errorThrown);
+													console.log(status);
+												}
+											});
+										
+										},
+										error:function(data, errorThrown,status) {
+											console.log(data);
+											console.log(errorThrown);
+											console.log(status);
+										}
+									});
+								},
+								error:function(data, errorThrown,status) {
+									console.log(data);
+									console.log(errorThrown);
+									console.log(status);
+								}
+							});
+						}
 					},
 					error:function (data, errorThrown,status) {
 						console.log(data);
