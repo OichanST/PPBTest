@@ -1,4 +1,4 @@
-<script>console.log("ver1.00.00")</script>
+<script>console.log("ver1.00.01")</script>
 <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 <!-- PPBより受領したスクリプトを反映
@@ -607,6 +607,7 @@
 	 * 初期処理
 	 */
 	function init(){
+		console.log(res);
 		// RestApexとの通信時erorrだった場合にエラーのモーダルを表示する処理に変更する
 		if(res.result == 'SUCCESS'){
 			if(!res.caseList){ // お問い合わせ0件(null)の場合
