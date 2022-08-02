@@ -1,4 +1,4 @@
-<script>console.log("ver1.00.03")</script>
+<script>console.log("ver1.00.04")</script>
 <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 <!-- PPBより受領したスクリプトを反映
@@ -877,68 +877,70 @@
 					data:JSON.stringify(inqRegistData),
 					success:function(response){
 						const cbdId = response.cbdId;
-						if(inputFile){
-							const cvJson = {
-								Title:fileName,
-								PathOnClient:fileName,
-								VersionData:inputFile
-							}
-							$.ajax({
-								type:"POST",
-								url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion",
-								cache:false,
-								headers:{"Authorization":accToken, "Content-Type":"application/json"},
-								dataType:"json",
-								data:JSON.stringify(cvJson),
-								success:function(cv){
-									const cvId = cv.id;
-									const query = "SELECT+ContentDocumentId+FROM+ContentVersion+WHERE+Id+=+'" + cvId + "'";
-									$.ajax({
-										type:"GET",
-										crossOrigin:true,
-										url:REQUEST_DOMAIN + "/services/data/v54.0/query/?q=" + query,
-										cache:false,
-										headers: {"Authorization":accToken},
-										success : function(res){
-											const records = res.records;
-											const cdId = records[0].ContentDocumentId;
-											const linkJson = {
-												ContentDocumentId:cdId,
-												LinkedEntityId:cbdId,
-												Visibility:"AllUsers"
-											};
-											$.ajax({
-												type:"POST",
-												crossOrigin:true,
-												url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentDocumentLink",
-												cache:false,
-												headers:{"Authorization":accToken, "Content-Type":"application/json"},
-												dataType:"json",
-												data:JSON.stringify(linkJson),
-												success:function(res){
-													//console.log("添付ファイル登録完了");
-												},
-												error:function(data, errorThrown,status) {
-													console.log(data);
-													console.log(errorThrown);
-													console.log(status);
-												}
-											});
-										
-										},
-										error:function(data, errorThrown, status) {
-											console.log(data);
-											console.log(errorThrown);
-											console.log(status);
-										}
-									});
-								},
-								error:function(data, errorThrown, status) {
-									console.log(data);
-									console.log(errorThrown);
-									console.log(status);
+						if(inputFiles.length > 0){
+							for(let i = 0; i < inputFiles.length; i++){
+								const cvJson = {
+									Title:inputFiles[i].name,
+									PathOnClient:inputFiles[i].name,
+									VersionData:inputFiles[i].versionData
 								}
-							});
+								$.ajax({
+									type:"POST",
+									url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentVersion",
+									cache:false,
+									headers:{"Authorization":accToken, "Content-Type":"application/json"},
+									dataType:"json",
+									data:JSON.stringify(cvJson),
+									success:function(cv){
+										const cvId = cv.id;
+										const query = "SELECT+ContentDocumentId+FROM+ContentVersion+WHERE+Id+=+'" + cvId + "'";
+										$.ajax({
+											type:"GET",
+											crossOrigin:true,
+											url:REQUEST_DOMAIN + "/services/data/v54.0/query/?q=" + query,
+											cache:false,
+											headers: {"Authorization":accToken},
+											success : function(res){
+												const records = res.records;
+												const cdId = records[0].ContentDocumentId;
+												const linkJson = {
+													ContentDocumentId:cdId,
+													LinkedEntityId:cbdId,
+													Visibility:"AllUsers"
+												};
+												$.ajax({
+													type:"POST",
+													crossOrigin:true,
+													url:REQUEST_DOMAIN + "/services/data/v54.0/sobjects/ContentDocumentLink",
+													cache:false,
+													headers:{"Authorization":accToken, "Content-Type":"application/json"},
+													dataType:"json",
+													data:JSON.stringify(linkJson),
+													success:function(res){
+														console.log("添付ファイル登録完了");
+													},
+													error:function(data, errorThrown,status) {
+														console.log(data);
+														console.log(errorThrown);
+														console.log(status);
+													}
+												});
+											
+											},
+											error:function(data, errorThrown, status) {
+												console.log(data);
+												console.log(errorThrown);
+												console.log(status);
+											}
+										});
+									},
+									error:function(data, errorThrown, status) {
+										console.log(data);
+										console.log(errorThrown);
+										console.log(status);
+									}
+								});
+							}
 						}
 					},
 					error:function (data, errorThrown, status) {
@@ -985,7 +987,7 @@
 					success:function(response){
 						const cbdId = response.cbdId;
 						console.log(cbdId);
-						if(inputFile){
+						if(inputFiles.length > 0){
 							const cvJson = {
 								Title:fileName,
 								PathOnClient:fileName,
