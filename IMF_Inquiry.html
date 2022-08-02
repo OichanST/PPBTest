@@ -1,4 +1,284 @@
 <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+<!-- PPB‚æ‚èŽó—Ì‚µ‚½ƒXƒNƒŠƒvƒg‚ð”½‰f
+	/*** NewInquiry_InputScreen ***/
+/*
+	$(function(){
+		var onResize;
+		$(window).on('load resize', function(){
+			clearTimeout(onResize);
+			onResize = setTimeout(function(){
+				inqtextinputAfter(document.getElementById("inqTextInput"));
+			},100);
+		});
+	});
+	//textareaŽ©“®‚‚³’²®
+	function inqtextinputAfter(argObj){
+		argObj.style.height = "42px";
+		var wSclollHeight = parseInt(argObj.scrollHeight);
+		// 1s‚Ì’·‚³‚ðŽæ“¾‚·‚é
+		var wLineH = parseInt(argObj.style.lineHeight.replace(/px/, ''));
+		// Å’á2s‚Ì•\Ž¦ƒGƒŠƒA‚É‚·‚é
+		if(wSclollHeight < (wLineH * 2)){wSclollHeight=(wLineH * 2);}
+		// ƒeƒLƒXƒgƒGƒŠƒA‚Ì‚‚³‚ðÝ’è‚·‚é
+		argObj.style.height = wSclollHeight + "px";
+	}
+*/
+	$(function(){
+		//ƒ‚[ƒ_ƒ‹‚‚³’²®
+		/*
+		$(window).on("load orientationchange resize", function() {
+			ModalWinLoad();
+		});
+		*/
+		
+		//ƒ‚[ƒ_ƒ‹ŠJ•Â
+		$(".ModalBtn").on("click", function(){
+			$(".modalOverlay,.modalWrap").fadeIn();
+			$("body").css({position:"fixed",top:-1});
+			selectId = $(this).attr("id").slice(6);
+			//“–ŠYˆ—‚¾‚¯‚ÍŒÄ‚ÑŒ³‚Ìˆ—‚ª“Á’è‚Å‚«‚È‚©‚Á‚½‚½‚ßAƒRƒƒ“ƒgƒAƒEƒg‚µ‚Ä‚¢‚é
+			//ModalOpen(selectId);
+		});
+		
+		$(".modal__bottomArea").on("click", function(){
+			$(".modalOverlay,.modalWrap").fadeOut();
+			$("body").css({position:"",top:0});
+			SelectRadio(selectId);
+		});
+		$(".x-data-aaa").change(function(){
+			SelectRadio(selectId);
+		});
+		//ƒ‚[ƒ_ƒ‹ŠJ•Â@–ß‚éAƒƒOƒAƒEƒgŽž
+		$(".prevBtn, .logout").on("click", function(){
+			if ($("body").find(".data-on").length) {
+				var CurrentScrollY = $(window).scrollTop();
+				$(".modalOverlay,.modalWrap_error.error-type1").fadeIn();
+				$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+			}else{
+			}
+		});
+		$(".textinput-box .InputClear").on("click", function(){
+			if ($("body").find(".data-on").length) {
+				var CurrentScrollY = $(window).scrollTop();
+				$(".modalOverlay,.modalWrap_error.error-type2").fadeIn();
+				$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+			}else{
+			}
+		});
+		$(".upfile-text .InputClear").on("click", function(){
+			var CurrentScrollY = $(window).scrollTop();
+			$(".modalOverlay,.modalWrap_error.error-type3").fadeIn();
+			$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+		});
+		$(".modal__close").on("click", function(){
+			var CurrentScrollY = $(window).scrollTop();
+			$(".modalOverlay,.modalWrap_error").fadeOut();
+			$("body").css({position:"",top:0 * CurrentScrollY});
+		});
+		//“ü—Í’lƒNƒŠƒA
+		$(".InputClear").on({
+			"click":function(){
+				$(this).prev().val("");
+				$(this).css("opacity", 0);
+				$("#inqTextInput").addClass("reqEntry").removeClass("data-on");
+//				$("#inqTextInput").css({height:"42px"});
+				NextBtnActivity();
+			}
+		});
+		//input“ü—Í
+		$("#inqTextInput").on("keydown keyup keypress change blur", function() {
+			if ($(this).val().length) {
+				$(this).next(".inputClear").css("opacity", 1);
+				$("#inqTextInput").removeClass("reqEntry").addClass("data-on");
+			}else{
+				$(this).next(".inputClear").css("opacity", 0);
+				$("#inqTextInput").addClass("reqEntry").removeClass("data-on");
+//				$("#inqTextInput").css({height:"42px"});
+			}
+			NextBtnActivity();
+		});
+		//“ü—ÍŽž‚Ì‰ºü§Œä
+		setReqCls("#Modal-aaa, #inqTextInput");
+	});
+	function SelectRadio(id){
+		var childName = $("#"+id).children("li").attr("name");
+		var selectValue = $("input[name='"+childName+"']:checked").next().html();
+		$("#Modal-"+ id).html(selectValue);
+		var defValue = $("#Modal-"+ id).html();
+		var defValueMsg = "‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢";
+		if(defValue == defValueMsg){
+			if(!$("#Modal-"+ id).hasClass("reqEntry")){$("#Modal-"+ id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");}
+		}else if(defValue == ""){
+			$('#Modal-'+ id).add().html("‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢");
+		}else{
+			$("#Modal-"+ id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
+		}
+		NextBtnActivity();
+	}
+	function NextBtnActivity(){
+		if (!($("body").find(".reqEntry").length)) {
+			$("p").find("#nextBtn").prop("disabled", false);
+		}else{
+			$("p").find("#nextBtn").prop("disabled", true);
+		}
+	}
+	/* ƒtƒ@ƒCƒ‹‘€ìˆ—‚ÍUSE‚ÅŽÀ‘•
+	$(function(){
+		$("#fileName").change(function(){
+			var file = document.getElementById("fileName").value;
+			document.getElementById("fileText").value = file;
+			$("#fileText").css({display:"block"});
+			$("#fileText").next(".inputClear").css("opacity", 1);
+		});
+	});
+	*/
+	/*** /NewInquiry_InputScreen ***/
+
+	/*** Reply_InputScreen ***/
+/*
+	$(function(){
+		var onResize;
+		$(window).on('load resize', function(){
+			clearTimeout(onResize);
+			onResize = setTimeout(function(){
+				textinputAfter(document.getElementById("cbdTextInput"));
+			},100);
+		});
+	});
+	//textareaŽ©“®‚‚³’²®
+	function textinputAfter(argObj){
+		argObj.style.height = "42px";
+		var wSclollHeight = parseInt(argObj.scrollHeight);
+		// 1s‚Ì’·‚³‚ðŽæ“¾‚·‚é
+		var wLineH = parseInt(argObj.style.lineHeight.replace(/px/, ''));
+		// Å’á2s‚Ì•\Ž¦ƒGƒŠƒA‚É‚·‚é
+		if(wSclollHeight < (wLineH * 2)){wSclollHeight=(wLineH * 2);}
+		// ƒeƒLƒXƒgƒGƒŠƒA‚Ì‚‚³‚ðÝ’è‚·‚é
+		argObj.style.height = wSclollHeight + "px";
+	}
+*/
+	$(function(){
+		//ƒ‚[ƒ_ƒ‹‚‚³’²®
+		/*
+		$(window).on("load orientationchange resize", function() {
+			ModalWinLoad();
+		});
+		*/
+		
+		//ƒ‚[ƒ_ƒ‹ŠJ•Â
+		$(".ModalBtn").on("click", function(){
+			$(".modalOverlay,.modalWrap").fadeIn();
+			$("body").css({position:"fixed",top:-1});
+			selectId = $(this).attr("id").slice(6);
+			//ModalOpen(selectId);
+		});
+		
+		$(".modal__bottomArea").on("click", function(){
+			$(".modalOverlay,.modalWrap").fadeOut();
+			$("body").css({position:"",top:0});
+			SelectRadio(selectId);
+		});
+		$(".x-data-aaa").change(function(){
+			SelectRadio(selectId);
+		});
+		//ƒ‚[ƒ_ƒ‹ŠJ•Â@–ß‚éAƒƒOƒAƒEƒgŽž
+		$(".prevBtn, .logout").on("click", function(){
+			if ($("body").find(".data-on").length) {
+				var CurrentScrollY = $(window).scrollTop();
+				$(".modalOverlay,.modalWrap_error.error-type1").fadeIn();
+				$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+			}else{
+			}
+		});
+		$(".textinput-box .InputClear").on("click", function(){
+			if ($("body").find(".data-on").length) {
+				var CurrentScrollY = $(window).scrollTop();
+				$(".modalOverlay,.modalWrap_error.error-type2").fadeIn();
+				$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+			}else{
+			}
+		});
+		$(".upfile-text .InputClear").on("click", function(){
+			var CurrentScrollY = $(window).scrollTop();
+			$(".modalOverlay,.modalWrap_error.error-type3").fadeIn();
+			$("body").css({position:"fixed",top:-1 * CurrentScrollY});
+		});
+		$(".modal__close").on("click", function(){
+			var CurrentScrollY = $(window).scrollTop();
+			$(".modalOverlay,.modalWrap_error").fadeOut();
+			$("body").css({position:"",top:0 * CurrentScrollY});
+		});
+		//“ü—Í’lƒNƒŠƒA
+		$(".InputClear").on({
+			"click":function(){
+				$(this).prev().val("");
+				$(this).css("opacity", 0);
+				$("#cbdTextInput").addClass("reqEntry").removeClass("data-on");
+//				$("#cbdTextInput").css({height:"42px"});
+				NextBtnActivity();
+			}
+		});
+		//input“ü—Í
+		$("#cbdTextInput").on("keydown keyup keypress change blur", function() {
+			if ($(this).val().length) {
+				$(this).next(".inputClear").css("opacity", 1);
+				$("#cbdTextInput").removeClass("reqEntry").addClass("data-on");
+			}else{
+				$(this).next(".inputClear").css("opacity", 0);
+				$("#cbdTextInput").addClass("reqEntry").removeClass("data-on");
+//				$("#cbdTextInput").css({height:"42px"});
+			}
+			NextBtnActivity();
+		});
+		//“ü—ÍŽž‚Ì‰ºü§Œä
+		setReqCls("#Modal-aaa, #cbdTextInput");
+	});
+	function SelectRadio(id){
+		var childName = $("#"+id).children("li").attr("name");
+		var selectValue = $("input[name='"+childName+"']:checked").next().html();
+		$("#Modal-"+ id).html(selectValue);
+		var defValue = $("#Modal-"+ id).html();
+		var defValueMsg = "‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢";
+		if(defValue == defValueMsg){
+			if(!$("#Modal-"+ id).hasClass("reqEntry")){
+				$("#Modal-"+ id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");
+			}
+		}else if(defValue == ""){
+			$('#Modal-'+ id).add().html("‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢");
+		}else{
+			$("#Modal-"+ id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
+		}
+		NextBtnActivity();
+	}
+	function NextBtnActivity(){
+		if (!($("body").find(".reqEntry").length)) {
+			$("p").find("#nextBtn").prop("disabled", false);
+		}else{
+			$("p").find("#nextBtn").prop("disabled", true);
+		}
+	}
+	/* ƒtƒ@ƒCƒ‹‘€ìˆ—‚ÍUSE‘¤‚ÅŽÀ‘•
+	$(function(){
+		$("#fileName").change(function(){
+			var file = document.getElementById("fileName").value;
+			document.getElementById("fileText").value = file;
+			$("#fileText").css({display:"block"});
+			$("#fileText").next(".inputClear").css("opacity", 1);
+		});
+	});
+	*/
+	/*** /Reply_InputScreen ***/
+
+	/*** DetailsScreen ***/
+	$(function(){
+		$(".contbrd-cont").click(function(){
+			$(this).toggleClass("open");
+		});
+	});
+	/*** /DetailsScreen ***/
+//-->
+</script>
 <!--### template ###-->
 <!-- InquiryForm -->
 <template id="caseTemplate">
@@ -10,8 +290,8 @@
 					<p class="list-qa-cont cbd-content"></p>
 				</div>
 				<p class="list-qa-time inq-createdate"></p>
-				<p class="list-qa-txt"><span>ãŠå•ã„åˆã‚ã›ç¨®é¡ž</span><span class="inq-type"></span></p>
-				<p class="list-qa-txt"><span>ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</span><span class="txt-fin inq-status"></span></p>
+				<p class="list-qa-txt"><span>‚¨–â‚¢‡‚í‚¹Ží—Þ</span><span class="inq-type"></span></p>
+				<p class="list-qa-txt"><span>ƒXƒe[ƒ^ƒX</span><span class="txt-not-fin inq-status"></span></p>
 			</dd>
 		</a>
 	</dl>
@@ -44,42 +324,50 @@
 	<p><a class="fileLink"></a></p>
 </template>
 
+<!-- uploadFileTemplate -->
+<template id="fileUpTemplate">
+	<p class="upfile-text"><a></a><span class="InputClear inputClear">~</span></p>
+</template>
+
 <script type="text/javascript">
-	// é€šä¿¡å…ˆURLã€€â€»ç’°å¢ƒã«ä½µã›ã¦å¤‰æ›´ã™ã‚‹å¿…è¦ã‚ã‚Šï¼
+	// ’ÊMæURL@¦ŠÂ‹«‚É•¹‚¹‚Ä•ÏX‚·‚é•K—v‚ ‚èI
 	const REQUEST_DOMAIN = 'https://paypay-bank--pt49.sandbox.my.salesforce.com';
 	const CLIENT_ID = '3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ';
 	const REFLESH_TOKEN = '5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu';
 	
-	// é€šä¿¡å‡¦ç†çµæžœã‚’é€€é¿ã™ã‚‹ãŸã‚ã®å¤‰æ•°
+	// ’ÊMˆ—Œ‹‰Ê‚ð‘Þ”ð‚·‚é‚½‚ß‚Ì•Ï”
 	let res;
-	// é€£æºç”¨æ–‡å­—åˆ—
+	// ˜AŒg—p•¶Žš—ñ
 	let linkedStr;
-	// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
+	// ƒ[ƒ‹ƒAƒhƒŒƒX
 	let eMail;
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ç”¨ãƒ•ã‚¡ã‚¤ãƒ«
-	let inputFile;
-	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ç”¨ãƒ•ã‚¡ã‚¤ãƒ«å
-	let fileName;
-	// ã‚¨ãƒ©ãƒ¼æ ¼ç´ç”¨
+	// ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒh—pƒtƒ@ƒCƒ‹
+	let inputFiles = new Array();
+	// ƒAƒbƒvƒ[ƒhƒtƒ@ƒCƒ‹‘€ì—pF‘I‘ðIndex
+	let selectFileIndex;
+	// ƒAƒbƒvƒ[ƒhƒtƒ@ƒCƒ‹‘€ì—pFƒAƒbƒvƒ[ƒhƒtƒ@ƒCƒ‹”
+	let uploadedFileSize = 0;
+	
+	// ƒGƒ‰[Ši”[—p
 	let errorInfo = {
-		data: '', // ãƒ‡ãƒ¼ã‚¿
-		errorThrown: '', // ä¾‹å¤–æƒ…å ±
-		status: '' // ã‚¨ãƒ©ãƒ¼æƒ…å ±
+		data: '', // ƒf[ƒ^
+		errorThrown: '', // —áŠOî•ñ
+		status: '' // ƒGƒ‰[î•ñ
 	};
-	// æ–°è¦æŠ•ç¨¿ç”¨ãƒ‡ãƒ¼ã‚¿ãƒãƒƒã‚·ãƒ¥
+	// V‹K“Še—pƒf[ƒ^ƒnƒbƒVƒ…
 	const inqRegistData = {
 		EncryptedData:null,
 		Subject:null,
 		Content:null,
 		LinkedDial:null
 	};
-	// è¿½åŠ æŠ•ç¨¿ç”¨ãƒ‡ãƒ¼ã‚¿ãƒãƒƒã‚·ãƒ¥
+	// ’Ç‰Á“Še—pƒf[ƒ^ƒnƒbƒVƒ…
 	const cbdRegistData = {
 		EncryptedData:null,
 		CaseId:null,	
 		Content:null
 	};
-	// ç”»é¢ID
+	// ‰æ–ÊID
 	const screenNameList = [
 		'inquiryForm',
 		'noInq',
@@ -90,18 +378,24 @@
 		'replyConfirmScreen',
 		'compScreen'
 	];
+	// ŠeŽíŽè‘±‚«ƒ_ƒCƒ„ƒ‹Ý’è‘ÎÛ
+	const procedureDialList = [
+		'“o˜^î•ñ‚Ì•ÏX', 
+		'ƒLƒƒƒbƒVƒ…ƒJ[ƒhEƒg[ƒNƒ“', 
+		'Už', 
+		'ŒûÀŽ©“®U‘Ö', 
+		'ŠeŽíØ–¾‘iŽæˆø–¾×EŽc‚Ø–¾‚È‚Çj'
+	];
 	
 	/**
-	 * åˆæœŸè¡¨ç¤ºå‡¦ç†
+	 * ‰Šú•\Ž¦ˆ—
 	 */
 	$(function(){
-		console.log("ver 1.35.01");
-		// é€£æºæ–‡å­—åˆ—å–å¾—ã€€TODO:PPBæä¾›æ™‚ã«ã¯è¦åˆ‡ã‚Šæ›¿ãˆ
-		//linkedStr = $('input[name="SFConnectParam"]').val();
-		linkedStr = "c8ee47bf6884e7be5ddecb3c1a47bc09858b831b05c3f0f718861131b5b0a2a5";
-		// ãƒ›ãƒ¼ãƒ ç”»é¢ã‚’è¡¨ç¤º
+		// ˜AŒg•¶Žš—ñŽæ“¾
+		linkedStr = $('input[name="SFConnectParam"]').val();
+		// ƒz[ƒ€‰æ–Ê‚ð•\Ž¦
 		document.getElementById('inquiryForm').style.display = 'block';
-		// ãã‚Œä»¥å¤–ã‚’éžè¡¨ç¤º
+		// ‚»‚êˆÈŠO‚ð”ñ•\Ž¦
 		document.getElementById('noInq').style.display = 'none';
 		document.getElementById('detailsScreen').style.display = 'none';
 		document.getElementById('inqInputScreen').style.display = 'none';
@@ -114,11 +408,11 @@
 			$(this).toggleClass("open");
 		});
 		
-		/*** ç¢ºèªã™ã‚‹ãƒœã‚¿ãƒ³æ´»æ€§å‡¦ç† ***/
-		//å¿…é ˆé …ç›®ã«ä½•ã‹å¤‰æ›´ãŒåŠ ãˆã‚‰ã‚ŒãŸã‚‰ï¼ˆï¼å…¥åŠ›ã•ã‚ŒãŸã‚‰ï¼‰ã€checké–¢æ•°ãŒä½œå‹•ã™ã‚‹
+		/*** Šm”F‚·‚éƒ{ƒ^ƒ“Šˆ«ˆ— ***/
+		//•K{€–Ú‚É‰½‚©•ÏX‚ª‰Á‚¦‚ç‚ê‚½‚çi“ü—Í‚³‚ê‚½‚çjAcheckŠÖ”‚ªì“®‚·‚é
 		$('#confButton').prop("disabled", true);
 		
-		$('input[name="aaa"]').change(function(){
+		$('#modalText').change( function(){
 			inqReqCheck();
 		});
 		
@@ -132,276 +426,356 @@
 			cbdReqCheck();
 		});
 		
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤
-		$(".x-data-aaa").change(function(){
-			SelectRadio("aaa");
-		});
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤
-
-		/*
-		//const jinkakuCode = $('input[name="JinkakuCode"]').val();
-		const jinkakuCode = 'å€‹äºº';
+		
+		const jinkakuCode = $('input[name="JinkakuCode"]').val();
 		if(jinkakuCode){
-			if(jinkakuCode == 'å€‹äºº' || jinkakuCode == 'éžå±…ä½è€…'){
-				document.getElementById('aaa01').style.display = 'list-item';
-				document.getElementById('aaa02').style.display = 'list-item';
-				document.getElementById('aaa03').style.display = 'list-item';
-				document.getElementById('aaa04').style.display = 'list-item';
-				document.getElementById('aaa05').style.display = 'list-item';
-				document.getElementById('aaa06').style.display = 'list-item';
-				document.getElementById('aaa07').style.display = 'none';
-				document.getElementById('aaa08').style.display = 'none';
-				document.getElementById('aaa09').style.display = 'none';
-				document.getElementById('aaa10').style.display = 'none';
-				document.getElementById('aaa12').style.display = 'none';
-				document.getElementById('aaa13').style.display = 'none';
+			// lŠiƒR[ƒh‚ªŒÂl‚Ü‚½‚Í”ñ‹ZŽÒ‚Ìê‡
+			if(jinkakuCode == 'ŒÂl' || jinkakuCode == '”ñ‹ZŽÒ'){
+				// ŒÂl—p‚ð•\Ž¦
+				document.getElementById('dial01').style.display = '';
+				document.getElementById('dial02').style.display = '';
+				document.getElementById('dial03').style.display = '';
+				document.getElementById('dial04').style.display = '';
+				document.getElementById('dial05').style.display = '';
+				document.getElementById('dial06').style.display = '';
+				// –@l—p‚ð”ñ•\Ž¦
+				document.getElementById('dial07').style.display = 'none';
+				document.getElementById('dial08').style.display = 'none';
+				document.getElementById('dial09').style.display = 'none';
+				document.getElementById('dial10').style.display = 'none';
+				document.getElementById('dial11').style.display = 'none';
+				document.getElementById('dial12').style.display = 'none';
+				document.getElementById('dial13').style.display = 'none';
 			}else{
-				document.getElementById('aaa01').style.display = 'none';
-				document.getElementById('aaa02').style.display = 'none';
-				document.getElementById('aaa03').style.display = 'none';
-				document.getElementById('aaa04').style.display = 'none';
-				document.getElementById('aaa05').style.display = 'none';
-				document.getElementById('aaa06').style.display = 'none';
-				document.getElementById('aaa07').style.display = 'list-item';
-				document.getElementById('aaa08').style.display = 'list-item';
-				document.getElementById('aaa09').style.display = 'list-item';
-				document.getElementById('aaa10').style.display = 'list-item';
-				document.getElementById('aaa12').style.display = 'list-item';
-				document.getElementById('aaa13').style.display = 'list-item';
+				// ŒÂl—p‚ð”ñ•\Ž¦
+				document.getElementById('dial01').style.display = 'none';
+				document.getElementById('dial02').style.display = 'none';
+				document.getElementById('dial03').style.display = 'none';
+				document.getElementById('dial04').style.display = 'none';
+				document.getElementById('dial05').style.display = 'none';
+				document.getElementById('dial06').style.display = 'none';
+				// –@l—p‚ð•\Ž¦
+				document.getElementById('dial07').style.display = '';
+				document.getElementById('dial08').style.display = '';
+				document.getElementById('dial09').style.display = '';
+				document.getElementById('dial10').style.display = '';
+				document.getElementById('dial11').style.display = '';
+				document.getElementById('dial12').style.display = '';
+				document.getElementById('dial13').style.display = '';
+			}
+		}
+		
+		$("#inqFileName").change(function(){
+			
+			$("#inqFileAlert").html(null);
+			
+			const elemFile = document.getElementById("inqFileName");
+			
+			const files = elemFile.files;
+			
+			selectFiles = files.length;
+			
+			existFiles = $("#inqFileList").children().length;
+			
+			if(selectFiles + existFiles > 5){
+				$("#inqFileAlert").text("ƒtƒ@ƒCƒ‹”‚Í5ƒtƒ@ƒCƒ‹ˆÈ“à‚ÅƒAƒbƒvƒ[ƒh‚µ‚Ä‚­‚¾‚³‚¢B");
+				return;
 			}
 			
-		}
-		*/
+			const extensionList = ["heic", "xls", "xlsx", "doc", "docx", "png", "jpg", "jpeg", "pd"];
+			
+			let fileSize = 0;
+			
+			for(let i = 0; i < files.length; i++){
+			
+				const extensionSplit = files[i].name.split(".");
+			
+				const extension = extensionSplit[extensionSplit.length - 1];
+				
+				if(extensionList.indexOf(extension) < 0){
+					$("#inqFileAlert").html("ˆÈ‰º‚Ìƒtƒ@ƒCƒ‹Œ`Ž®‚Ì‚ÝƒAƒbƒvƒ[ƒh‰Â”\‚Å‚·B<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
+					return;
+				}
+				
+				fileSize = files[i].size;
+			}
+			
+			if(uploadedFileSize + fileSize > 24 * 1024 * 1024){
+				$("#inqFileAlert").text("ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Í24MBˆÈ“à‚ÅƒAƒbƒvƒ[ƒh‚µ‚Ä‚­‚¾‚³‚¢B");
+				return;
+			}
+			
+			uploadedFileSize += fileSize;
+			
+			for(let i = 0; i < files.length; i++){
+				
+				const fileUpTemplate = document.getElementById("fileUpTemplate");
+				
+				const clone = fileUpTemplate.content.cloneNode(true);
+				
+				const filePathList = files[i].name.split("\\");
+				
+				clone.querySelector(".upfile-text").getElementsByTagName("a")[0].innerHTML = filePathList[filePathList.length - 1];
+				
+				$(clone.querySelector(".inputClear")).on("click", function(){
+					
+					selectFileIndex = $(this.parentNode).prevAll().length;
+					console.log(selectFileIndex);
+					$(".modalOverlay,.error-type3").fadeIn();
+					$("body").css({position:"fixed",top:-1});
+				});
+			
+				$("#inqFileList").append(clone);
+			}
+			
+			recursiveFileRead(elemFile, files, 0);
+		});
 		
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤ã—ã¦ä¸€éƒ¨æ”¹å¤‰
-		$("#inqFileName").change(function(){
-			console.log("filechange trigger");
-			var file = document.getElementById("inqFileName").value;
-			document.getElementById("inqFileText").value = file;
-			$("#inqFileText").css({display:"block"});
-			$("#inqFileText").next(".inputClear").css("pacity", 1);
-			// ã“ã“ã‹ã‚‰USEè¿½åŠ å‡¦ç†
-			const reader = new FileReader();
-			reader.onload = function(){
-				const baseFile = this.result;
-				const spFile = baseFile.split(",");
-				inputFile = spFile[1];
-			}
-			const f = document.getElementById("inqFileName").files[0];
-			fileName = f.name;
-			reader.readAsDataURL(f);
-		});
 		$("#cbdFileName").change(function(){
-			console.log("filechange trigger");
-			var file = document.getElementById("cbdFileName").value;
-			document.getElementById("cbdFileText").value = file;
-			$("#cbdFileText").css({display:"block"});
-			$("#cbdFileText").next(".inputClear").css("pacity", 1);
-			// ã“ã“ã‹ã‚‰USEè¿½åŠ å‡¦ç†
-			const reader = new FileReader();
-			reader.onload = function(){
-				const baseFile = this.result;
-				const spFile = baseFile.split(",");
-				inputFile = spFile[1];
+			
+			$("#cbdFileAlert").html(null);
+			
+			const elemFile = document.getElementById("cbdFileName");
+			
+			const files = elemFile.files;
+			
+			selectFiles = files.length;
+			
+			existFiles = $("#cbdFileList").children().length;
+			
+			if(selectFiles + existFiles > 5){
+				$("#cbdFileAlert").text("ƒtƒ@ƒCƒ‹”‚Í5ƒtƒ@ƒCƒ‹ˆÈ“à‚ÅƒAƒbƒvƒ[ƒh‚µ‚Ä‚­‚¾‚³‚¢B");
+				return;
 			}
-			const f = document.getElementById("cbdFileName").files[0];
-			fileName = f.name;
-			reader.readAsDataURL(f);
+			
+			const extensionList = ["heic", "xls", "xlsx", "doc", "docx", "png", "jpg", "jpeg", "pd"];
+			
+			let fileSize = 0;
+			
+			for(let i = 0; i < files.length; i++){
+			
+				const extensionSplit = files[i].name.split(".");
+			
+				const extension = extensionSplit[extensionSplit.length - 1];
+				
+				if(extensionList.indexOf(extension) < 0){
+					$("#cbdFileAlert").html("ˆÈ‰º‚Ìƒtƒ@ƒCƒ‹Œ`Ž®‚Ì‚ÝƒAƒbƒvƒ[ƒh‰Â”\‚Å‚·B<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
+					return;
+				}
+				
+				fileSize = files[i].size;
+			}
+			
+			if(uploadedFileSize + fileSize > 24 * 1024 * 1024){
+				$("#cbdFileAlert").text("ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Í24MBˆÈ“à‚ÅƒAƒbƒvƒ[ƒh‚µ‚Ä‚­‚¾‚³‚¢B");
+				return;
+			}
+			
+			
+			uploadedFileSize += fileSize;
+			
+			for(let i = 0; i < files.length; i++){
+				
+				const fileUpTemplate = document.getElementById("fileUpTemplate");
+				
+				const clone = fileUpTemplate.content.cloneNode(true);
+				
+				const filePathList = files[i].name.split("\\");
+				
+				clone.querySelector(".upfile-text").getElementsByTagName("a")[0].innerHTML = filePathList[filePathList.length - 1];
+				
+				$(clone.querySelector(".inputClear")).on("click", function(){
+					
+					selectFileIndex = $(this.parentNode).prevAll().length;
+					console.log(selectFileIndex);
+					$(".modalOverlay,.error-type3").fadeIn();
+					$("body").css({position:"fixed",top:-1});
+				});
+			
+				$("#cbdFileList").append(clone);
+			}
+			
+			recursiveFileRead(elemFile, files, 0);
 		});
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤ã—ã¦ä¸€éƒ¨æ”¹å¤‰
-		// Ajaxã«ã‚ˆã‚ŠSalesforceã‹ã‚‰è¡¨ç¤ºãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+
+		// Ajax‚É‚æ‚èSalesforce‚©‚ç•\Ž¦ƒf[ƒ^‚ðŽæ“¾
 		getAllCase();
 	});
 	
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤
-	function SelectRadio(id){
-		var childName = $("#" + id).children("li").attr("name");
-		var selectValue = $("input[name='" + childName + "']:checked").next().html();
-		$("#Modal-" + id).html(selectValue);
-		var defValue = $("#Modal-" + id).html();
-		var defValueMsg = "é¸æŠžã—ã¦ãã ã•ã„";
-		if(defValue == defValueMsg){
-			if(!$("#Modal-" + id).hasClass("reqEntry")){
-				$("#Modal-" + id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");
-			}
-		}else if(defValue == ""){
-			$("#Modal-" + id).add().html("é¸æŠžã—ã¦ãã ã•ã„");
-		}else{
-			$("#Modal-" + id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
-		}
-		NextBtnActivity();
-	}
-	
-	function NextBtnActivity(){
-		if(!($("body").find(".reqEntry").length)){
-			$("p").find("#nextBtn").prop("desabled", false);
-		}else{
-			$("p").find("#nextBtn").prop("desabled", true);
-		}
-	}
-// PPBå´ã‚½ãƒ¼ã‚¹ã‹ã‚‰ç§»æ¤
-	
 	/**
-	 * åˆæœŸå‡¦ç†
+	 * ‰Šúˆ—
 	 */
 	function init(){
-		// ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸã¨ã
-		if(errorInfo.status == 'error'){
-/* TODO:å‹•ã‹ãªã„ã®ã§ä¸€æ™‚ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
-			// RestApexã¨ã®é€šä¿¡æ™‚erorrã ã£ãŸå ´åˆã«ã‚¨ãƒ©ãƒ¼ã®ãƒ¢ãƒ¼ãƒ€ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹å‡¦ç†ã«å¤‰æ›´ã™ã‚‹
-*/
+		// RestApex‚Æ‚Ì’ÊMŽžerorr‚¾‚Á‚½ê‡‚ÉƒGƒ‰[‚Ìƒ‚[ƒ_ƒ‹‚ð•\Ž¦‚·‚éˆ—‚É•ÏX‚·‚é
+		if(res.result == 'SUCCESS'){
+			if(!res.caseList){ // ‚¨–â‚¢‡‚í‚¹0Œ(null)‚Ìê‡
+				// ƒz[ƒ€‰æ–Êi—š—ð‚È‚µj‚ð•\Ž¦
+				changeDisp('noInq');
+				return;
+			}else{
+				// ‰½‚à‚µ‚È‚¢
+			}
+		}else if(res.result == 'TIMED_CHECK'){ // ŽžŒÀƒ`ƒFƒbƒNƒGƒ‰[
+			// ƒz[ƒ€‰æ–Êi—š—ð‚È‚µj‚ð•\Ž¦
+			changeDisp('noInq');
+			// ƒ‚[ƒ_ƒ‹‚ð•\Ž¦
+
+			return;
+		}else{ // ƒVƒXƒeƒ€ƒGƒ‰[ 
+			changeDisp('noInq');
+
 			return;
 		}
-// TODO:å‹•ã‹ãªã„ã®ã§ä¸€æ™‚ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
-		// ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒå–å¾—ã§ãã¦ã€ã‚±ãƒ¼ã‚¹ãŒãªã„å ´åˆ
-		if(res.accMail && !res.caseList.length){
-			// ãƒ›ãƒ¼ãƒ ç”»é¢ï¼ˆå±¥æ­´ãªã—ï¼‰ã‚’è¡¨ç¤º
-			changeDisp('noInq');
-		}
-//
-		// å…¥åŠ›ç”»é¢å‡ºåŠ›ç”¨
+		// “ü—Í‰æ–Êo—Í—p
 		eMail = res.accMail;
-		// æ–°è¦å…¥åŠ›ç”»é¢ã«åæ˜ 
+		// V‹K“ü—Í‰æ–Ê‚É”½‰f
 		document.getElementById('newInqMail').innerHTML = eMail;
-		// ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒãƒ¼ã‚·ãƒ§ãƒ³å–å¾—ã®ãŸã‚ã®Promiseç”Ÿæˆ
+		// ƒRƒ“ƒeƒ“ƒcƒo[ƒVƒ‡ƒ“Žæ“¾‚Ì‚½‚ß‚ÌPromise¶¬
 		const fileGetPromise = new Promise((resolve) => {
-			// ãƒ•ã‚¡ã‚¤ãƒ«IDã®ãƒªã‚¹ãƒˆ
+			// ƒtƒ@ƒCƒ‹ID‚ÌƒŠƒXƒg
 			const fileIdList = new Array();
-			// ã‚±ãƒ¼ã‚¹ã®ãƒªã‚¹ãƒˆã‚µã‚¤ã‚ºãŒ0ã§ãªã„
+			// ƒP[ƒX‚ÌƒŠƒXƒgƒTƒCƒY‚ª0‚Å‚È‚¢
 			if(res.caseList.length != 0){
-				// ã‚±ãƒ¼ã‚¹ã‚’ãƒ«ãƒ¼ãƒ—
+				// ƒP[ƒX‚ðƒ‹[ƒv
 				for(i = 0; i < res.caseList.length; i++){
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’å–å¾—
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðŽæ“¾
 					const cbdFileList = res.caseList[i].cbdFileList;
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’ãƒ«ãƒ¼ãƒ—
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðƒ‹[ƒv
 					for(j = 0; j < cbdFileList.length; j++){
-						// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ«ãƒ¼ãƒ—
+						// “Y•tƒtƒ@ƒCƒ‹‚ðƒ‹[ƒv
 						for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
-							// è¦ç´ ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
+							// —v‘f‚ðƒCƒ“ƒXƒ^ƒ“ƒX‰»
 							const cv = cbdFileList[j].contentVersions[k];
-							// å–å¾—ã§ãã¦ã„ã‚‹å ´åˆ
+							// Žæ“¾‚Å‚«‚Ä‚¢‚éê‡
 							if(cv){
-								// IDã‚’ãƒªã‚¹ãƒˆã«é€€é¿
+								// ID‚ðƒŠƒXƒg‚É‘Þ”ð
 								fileIdList.push(cv.Id);
 							}
 						}
 					}
 				}
 			}
-			// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆ
+			// “Y•tƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡
 			if(fileIdList.length > 0){
-				// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—
+				// “Y•tƒtƒ@ƒCƒ‹‚ðŽæ“¾
 				getContentVersion(fileIdList, resolve, 0);
-			// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãªã—
+			// “Y•tƒtƒ@ƒCƒ‹‚È‚µ
 			}else{
-				// æ¬¡ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™
+				// ŽŸ‚Ìˆ—‚ðŒÄ‚Ño‚·
 				resolve();
 			}
-		// promiseå‡¦ç†ãŒã™ã¹ã¦å®Œäº†ã—ã¦ã‹ã‚‰å®Ÿè¡Œã€€â€»æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã€resolveã®ã‚³ãƒ¼ãƒ«ã¯getContentVersionå†…ã§è¡Œã†
+		// promiseˆ—‚ª‚·‚×‚ÄŠ®—¹‚µ‚Ä‚©‚çŽÀs@¦“Y•tƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡Aresolve‚ÌƒR[ƒ‹‚ÍgetContentVersion“à‚Ås‚¤
 		}).then(() => {
-			// Cookieå–å¾—å‡¦ç†ã‚’å‘¼ã³å‡ºã™
+			// CookieŽæ“¾ˆ—‚ðŒÄ‚Ño‚·
 			const cookieList = getCookie();
-			// NEWä»˜ä¸Žå¯¾è±¡ã®IDã‚’æ ¼ç´ã™ã‚‹é…åˆ—
+			// NEW•t—^‘ÎÛ‚ÌID‚ðŠi”[‚·‚é”z—ñ
 			let newTargetList = [];
-			// ã‚±ãƒ¼ã‚¹ã‚’ãƒ«ãƒ¼ãƒ—
+			// ƒP[ƒX‚ðƒ‹[ƒv
 			for(let c = 0; c < res.caseList.length; c++){
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’å–å¾—
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðŽæ“¾
 				const cbdFileList = res.caseList[c].cbdFileList;
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’ãƒ«ãƒ¼ãƒ—
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðƒ‹[ƒv
 				for(let i = 0; i < cbdFileList.length; i++){
-					// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’trueã§åˆæœŸåŒ–
+					// NEW•\Ž¦ƒtƒ‰ƒO‚ðtrue‚Å‰Šú‰»
 					let newDisplayFlag = true;
-					// 1ãƒ¶æœˆå‰ã®æ—¥ä»˜ç”¨å¤‰æ•°ã«ç¾åœ¨æ—¥ã‚’å–å¾—ã—ã¦-1ãƒ¶æœˆã™ã‚‹
+					// 1ƒ–ŒŽ‘O‚Ì“ú•t—p•Ï”‚ÉŒ»Ý“ú‚ðŽæ“¾‚µ‚Ä-1ƒ–ŒŽ‚·‚é
 					let nowDateTime = new Date();
-					// ç¾åœ¨å¹´ã‚’å–å¾—
+					// Œ»Ý”N‚ðŽæ“¾
 					const year = nowDateTime.getFullYear();
-					// æœˆã‚’å–å¾—ã—ã¦ã€1ãƒ¶æœˆå¢—ã‚„ã—ã¦
+					// ŒŽ‚ðŽæ“¾‚µ‚ÄA1ƒ–ŒŽ‘‚â‚µ‚Ä
 					const month = nowDateTime.getMonth() + 1;
-					// æ—¥ã‚’å–å¾—ã™ã‚‹
+					// “ú‚ðŽæ“¾‚·‚é
 					const date = nowDateTime.getDate();
-					// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰æ™‚é–“(h)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+					// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚çŽžŠÔ(h)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 					const hour = (`0` + (nowDateTime.getHours())).slice(-2);
-					// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰åˆ†(m)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+					// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚ç•ª(m)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 					const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
-					// Dateã«å¤‰æ›
+					// Date‚É•ÏŠ·
 					nowDateTIme = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æ™‚é–“
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌŽžŠÔ
 					let cbdDateTime = new Date(cbdFileList[i].CreatedDate);
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æœ€çµ‚æ›´æ–°æ—¥ãŒç¾åœ¨æ—¥æ™‚-1ãƒ¶æœˆã‚ˆã‚Šå¤ã„ï¼ˆå€¤ã‚’å«ã‚€ï¼‰å ´åˆ
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌÅIXV“ú‚ªŒ»Ý“úŽž-1ƒ–ŒŽ‚æ‚èŒÃ‚¢i’l‚ðŠÜ‚Þjê‡
 					if(cbdDateTime >= nowDateTIme){
-						// Cookieã®CbdIdã®ä»¶æ•°åˆ†
+						// Cookie‚ÌCbdId‚ÌŒ”•ª
 						for(j = 0; j < cookieList.length; j++){
-							// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®IDã¨Cookieã®IDãŒä¸€è‡´ã—ã¦ã„ã‚‹å ´åˆ
-							if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "å•ã„åˆã‚ã›"){
-								// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’falseã«è¨­å®š
+							// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌID‚ÆCookie‚ÌID‚ªˆê’v‚µ‚Ä‚¢‚éê‡
+							if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "–â‚¢‡‚í‚¹"){
+								// NEW•\Ž¦ƒtƒ‰ƒO‚ðfalse‚ÉÝ’è
 								newDisplayFlag = false;
 							}
 						}
 					}else{
-						// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’falseã«è¨­å®š
+						// NEW•\Ž¦ƒtƒ‰ƒO‚ðfalse‚ÉÝ’è
 						newDisplayFlag = false;
 					}
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®ãƒ¬ã‚³â€•ãƒ‰ã«NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒã‚ã‚‹å ´åˆ
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌƒŒƒR\ƒh‚ÉNEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚ª‚ ‚éê‡
 					if("newIconDisp" in cbdFileList[i]){
-						// NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã«å€¤ã‚’è¿½åŠ 
+						// NEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚É’l‚ð’Ç‰Á
 						cbdFileList[i].newIconDisp = newDisplayFlag;
-					// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒãªã„å ´åˆ
+					// ƒvƒƒpƒeƒB‚ª‚È‚¢ê‡
 					}else{
-						// NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ä»˜ä¸Žã—ã€å€¤ã‚’è¨­å®š
+						// NEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚ð•t—^‚µA’l‚ðÝ’è
 						cbdFileList[i]["newIconDisp"] = newDisplayFlag;
 					}
 				}
 			}
-			/*** ã‚¿ã‚°ã‚’ç”Ÿæˆ ***/
-			// Case templateè¦ç´ ã‚’å–å¾—
+			/*** ƒ^ƒO‚ð¶¬ ***/
+			// Case template—v‘f‚ðŽæ“¾
 			let caseTemplate = document.getElementById('caseTemplate');
-			// newIcon templateè¦ç´ ã‚’å–å¾—
+			// newIcon template—v‘f‚ðŽæ“¾
 			let iconTemplate = document.getElementById('newIconTemplate');
-			// ã‚±ãƒ¼ã‚¹ã®ãƒªã‚¹ãƒˆã®ä»¶æ•°åˆ†
+			// ƒP[ƒX‚ÌƒŠƒXƒg‚ÌŒ”•ª
 			for(let i = 0; i < res.caseList.length; i++){
-				// è¦ç´ ã‚’å–å¾—
+				// —v‘f‚ðŽæ“¾
 				const c = res.caseList[i];
-				// case templateè¦ç´ ã®å†…å®¹ã‚’è¤‡è£½
+				// case template—v‘f‚Ì“à—e‚ð•¡»
 				let clone = caseTemplate.content.cloneNode(true);
-				// ãŠå•ã„åˆã‚ã›å†…å®¹ã‚’å–å¾—
+				// ‚¨–â‚¢‡‚í‚¹“à—e‚ðŽæ“¾
 				let content = c.content;
-				// ãŠå•ã„åˆã‚ã›è©³ç´°ãŒnullã§ãªã„
+				// ‚¨–â‚¢‡‚í‚¹Ú×‚ªnull‚Å‚È‚¢
 				if(content != null){
-					// 12æ–‡å­—ã‚’è¶…ãˆã‚‹å ´åˆ
+					// 12•¶Žš‚ð’´‚¦‚éê‡
 					if(content.length > 30){
-						// çœç•¥ã™ã‚‹
+						// È—ª‚·‚é
 						content = content.substring(0, 30) + "...";
 					}
 				}
-				// è¤‡è£½ã—ãŸtemplateè¦ç´ ã«ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥
-				// ã‚±ãƒ¼ã‚¹ã®Idã‚’è¨­å®š
+				// •¡»‚µ‚½template—v‘f‚Éƒf[ƒ^‚ð‘}“ü
+				// ƒP[ƒX‚ÌId‚ðÝ’è
 				clone.querySelector('.inq-id').dataset.cId = c.record.Id;
-				// ã‚±ãƒ¼ã‚¹ç•ªå·ã‚’è¨­å®šã™ã‚‹
+				// ƒP[ƒX”Ô†‚ðÝ’è‚·‚é
 				clone.querySelector('.inq-title').textContent = 'No.' + c.record.CaseNumber;
-				// ãŠå•ã„åˆã‚ã›å†…å®¹ã‚’è¨­å®šã™ã‚‹
+				// ‚¨–â‚¢‡‚í‚¹“à—e‚ðÝ’è‚·‚é
 				clone.querySelector('.cbd-content').textContent = content;
-				// ã‚±ãƒ¼ã‚¹ã®ä½œæˆæ—¥ã‚’JSTæ—¥ä»˜ã‹ã¤ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã«å¤‰æ›ã—ã¦ã€è¨­å®š
+				// ƒP[ƒX‚Ìì¬“ú‚ðJST“ú•t‚©‚ÂƒXƒ‰ƒbƒVƒ…‚É•ÏŠ·‚µ‚ÄAÝ’è
 				clone.querySelector('.inq-createdate').textContent = changeSlashDate(c.record.CreatedDate);
-				// ãŠå•ã„åˆã‚ã›ç¨®é¡žã‚’è¨­å®šã™ã‚‹
+				// ‚¨–â‚¢‡‚í‚¹Ží—Þ‚ðÝ’è‚·‚é
 				clone.querySelector('.inq-type').textContent = c.record.SubjectIMF__c;
-				// ã‚±ãƒ¼ã‚¹ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¨­å®šã™ã‚‹
+				// ƒP[ƒX‚ÌƒXƒe[ƒ^ƒX‚ðÝ’è‚·‚é
 				clone.querySelector('.inq-status').textContent = c.record.StatusClient__c;
+				// u‰ñ“šŠ®—¹vAu‰ñ“š‚É­‚µ‚¨ŽžŠÔ‚ð‚¢‚½‚¾‚¢‚Ä‚¨‚è‚Ü‚·Bv‚Ìê‡
+				if(c.record.StatusClient__c == '‰ñ“šŠ®—¹' || c.record.StatusClient__c == '‰ñ“š‚É­‚µ‚¨ŽžŠÔ‚ð‚¢‚½‚¾‚¢‚Ä‚¨‚è‚Ü‚·B'){
+					// CSSƒNƒ‰ƒX‚ðíœiƒOƒŒ[j
+					clone.querySelector('.inq-status').classList.remove('txt-not-fin');
+					// CSSƒNƒ‰ƒX‚ð’Ç‰ÁiƒOƒŠ[ƒ“j
+					clone.querySelector('.inq-status').classList.add('txt-fin');
+				}
 				// 
 				clone.querySelector('.inq-outputNew').id = c.record.Id;
-				// caseã‚’ç”»é¢ã«å‡ºåŠ›
+				// case‚ð‰æ–Ê‚Éo—Í
 				document.getElementById('listQa').appendChild(clone);
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’å–å¾—
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðŽæ“¾
 				const cbdFileList = c.cbdFileList;
-				// ã‚±ãƒ¼ã‚¹ã®NEWã‚¢ã‚¤ã‚³ãƒ³éžè¡¨ç¤ºç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒfalseã®å ´åˆã€NEWã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®ä»¶æ•°åˆ†
+				// ƒP[ƒX‚ÌNEWƒAƒCƒRƒ“”ñ•\Ž¦—pƒvƒƒpƒeƒB‚ªfalse‚Ìê‡ANEWƒAƒCƒRƒ“‚ð•\Ž¦‚·‚é
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌŒ”•ª
 				for(let j = 0; j < cbdFileList.length; j++){
-					// NewãŒTrueã®å ´åˆ
+					// New‚ªTrue‚Ìê‡
 					if(cbdFileList[j].newIconDisp){
-						// newIcon templateè¦ç´ ã‚’è¤‡è£½
+						// newIcon template—v‘f‚ð•¡»
 						let newIconClone = newIconTemplate.content.cloneNode(true);
-						// newIconã‚’ç”»é¢ã«å‡ºåŠ›
+						// newIcon‚ð‰æ–Ê‚Éo—Í
 						document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
-						// ä»¥å¾Œå‡¦ç†ä¸è¦
+						// ˆÈŒãˆ—•s—v
 						break;
 					}
 				}
@@ -410,26 +784,26 @@
 	}
 	
 	/***
-	 * ç”»é¢ã®è¡¨ç¤ºéžè¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆ
-	 * å¼•æ•°ï¼šé·ç§»å…ˆç”»é¢(div)Id
+	 * ‰æ–Ê‚Ì•\Ž¦”ñ•\Ž¦Ø‚è‘Ö‚¦
+	 * ˆø”F‘JˆÚæ‰æ–Ê(div)Id
 	 ***/
 	function changeDisp(nextScreen){
-		// ç”»é¢IDãƒªã‚¹ãƒˆãƒ«ãƒ¼ãƒ—
+		// ‰æ–ÊIDƒŠƒXƒgƒ‹[ƒv
 		for(i = 0; i < screenNameList.length; i++){
-			// æŒ‡å®šIDã®å ´åˆ
+			// Žw’èID‚Ìê‡
 			if(screenNameList[i] == nextScreen){
-				// è¡¨ç¤º
+				// •\Ž¦
 				document.getElementById(screenNameList[i]).style.display = 'block';
-			// ãã‚Œä»¥å¤–
+			// ‚»‚êˆÈŠO
 			}else{
-				// éžè¡¨ç¤º
+				// ”ñ•\Ž¦
 				document.getElementById(screenNameList[i]).style.display = 'none';
 			}
 		}
 	}
 	
 	/**
-	 * åˆæœŸè¡¨ç¤ºæ™‚ãƒ‡ãƒ¼ã‚¿å–å¾—
+	 * ‰Šú•\Ž¦Žžƒf[ƒ^Žæ“¾
 	 */
 	function getAllCase(){
 		$.ajax({
@@ -473,10 +847,10 @@
 	}
 	
     /**
-	 * åˆæœŸè¡¨ç¤ºæ™‚ãƒ‡ãƒ¼ã‚¿å–å¾—
+	 * ‰Šú•\Ž¦Žžƒf[ƒ^Žæ“¾
 	 */
 	function registInquery(){
-		// ã‚¢ã‚¯ã‚»ã‚¹ãƒˆãƒ¼ã‚¯ãƒ³å–å¾—ï¼ˆãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒˆãƒ¼ã‚¯ãƒ³ãƒ•ãƒ­ãƒ¼ï¼‰ Ajax
+		// ƒAƒNƒZƒXƒg[ƒNƒ“Žæ“¾iƒŠƒtƒŒƒbƒVƒ…ƒg[ƒNƒ“ƒtƒ[j Ajax
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -539,7 +913,7 @@
 												dataType:"json",
 												data:JSON.stringify(linkJson),
 												success:function(res){
-													//console.log("æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ç™»éŒ²å®Œäº†");
+													//console.log("“Y•tƒtƒ@ƒCƒ‹“o˜^Š®—¹");
 												},
 												error:function(data, errorThrown,status) {
 													console.log(data);
@@ -580,10 +954,10 @@
 	}
 	
 	/**
-	 * åˆæœŸè¡¨ç¤ºæ™‚ãƒ‡ãƒ¼ã‚¿å–å¾—
+	 * ‰Šú•\Ž¦Žžƒf[ƒ^Žæ“¾
 	 */
 	function registContactBoard(){
-		// ã‚¢ã‚¯ã‚»ã‚¹ãƒˆãƒ¼ã‚¯ãƒ³å–å¾—ï¼ˆãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒˆãƒ¼ã‚¯ãƒ³ãƒ•ãƒ­ãƒ¼ï¼‰ Ajax
+		// ƒAƒNƒZƒXƒg[ƒNƒ“Žæ“¾iƒŠƒtƒŒƒbƒVƒ…ƒg[ƒNƒ“ƒtƒ[j Ajax
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -649,7 +1023,7 @@
 												dataType:"json",
 												data:JSON.stringify(linkJson),
 												success:function(res){
-													console.log("æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ç™»éŒ²å®Œäº†");
+													console.log("“Y•tƒtƒ@ƒCƒ‹“o˜^Š®—¹");
 												},
 												error:function(data, errorThrown,status) {
 													console.log(data);
@@ -690,9 +1064,9 @@
 	}
 	
 	/***
-	 * ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼ˆãƒ•ã‚¡ã‚¤ãƒ«ï¼‰å–å¾—å‡¦ç†
-	 * å¼•æ•°ã€€ï¼šã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒãƒ¼ã‚¸ãƒ§ãƒ³Id
-	 * è¿”å´å€¤ï¼šãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«
+	 * ƒRƒ“ƒeƒ“ƒcƒo[ƒWƒ‡ƒ“iƒtƒ@ƒCƒ‹jŽæ“¾ˆ—
+	 * ˆø”@FƒRƒ“ƒeƒ“ƒcƒo[ƒWƒ‡ƒ“Id
+	 * •Ô‹p’lFƒtƒ@ƒCƒ‹‚Ì’†g
 	 ***/
 	function getContentVersion(fileIdList, resolve, index){
 		
@@ -719,50 +1093,50 @@
 					headers:{"Authorization":accToken},
 					xhrFields:{responseType:'blob'},
 					success:function(fileContent){
-						// ã‚±ãƒ¼ã‚¹ã®ãƒªã‚¹ãƒˆã‚µã‚¤ã‚ºãŒ0ã§ãªã„
+						// ƒP[ƒX‚ÌƒŠƒXƒgƒTƒCƒY‚ª0‚Å‚È‚¢
 						if(res.caseList.length != 0){
-							// ãƒ•ã‚¡ã‚¤ãƒ«ã®ç´ä»˜ã‘æœ‰ç„¡
+							// ƒtƒ@ƒCƒ‹‚Ì•R•t‚¯—L–³
 							let fileAttached = false;
-							// ã‚±ãƒ¼ã‚¹ã‚’ãƒ«ãƒ¼ãƒ—
+							// ƒP[ƒX‚ðƒ‹[ƒv
 							for(let i = 0; i < res.caseList.length; i++){
-								// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’å–å¾—
+								// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðŽæ“¾
 								const cbdFileList = res.caseList[i].cbdFileList;
-								// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’ãƒ«ãƒ¼ãƒ—
+								// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ðƒ‹[ƒv
 								for(let j = 0; j < cbdFileList.length; j++){
-									// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ«ãƒ¼ãƒ—
+									// “Y•tƒtƒ@ƒCƒ‹‚ðƒ‹[ƒv
 									for(let k = 0; k < cbdFileList[j].contentVersions.length; k++){
-										// è¦ç´ ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
+										// —v‘f‚ðƒCƒ“ƒXƒ^ƒ“ƒX‰»
 										const cv = cbdFileList[j].contentVersions[k];
 										
 										if(cv.Id == fileId){
-											// IDã‚’æ¡ä»¶ã«æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã®Blobãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
+											// ID‚ððŒ‚É“Y•tƒtƒ@ƒCƒ‹‚ÌBlobƒf[ƒ^‚ðŽæ“¾
 											res.caseList[i].cbdFileList[j].contentVersions[k]["versionData"] = fileContent;
-											// ç´ä»˜ã‘æ¸ˆã«ã™ã‚‹
+											// •R•t‚¯Ï‚É‚·‚é
 											fileAttached = true;
-											// ä»¥å¾Œå‡¦ç†ä¸è¦
+											// ˆÈŒãˆ—•s—v
 											break;
 										}
 									}
-									// ç´ä»˜ã‘æ¸ˆã®å ´åˆ
+									// •R•t‚¯Ï‚Ìê‡
 									if(fileAttached){
-										// ä»¥å¾Œå‡¦ç†ä¸è¦
+										// ˆÈŒãˆ—•s—v
 										break;
 									}
 								}
-								// ç´ä»˜ã‘æ¸ˆã®å ´åˆ
+								// •R•t‚¯Ï‚Ìê‡
 								if(fileAttached){
-									// ä»¥å¾Œå‡¦ç†ä¸è¦
+									// ˆÈŒãˆ—•s—v
 									break;
 								}
 							}
 						}
-						// å…¨ã¦ç´ä»˜ã‘çµ‚ã‚ã£ãŸã‚‰
+						// ‘S‚Ä•R•t‚¯I‚í‚Á‚½‚ç
 						if(fileIdList.length - 1 == index){
-							// æ¬¡ã®å‡¦ç†ã‚’å‘¼ã¶
+							// ŽŸ‚Ìˆ—‚ðŒÄ‚Ô
 							resolve();
-						// ã¾ã çµ‚ã‚ã£ã¦ãªã„å ´åˆ
+						// ‚Ü‚¾I‚í‚Á‚Ä‚È‚¢ê‡
 						}else{
-							// å†å¸°å®Ÿè¡Œã™ã‚‹
+							// Ä‹AŽÀs‚·‚é
 							getContentVersion(fileIdList, resolve, index + 1);
 						}
 					},
@@ -782,173 +1156,173 @@
 	}
 	
 	/**
-	 * åˆæœŸè¡¨ç¤ºå‡¦ç†ï¼ˆã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ï¼‰
+	 * ‰Šú•\Ž¦ˆ—iƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×j
 	 */
 	function sendDetailsScreen(selectedCaseId){
-		// ç”»é¢å†…å®¹ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
+		// ‰æ–Ê“à—e‚ðƒNƒŠƒA‚·‚é
 		document.getElementById('outputCbdTemp').innerHTML = null;
-		// æŠ•ç¨¿ã™ã‚‹ãƒœã‚¿ãƒ³ã«ã‚±ãƒ¼ã‚¹Idã‚’è¨­å®š
+		// “Še‚·‚éƒ{ƒ^ƒ“‚ÉƒP[ƒXId‚ðÝ’è
 		document.getElementById('replyButton').dataset.cId = selectedCaseId;
-		// Cookieå–å¾—å‡¦ç†ã‚’å‘¼ã³å‡ºã™
+		// CookieŽæ“¾ˆ—‚ðŒÄ‚Ño‚·
 		const CookieList = getCookie();
-		// NEWä»˜ä¸Žå¯¾è±¡ã®IDã‚’æ ¼ç´ã™ã‚‹é…åˆ—
+		// NEW•t—^‘ÎÛ‚ÌID‚ðŠi”[‚·‚é”z—ñ
 		let newTargetList = [];
 		
 		let cbdFileList;
-		// ã‚±ãƒ¼ã‚¹ã®ä»¶æ•°åˆ†
+		// ƒP[ƒX‚ÌŒ”•ª
 		for(i = 0; i < res.caseList.length; i++){
 		
 			const rec = res.caseList[i].record;
-			// URLã®ã‚±ãƒ¼ã‚¹Idã¨ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã‹ã‚‰å–å¾—ã—ãŸã‚±ãƒ¼ã‚¹IdãŒä¸€è‡´ã™ã‚‹å ´åˆ
+			// URL‚ÌƒP[ƒXId‚ÆƒZƒbƒVƒ‡ƒ“ƒXƒgƒŒ[ƒW‚©‚çŽæ“¾‚µ‚½ƒP[ƒXId‚ªˆê’v‚·‚éê‡
 			if(selectedCaseId == rec.Id){
-				// ãƒšãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
-				document.getElementById('contbrdTitle').textContent = 'ãŠå•ã„åˆã‚ã›ç•ªå·ï¼šNo.' + rec.CaseNumber;
+				// ƒy[ƒWƒ^ƒCƒgƒ‹‚ðÝ’è
+				document.getElementById('contbrdTitle').textContent = '‚¨–â‚¢‡‚í‚¹”Ô†FNo.' + rec.CaseNumber;
 				
 				cbdFileList = res.caseList[i].cbdFileList;
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ãƒ¬ã‚³ãƒ¼ãƒ‰ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã®çµ„ã¿åˆã‚ã›ãƒªã‚¹ãƒˆã®ä»¶æ•°åˆ†
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×ƒŒƒR[ƒh‚Æƒtƒ@ƒCƒ‹‚Ì‘g‚Ý‡‚í‚¹ƒŠƒXƒg‚ÌŒ”•ª
 				for(j = 0; j < cbdFileList.length; j++){
 				
 					let idFlg = {};
-					// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’trueã§åˆæœŸåŒ–
+					// NEW•\Ž¦ƒtƒ‰ƒO‚ðtrue‚Å‰Šú‰»
 					let newDisplayFlag = true;
-					// 1ãƒ¶æœˆå‰ã®æ—¥ä»˜ç”¨å¤‰æ•°ã«ç¾åœ¨æ—¥ã‚’å–å¾—ã—ã¦-1ãƒ¶æœˆã™ã‚‹
+					// 1ƒ–ŒŽ‘O‚Ì“ú•t—p•Ï”‚ÉŒ»Ý“ú‚ðŽæ“¾‚µ‚Ä-1ƒ–ŒŽ‚·‚é
 					let nowDateTime = new Date();
 					const year = nowDateTime.getFullYear();
-					// æœˆã‚’å–å¾—ã—ã¦ã€1ãƒ¶æœˆå¢—ã‚„ã—ã¦
+					// ŒŽ‚ðŽæ“¾‚µ‚ÄA1ƒ–ŒŽ‘‚â‚µ‚Ä
 					const month = nowDateTime.getMonth() + 1;
-					// æ—¥ã‚’å–å¾—ã™ã‚‹
+					// “ú‚ðŽæ“¾‚·‚é
 					const date = nowDateTime.getDate();
-					// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰æ™‚é–“(h)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+					// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚çŽžŠÔ(h)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 					const hour = (`0` + (nowDateTime.getHours())).slice(-2);
-					// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰åˆ†(m)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+					// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚ç•ª(m)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 					const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
 					nowDateTime = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æ™‚é–“
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌŽžŠÔ
 					let cbdDateTime = new Date(cbdFileList[j].CreatedDate);
-					// cbdæ—¥ä»˜ãŒä¸€ã‚«æœˆå‰ã‚ˆã‚Šå¤§ãã„
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æœ€çµ‚æ›´æ–°æ—¥ãŒç¾åœ¨æ—¥æ™‚-1ãƒ¶æœˆã‚ˆã‚Šæ–°ã—ã„ï¼ˆå€¤ã‚’å«ã‚€ï¼‰å ´åˆ
+					// cbd“ú•t‚ªˆêƒJŒŽ‘O‚æ‚è‘å‚«‚¢
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌÅIXV“ú‚ªŒ»Ý“úŽž-1ƒ–ŒŽ‚æ‚èV‚µ‚¢i’l‚ðŠÜ‚Þjê‡
 					if(cbdDateTime >= nowDateTime){
-						// Cookieã®CbdIdã®ä»¶æ•°åˆ†
+						// Cookie‚ÌCbdId‚ÌŒ”•ª
 						for(k = 0; k < CookieList.length; k++){
-							// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®IDã¨Cookieã®IDãŒä¸€è‡´ã—ã¦ã„ã‚‹å ´åˆ
+							// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌID‚ÆCookie‚ÌID‚ªˆê’v‚µ‚Ä‚¢‚éê‡
 							if(cbdFileList[j].Id == CookieList[k]){
-								// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’falseã«è¨­å®š
+								// NEW•\Ž¦ƒtƒ‰ƒO‚ðfalse‚ÉÝ’è
 								newDisplayFlag = false;
 							}
 						}
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æœ€çµ‚æ›´æ–°æ—¥ãŒç¾åœ¨æ—¥æ™‚-1ãƒ¶æœˆã‚ˆã‚Šå¤ã„ï¼ˆå€¤ã‚’å«ã‚€ï¼‰å ´åˆ
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌÅIXV“ú‚ªŒ»Ý“úŽž-1ƒ–ŒŽ‚æ‚èŒÃ‚¢i’l‚ðŠÜ‚Þjê‡
 					}else{
-						// NEWè¡¨ç¤ºãƒ•ãƒ©ã‚°ã‚’falseã«è¨­å®š
+						// NEW•\Ž¦ƒtƒ‰ƒO‚ðfalse‚ÉÝ’è
 						newDisplayFlag = false;
 					}
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®ãƒ¬ã‚³â€•ãƒ‰ã«NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒã‚ã‚‹å ´åˆ
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌƒŒƒR\ƒh‚ÉNEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚ª‚ ‚éê‡
 					if('newIconDisp' in cbdFileList[j]){
-						// NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã«å€¤ã‚’è¿½åŠ 
+						// NEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚É’l‚ð’Ç‰Á
 						cbdFileList[j].newIconDisp = newDisplayFlag;
-					// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒãªã„å ´åˆ
+					// ƒvƒƒpƒeƒB‚ª‚È‚¢ê‡
 					}else{
-						// NEWã‚¢ã‚¤ã‚³ãƒ³åˆ¶å¾¡ç”¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã‚’ä»˜ä¸Žã—ã€å€¤ã‚’è¨­å®š
+						// NEWƒAƒCƒRƒ“§Œä—p‚ÌƒvƒƒpƒeƒB‚ð•t—^‚µA’l‚ðÝ’è
 						cbdFileList[j]["newIconDisp"] = newDisplayFlag;
 					}
 				}
 			}
 		}
-		// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°templateã‚’å–å¾—
+		// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×template‚ðŽæ“¾
 		let caseTemplate = document.getElementById('cbdTemplate');
-		// newIcon templateè¦ç´ ã‚’å–å¾—
+		// newIcon template—v‘f‚ðŽæ“¾
 		let iconTemplate = document.getElementById('newIconTemplate');
-		// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®ãƒªã‚¹ãƒˆã®ä»¶æ•°åˆ†
+		// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌƒŠƒXƒg‚ÌŒ”•ª
 		for(let i = 0; i < cbdFileList.length; i++){
-			// è¦ç´ ã‚’å–å¾—
+			// —v‘f‚ðŽæ“¾
 			const cbd = cbdFileList[i].cbd;
-			// ç´ä»˜ãæ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—
+			// •R•t‚­“Y•tƒtƒ@ƒCƒ‹‚ðŽæ“¾
 			const cvList = cbdFileList[i].contentVersions;
-			// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°templateã®å†…å®¹ã‚’è¤‡è£½
+			// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×template‚Ì“à—e‚ð•¡»
 			let clone = cbdTemplate.content.cloneNode(true);
-			// è¤‡è£½ã—ãŸtemplateè¦ç´ ã«ãƒ‡ãƒ¼ã‚¿ã‚’æŒ¿å…¥	
-			// ãƒ¬ã‚³ãƒ¼ãƒ‰ç¨®åˆ¥ãŒã€ãŠå®¢ã•ã¾ã®å ´åˆ
-			if(cbd.Classification__c == 'å•ã„åˆã‚ã›'){
-				// ãŠå®¢ã•ã¾ã‚¯ãƒ©ã‚¹ã‚’ä»˜ä¸Ž
+			// •¡»‚µ‚½template—v‘f‚Éƒf[ƒ^‚ð‘}“ü	
+			// ƒŒƒR[ƒhŽí•Ê‚ªA‚¨‹q‚³‚Ü‚Ìê‡
+			if(cbd.Classification__c == '–â‚¢‡‚í‚¹'){
+				// ‚¨‹q‚³‚ÜƒNƒ‰ƒX‚ð•t—^
 				clone.querySelector('.contbrd-head').classList.add('customer');
-				// ã‚¢ã‚¯ã‚¿ãƒ¼åã‚’ã€ŒãŠå®¢ã•ã¾ã€ã«è¨­å®š
-				clone.querySelector('.actor-text').textContent = 'ãŠå®¢ã•ã¾';
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æŠ•ç¨¿å†…å®¹ã‚’ãã®ã¾ã¾è¨­å®š
+				// ƒAƒNƒ^[–¼‚ðu‚¨‹q‚³‚Üv‚ÉÝ’è
+				clone.querySelector('.actor-text').textContent = '‚¨‹q‚³‚Ü';
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚Ì“Še“à—e‚ð‚»‚Ì‚Ü‚ÜÝ’è
 				clone.querySelector('.contbrd-content').textContent = cbd.Content__c;
-			// PayPayéŠ€è¡Œã®å ´åˆ
+			// PayPay‹âs‚Ìê‡
 			}else{
-				// å›žç­”ã‚¯ãƒ©ã‚¹ã‚’ä»˜ä¸Ž
+				// ‰ñ“šƒNƒ‰ƒX‚ð•t—^
 				clone.querySelector('.contbrd-head').classList.add('answer');
-				// ã‚¢ã‚¯ã‚¿ãƒ¼åã‚’ã€ŒPayPayéŠ€è¡Œã€ã«è¨­å®š
-				clone.querySelector('.actor-text').textContent = 'PayPayéŠ€è¡Œ';
-				// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æŠ•ç¨¿å†…å®¹ã‚’å¼•æ•°ã«URLãƒªãƒ³ã‚¯åŒ–å‡¦ç†ã‚’å‘¼ã³å‡ºã—
+				// ƒAƒNƒ^[–¼‚ðuPayPay‹âsv‚ÉÝ’è
+				clone.querySelector('.actor-text').textContent = 'PayPay‹âs';
+				// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚Ì“Še“à—e‚ðˆø”‚ÉURLƒŠƒ“ƒN‰»ˆ—‚ðŒÄ‚Ño‚µ
 				let content = AutoLink(cbd.Content__c);
-				// å€¤ãŒNullã§ã¯ãªã„å ´åˆ
+				// ’l‚ªNull‚Å‚Í‚È‚¢ê‡
 				if(content != null){
-					// ãƒªãƒ³ã‚¯åŒ–ã—ãŸæŠ•ç¨¿å†…å®¹ã‚’è¨­å®š
-					// textContentã«å…¥ã‚Œã‚‹ã¨HTMLã‚¨ãƒ³ãƒ†ã‚£ãƒ†ã‚£ã«å¤‰æ›ã•ã‚Œã‚‹ãŸã‚ã€innerHTMLã«å…¥ã‚Œã‚‹
+					// ƒŠƒ“ƒN‰»‚µ‚½“Še“à—e‚ðÝ’è
+					// textContent‚É“ü‚ê‚é‚ÆHTMLƒGƒ“ƒeƒBƒeƒB‚É•ÏŠ·‚³‚ê‚é‚½‚ßAinnerHTML‚É“ü‚ê‚é
 					clone.querySelector('.contbrd-content').innerHTML = content;
-				// å€¤ãŒNullã®å ´åˆ
+				// ’l‚ªNull‚Ìê‡
 				}else{
-					// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®æŠ•ç¨¿å†…å®¹ã‚’ãã®ã¾ã¾è¨­å®š
+					// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚Ì“Še“à—e‚ð‚»‚Ì‚Ü‚ÜÝ’è
 					clone.querySelector('.contbrd-content').innerHTML = cbd.Content__c;
 				}
 			}
-			// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®ä½œæˆæ—¥ã‚’æ—¥ä»˜ã‚’JSTã«å¤‰æ›ã™ã‚‹å‡¦ç†ã‚’å‘¼ã³å‡ºã—ã¦ã€è¨­å®šã™ã‚‹
+			// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚Ìì¬“ú‚ð“ú•t‚ðJST‚É•ÏŠ·‚·‚éˆ—‚ðŒÄ‚Ño‚µ‚ÄAÝ’è‚·‚é
 			clone.querySelector('.createddate').textContent = changeSlashDate(cbd.CreatedDate);
 			clone.querySelector('.outputNew').id = 'new' + cbd.Id;
 			clone.querySelector('.contbrd-txt').id = 'file' + cbd.Id;
-			// ç¹°ã‚Šè¿”ã—åˆå›žã®å ´åˆ
+			// ŒJ‚è•Ô‚µ‰‰ñ‚Ìê‡
 			if(i == 0){
-				// åˆå›žã®å…¨è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹ã‚’ä»˜ä¸Ž
+				// ‰‰ñ‚Ì‘S•\Ž¦—pƒNƒ‰ƒX‚ð•t—^
 				clone.querySelector('.contbrd-body').classList.add('first');
 			}
-			// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã‚’ç”»é¢ã«å‡ºåŠ›
+			// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ð‰æ–Ê‚Éo—Í
 			document.getElementById('outputCbdTemp').appendChild(clone);
-			// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒœãƒ¼ãƒ‰æ˜Žç´°ã®NEWã‚¢ã‚¤ã‚³ãƒ³è¡¨ç¤ºåˆ¶å¾¡ç”¨ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒtrueã®å ´åˆã‹ã¤ PPBã®å›žç­”ã®å ´åˆã€NEWã‚¢ã‚¤ã‚³ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
-			if(cbdFileList[i].newIconDisp && cbd.Classification__c == 'å›žç­”'){
-// TODO:å‹•ã‹ãªã„ã®ã§ä¸€æ™‚ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
-				// newIcon templateè¦ç´ ã‚’è¤‡è£½
+			// ƒRƒ“ƒ^ƒNƒgƒ{[ƒh–¾×‚ÌNEWƒAƒCƒRƒ“•\Ž¦§Œä—pƒvƒƒpƒeƒB‚ªtrue‚Ìê‡‚©‚Â PPB‚Ì‰ñ“š‚Ìê‡ANEWƒAƒCƒRƒ“‚ð•\Ž¦‚·‚é
+			if(cbdFileList[i].newIconDisp && cbd.Classification__c == '‰ñ“š'){
+// TODO:“®‚©‚È‚¢‚Ì‚ÅˆêŽžƒRƒƒ“ƒgƒAƒEƒg
+				// newIcon template—v‘f‚ð•¡»
 				let newIconClone = newIconTemplate.content.cloneNode(true);
 				
-				// å€‹åˆ¥è©³ç´°ç”»é¢ç”¨ã®CSSã‚¯ãƒ©ã‚¹ã‚’è¿½åŠ 
+				// ŒÂ•ÊÚ×‰æ–Ê—p‚ÌCSSƒNƒ‰ƒX‚ð’Ç‰Á
 				newIconClone.querySelector('.list-qa-ic').classList.add('new-icon');
-				// å…ƒã‚¯ãƒ©ã‚¹ã‚’å‰Šé™¤
+				// Œ³ƒNƒ‰ƒX‚ðíœ
 				newIconClone.querySelector('.list-qa-ic').classList.remove('list-qa-ic');
 				
-				// newIconã‚’ç”»é¢ã«å‡ºåŠ›
+				// newIcon‚ð‰æ–Ê‚Éo—Í
 				document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
 //
 			}
-			//ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆ
+			//ƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡
 			if(cbdFileList[i].contentVersions.length > 0){
-				// file templateè¦ç´ ã‚’å–å¾—
+				// file template—v‘f‚ðŽæ“¾
 				let fileTemplate = document.getElementById('fileTemplate');
-				// ã€Œãƒ•ã‚¡ã‚¤ãƒ«ã€å›ºå®šæ–‡è¨€ã‚¿ã‚°ã‚’ç”Ÿæˆ
+				// uƒtƒ@ƒCƒ‹vŒÅ’è•¶Œ¾ƒ^ƒO‚ð¶¬
 				let fileFixedText = document.createElement('p');
 				
-				fileFixedText.innerHTML = 'ãƒ•ã‚¡ã‚¤ãƒ«';
+				fileFixedText.innerHTML = 'ƒtƒ@ƒCƒ‹';
 				
 				fileFixedText.style = 'font-weight: bold;margin-top: 10px'
-				// ç”»é¢ã«è¿½åŠ 
+				// ‰æ–Ê‚É’Ç‰Á
 				document.getElementById('file' + cbd.Id).appendChild(fileFixedText);
-				// æ·»ä»˜ãƒ•ã‚¡ã‚¤ãƒ«ãƒªã‚¹ãƒˆã‚’å–å¾—
+				// “Y•tƒtƒ@ƒCƒ‹ƒŠƒXƒg‚ðŽæ“¾
 				const cvList = cbdFileList[i].contentVersions;
-				// ãƒ•ã‚¡ã‚¤ãƒ«ã®ä»¶æ•°åˆ†
+				// ƒtƒ@ƒCƒ‹‚ÌŒ”•ª
 				for(j = 0; j < cvList.length; j++){
-					// file templateè¦ç´ ã®å†…å®¹ã‚’è¤‡è£½
+					// file template—v‘f‚Ì“à—e‚ð•¡»
 					let fileClone = fileTemplate.content.cloneNode(true);
-					// ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ç”¨ãƒªãƒ³ã‚¯ã‚’ç”Ÿæˆ
+					// ƒtƒ@ƒCƒ‹‚Ì’†g‚©‚çƒ_ƒEƒ“ƒ[ƒh—pƒŠƒ“ƒN‚ð¶¬
 					let fileUrl = URL.createObjectURL(new Blob(
 						[cvList[j].versionData],
 						{type: "application/octet-stream"}
 					));
-					// ç”»é¢å‡ºåŠ›ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨­å®šã™ã‚‹
+					// ‰æ–Êo—Í‚·‚éƒtƒ@ƒCƒ‹–¼‚ðÝ’è‚·‚é
 					fileClone.querySelector('.fileLink').textContent = cvList[j].Name;
-					// ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã‚‹éš›ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨­å®šã™ã‚‹
+					// ƒ_ƒEƒ“ƒ[ƒh‚³‚ê‚éÛ‚Ìƒtƒ@ƒCƒ‹–¼‚ðÝ’è‚·‚é
 					fileClone.querySelector('.fileLink').download = cvList[j].Name;
-					// ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ç”¨ãƒªãƒ³ã‚¯ã‚’è¨­å®šã™ã‚‹
+					// ƒ_ƒEƒ“ƒ[ƒh—pƒŠƒ“ƒN‚ðÝ’è‚·‚é
 					fileClone.querySelector('.fileLink').href = fileUrl;
-					// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”»é¢ã«å‡ºåŠ›
+					// ƒtƒ@ƒCƒ‹‚ð‰æ–Ê‚Éo—Í
 					document.getElementById('file' + cbd.Id).appendChild(fileClone);
 				}
 			}
@@ -956,79 +1330,78 @@
 	}
 	
 	/***
-	 * URLãƒªãƒ³ã‚¯åŒ–å‡¦ç†
-	 * å¼•æ•°ã€€ï¼šæ–‡å­—åˆ—
-	 * è¿”å´çŸ¥ï¼šURLéƒ¨åˆ†ã‚’ãƒªãƒ³ã‚¯åŒ–ã—ãŸæ–‡å­—åˆ—
+	 * URLƒŠƒ“ƒN‰»ˆ—
+	 * ˆø”@F•¶Žš—ñ
+	 * •Ô‹p’mFURL•”•ª‚ðƒŠƒ“ƒN‰»‚µ‚½•¶Žš—ñ
 	 ***/
 	function AutoLink(str) {
 		if(!str){return;}
-		// æ­£è¦è¡¨ç¾
+		// ³‹K•\Œ»
 		let regexp_url = /((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#',()*!]+))/g; // ']))/;
 		let regexp_makeLink = function(all, url, h, href) {
 		return '<a href="h' + href + '" target="_blank">' + url + '</a>';
 		}
 		return str.replace(regexp_url, regexp_makeLink);
 	}
-	
-	/***
-	 * Cookieå–å¾—å‡¦ç†
-	 * å¼•æ•°ã€€ï¼šãªã—
-	 * è¿”å´å€¤ï¼šcbdIdãƒªã‚¹ãƒˆ
+	/*** 
+	 * CookieŽæ“¾ˆ—
+	 * ˆø”@F‚È‚µ
+	 * •Ô‹p’lFIdƒŠƒXƒg
 	 ***/
 	function getCookie(){
-		// Cookieã‚’å–å¾—
-		const nowCookie = document.cookie;
-		// CookieãŒnullã‚‚ã—ãã¯undefinedã§ãªã„å ´åˆ
-		if(nowCookie){
-			// å€¤ã‚’ ';' ã§åˆ†å‰²ã—ã¦1ï¼‰ã®é…åˆ—ã«æ ¼ç´
-			const tempIdList = nowCookie.split(';');
-			// å€¤ã®ä»¶æ•°åˆ†
-			tempIdList.forEach(data => {
-				// å€¤ã‚’ '=' ã§åˆ†å‰²
-				data = data.split('=');
-				// Keyã®å€¤ãŒãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ç”¨ã®Keyã®å ´åˆ
-				if(data[0] == 'IMFCookie'){
-					// å€¤ã‚’JSONæ–‡å­—åˆ—ã‹ã‚‰Javascriptã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã€é…åˆ—ã«æ ¼ç´
-					return JSON.parse(data[1]);
-				}
-			})
+		// CookieŽæ“¾ƒL[
+		let key = 'IMFCookie';
+		// ƒL[‚Éƒ}ƒbƒ`‚·‚éCookie‚ð•Ô‹pAƒ}ƒbƒ`‚µ‚È‚¯‚ê‚Î‹ó”z—ñ‚ð•Ô‚·
+		let cookieValue = ((document.cookie + ';').match(key + '=([^\S;]*)')||[])[1];
+		// ‹ó‚Å‚È‚¢ê‡
+		if(cookieValue){
+			// ’l‚ðƒfƒR[ƒh
+			let decodedStr = decodeURIComponent(cookieValue);
+			// JSON‚ð“Ç‚ÝŽæ‚è’l‚ðŽæ“¾
+			let jsonCookie = JSON.parse(decodedStr);
+			//console.log('jsonCookie: ' + jsonCookie);
+			// Id”z—ñ‚ð•Ô‹p
+			return jsonCookie;
+		// ‹ó‚Ìê‡
+		}else{
+			//console.log('cookieValue: ' + cookieValue);
+			// ‹ó‚ð•Ô‹p
+			return cookieValue;
 		}
-		// çµæžœã‚’è¿”å´
-		return null;
 	}
 	/***
-	 * å€‹åˆ¥å•ã„åˆã‚ã› è©³ç´°ç”»é¢ã®é·ç§»å‡¦ç†
-	 * å¼•æ•°ã€€ï¼šã‚±ãƒ¼ã‚¹Id
-	 * è¿”å´å€¤ï¼šãªã—
+	 * ŒÂ•Ê–â‚¢‡‚í‚¹ Ú×‰æ–Ê‚Ì‘JˆÚˆ—
+	 * ˆø”@FƒP[ƒXId
+	 * •Ô‹p’lF‚È‚µ
 	 ***/
 	 function inquiryDetailScreenTransition(caseId){
 		sendDetailsScreen(caseId);
 		changeDisp("detailsScreen");
 	}
 	/*** 
-	 * æ—¥ä»˜ã‚’JSTã«å¤‰æ›ã™ã‚‹å‡¦ç†
-	 * å¼•æ•°ã€€ï¼š2022-06-06T04:43:08.000+0000
-	 * è¿”å´å€¤ï¼š2022/06/06 04:43
+	 * “ú•t‚ðJST‚É•ÏŠ·‚·‚éˆ—
+	 * ˆø”@F2022-06-06T04:43:08.000+0000
+	 * •Ô‹p’lF2022/06/06 04:43
 	 ***/
 	function changeSlashDate(dateTime){
-		// æ—¥ä»˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¼•æ•°ã®æ—¥ä»˜ã‚’è¨­å®šã—ã¦æº–å‚™
+		// “ú•tƒIƒuƒWƒFƒNƒg‚Éˆø”‚Ì“ú•t‚ðÝ’è‚µ‚Ä€”õ
 		const newDate = new Date(dateTime);
-		// å¹´ã‚’å–å¾—
+		// ”N‚ðŽæ“¾
 		const year = newDate.getFullYear();
-		// æœˆã‚’å–å¾—ã—1ã‚’åŠ ç®—
+		// ŒŽ‚ðŽæ“¾‚µ1‚ð‰ÁŽZ
 		const month = (`0` + (newDate.getMonth() + 1)).slice(-2);
-		// æ—¥ã‚’å–å¾—
+		// “ú‚ðŽæ“¾
 		const day = (`0` + (newDate.getDate())).slice(-2);
-		// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰æ™‚é–“(h)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+		// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚çŽžŠÔ(h)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 		const hour = (`0` + (newDate.getHours())).slice(-2);
-		// å…ˆé ­æ–‡å­—åˆ—'0'ã«ã€1ï¼‰ã‹ã‚‰åˆ†(m)ã‚’å–å¾—ã—ã¦çµåˆã—ãŸå€¤ã‚’æœ€å¾Œã‹ã‚‰2æ–‡å­—ã¾ã§ã‚’å¤‰æ•°ã«æ ¼ç´
+		// æ“ª•¶Žš—ñ'0'‚ÉA1j‚©‚ç•ª(m)‚ðŽæ“¾‚µ‚ÄŒ‹‡‚µ‚½’l‚ðÅŒã‚©‚ç2•¶Žš‚Ü‚Å‚ð•Ï”‚ÉŠi”[
 		const minute = (`0` + (newDate.getMinutes())).slice(-2);
-		// å€¤ã‚’è¿”å´
+		// ’l‚ð•Ô‹p
 		return `${year}/${month}/${day} ${hour}:${minute}`;
 	}
 	
 	/**
-	 * å…¥åŠ›ç”»é¢ã§å…¥åŠ›ã•ã‚ŒãŸæƒ…å ±ã‚’ç¢ºèªç”»é¢ã®è¦ç´ ã«åæ˜ 
+	 * “ü—Í‰æ–Ê‚Å“ü—Í‚³‚ê‚½î•ñ‚ðŠm”F‰æ–Ê‚Ì—v‘f‚É”½‰f
 	 */
 	function outputValueInqConf(){
 		inqRegistData.EncryptedData = linkedStr;
@@ -1038,10 +1411,25 @@
 		document.getElementById('inqConfMailText').innerHTML = eMail;
 		document.getElementById('inqConfTypeText').innerHTML = inqRegistData.Subject;
 		document.getElementById('inqConfDtailsText').innerHTML = inqRegistData.Content;
+		// ‘I‘ð’l‚ðŽæ“¾
+		const jinkakuCode = $('input[name="JinkakuCode"]').val();
+		let selectedItem = document.getElementById('Modal-aaa').innerHTML;
+		// ‰æ–Ê“ü—Í‚³‚ê‚½‚¨–â‚¢‡‚í‚¹Ží—Þ
+		if(jinkakuCode == 'ŒÂl' || jinkakuCode == '”ñ‹ZŽÒ'){
+			// ŠeŽíŽè‘±‚«ƒ_ƒCƒ„ƒ‹Ý’è‘ÎÛ‚Ìê‡
+			if(procedureDialList.includes(selectedItem)){
+				inqRegistData.LinkedDial = 'ŠeŽíŽè‘±‚«ƒ_ƒCƒ„ƒ‹';
+			}else{
+				inqRegistData.LinkedDial = '‚»‚Ì‘¼ƒ_ƒCƒ„ƒ‹';
+			}
+			// lŠiƒR[ƒh‚ª–@l‚Ìê‡
+		}else{
+			inqRegistData.LinkedDial = '–@lƒ_ƒCƒ„ƒ‹';
+		}
 	}
 	
 	/**
-	 * å…¥åŠ›ç”»é¢ã§å…¥åŠ›ã•ã‚ŒãŸæƒ…å ±ã‚’ç¢ºèªç”»é¢ã®è¦ç´ ã«åæ˜ 
+	 * “ü—Í‰æ–Ê‚Å“ü—Í‚³‚ê‚½î•ñ‚ðŠm”F‰æ–Ê‚Ì—v‘f‚É”½‰f
 	 */
 	function outputValueCbdConf(){
 		cbdRegistData.EncryptedData = linkedStr;
@@ -1051,11 +1439,11 @@
 	}
 	
 	/**
-	 * å…¥åŠ›ã•ã‚ŒãŸã‚‰ãƒœã‚¿ãƒ³ã‚’æ´»æ€§åŒ–ã™ã‚‹
+	 * “ü—Í‚³‚ê‚½‚çƒ{ƒ^ƒ“‚ðŠˆ«‰»‚·‚é
 	 */
 	function inqReqCheck(){
 	
-		const itype_flg = ($('#input[name="aaa"]').val() === "") ? false : true;
+		const itype_flg = ( $('#Modal-aaa').html() == "‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢" ) ? false : true;
 		const idtail_flg = ($('#inqTextInput').val() === "") ? false : true;
 		
 		let isBtnActive;
@@ -1070,7 +1458,7 @@
 	}
 	
 	/**
-	 * å…¥åŠ›ã•ã‚ŒãŸã‚‰ãƒœã‚¿ãƒ³ã‚’æ´»æ€§åŒ–ã™ã‚‹
+	 * “ü—Í‚³‚ê‚½‚çƒ{ƒ^ƒ“‚ðŠˆ«‰»‚·‚é
 	 */	
 	function cbdReqCheck () {
 	
@@ -1086,6 +1474,89 @@
 		
 		$('#cbdConfButton').prop("disabled", !isBtnActive);
 	}
+	
+	function inqPrevAction(){
+	
+		itype_flg = (typeof $('input[name="aaa"]:checked').val() === "undefined") ? false : true;
+		idtail_flg  = ($('#inqTextInput').val() === "" ) ? false : true;
+		
+		if(itype_flg || idtail_flg){
+			$(".modalOverlay,.error-type1").fadeIn();
+			$("body").css({position:"fixed",top:-1});
+		}else{
+			changeDisp('inquiryForm');
+		}
+	}
+	
+	function inqClearInput(){
+		$('input[name="aaa"]:checked').prop("checked", false);
+		$("#Modal-aaa").html("‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢");
+		if(!$("#Modal-aaa").hasClass("reqEntry")){
+			$("#Modal-aaa").addClass("reqEntry").removeClass("inputSelectItem-on data-on");
+		}
+		$('#inqTextInput').val(null);
+		$('.modalOverlay,.error-type1').fadeOut();
+		changeDisp('inquiryForm');
+	}
+	
+	function cbdPrevAction(){
+		
+		if($("#cbdTextInput").val() === ""){
+			changeDisp('detailsScreen');
+		}else{
+			$(".modalOverlay,.error-type1").fadeIn();
+			$("body").css({position:"fixed",top:-1});
+		}
+		
+	}
+	
+	function cbdClearInput(){
+		$("#cbdTextInput").val(null);
+		$(".modalOverlay,.error-type1").fadeOut();
+		changeDisp('detailsScreen');
+	}
+	
+	/**
+	 * V‹K“ŠeŽž‚Ìƒtƒ@ƒCƒ‹íœ
+	 */
+	function inqDeleteFile(){
+		$("#inqFileList").children()[selectFileIndex].remove();
+		inputFiles.splice(selectFileIndex, 1);
+	}
+	/**
+	 * ’Ç‰Á“ŠeŽž‚Ìƒtƒ@ƒCƒ‹íœ
+	 */
+	function cbdDeleteFile(){
+		$("#cbdFileList").children()[selectFileIndex].remove();
+		inputFiles.splice(selectFileIndex, 1);
+	}
+	/**
+	 * ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒhˆ—iÄ‹Aj
+	 */
+	function recursiveFileRead(elemFile, files, index){
+	
+		const reader = new FileReader();
+		
+		const inputFileData = {
+			name:files[index].name,
+			versionData:null
+		};
+		
+		reader.onload = function(){
+			const baseFile = this.result;
+			const spFile = baseFile.split(",");
+			inputFileData.versionData = spFile[1];
+			inputFiles.push(inputFileData);
+			if(files.length - 1 > index){
+				recursiveFileRead(elemFile, files, index + 1);
+			}else{
+				console.log(inputFiles);
+				elemFile.value = null;
+			}
+		}
+		
+		reader.readAsDataURL(files[index]);
+	}
 </script>
 
 <!-- InquiryForm -->
@@ -1093,16 +1564,16 @@
 	<div class="blk">
 		<div class="blkCont bdrT0">
 			<div class="note">
-				<p>ãŠå•ã„åˆã‚ã›ã®å›žç­”ç›®å®‰ã¯åŽŸå‰‡ã€ç¿Œå–¶æ¥­æ—¥ã§ã™ã€‚</p>
+				<p>‚¨–â‚¢‡‚í‚¹‚Ì‰ñ“š–ÚˆÀ‚ÍŒ´‘¥A—‚‰c‹Æ“ú‚Å‚·B</p>
 			</div>
 			<p class="txtR mt-16">
-				<a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">æ–°è¦ãŠå•ã„åˆã‚ã›</a>
+				<a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">V‹K‚¨–â‚¢‡‚í‚¹</a>
 			</p>
 			<div class="list-qa">
 				<dl id="listQa"></dl>
 			</div>
 			<p>
-				<a href="javascript:commonSubmit('ln0001')" title="Welcome Pageã«æˆ»ã‚‹" class="btn btn02 btnL">Welcome Page</a>
+				<a href="javascript:commonSubmit('ln0001')" title="Welcome Page‚É–ß‚é" class="btn btn02 btnL">Welcome Page</a>
 			</p>
 		</div>
 	</div>
@@ -1113,9 +1584,9 @@
 	<div class="blk">
 		<div class="blkCont bdrT0">
 			<p class="contbrd-formBtn">
-				<a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">æ–°è¦ãŠå•ã„åˆã‚ã›</a>
+				<a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">V‹K‚¨–â‚¢‡‚í‚¹</a>
 			</p>
-			<p class="contbrd-formTitle">ãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ã®ä½¿ã„æ–¹</p>
+			<p class="contbrd-formTitle">‚¨–â‚¢‡‚í‚¹ƒtƒH[ƒ€‚ÌŽg‚¢•û</p>
 			<div class="stepCont">
 				<div class="stepBox">
 					<dl>
@@ -1125,10 +1596,10 @@
 								<img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								ï¼»æ–°è¦ãŠå•ã„åˆã‚ã›ï¼½<br class="smtOnlyBr">ã‚ˆã‚ŠæŠ•ç¨¿
+								mV‹K‚¨–â‚¢‡‚í‚¹n<br class="smtOnlyBr">‚æ‚è“Še
 							</p>
 							<p>
-								â€»Visaãƒ‡ãƒ“ãƒƒãƒˆãƒ»ãƒ­ãƒ¼ãƒ³ãƒ»FXãƒ»æŠ•è³‡ä¿¡è¨—ãƒ»å¤–è²¨é é‡‘ã¯å¯¾è±¡å¤–ã§ã™
+								¦VisaƒfƒrƒbƒgEƒ[ƒ“EFXE“ŠŽ‘M‘õEŠO‰Ý—a‹à‚Í‘ÎÛŠO‚Å‚·
 							</p>
 						</dd>
 					</dl>
@@ -1139,10 +1610,10 @@
 								<img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								å›žç­”ãŒæŠ•ç¨¿ã•ã‚ŒãŸã‚‰<br>ãƒ¡ãƒ¼ãƒ«ã§ãŠçŸ¥ã‚‰ã›
+								‰ñ“š‚ª“Še‚³‚ê‚½‚ç<br>ƒ[ƒ‹‚Å‚¨’m‚ç‚¹
 							</p>
 							<p>
-								åŽŸå‰‡ã€ç¿Œå–¶æ¥­æ—¥ã«å›žç­”ã—ã¾ã™
+								Œ´‘¥A—‚‰c‹Æ“ú‚É‰ñ“š‚µ‚Ü‚·
 							</p>
 						</dd>
 					</dl>
@@ -1153,10 +1624,10 @@
 								<img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦å›žç­”ã‚’ç¢ºèª
+								ƒƒOƒCƒ“‚µ‚Ä‰ñ“š‚ðŠm”F
 							</p>
 							<p>
-								å¥½ããªã‚¿ã‚¤ãƒŸãƒ³ã‚°ã§å›žç­”ã‚’ç¢ºèªã§ãã¾ã™
+								D‚«‚Èƒ^ƒCƒ~ƒ“ƒO‚Å‰ñ“š‚ðŠm”F‚Å‚«‚Ü‚·
 							</p>
 						</dd>
 					</dl>
@@ -1182,10 +1653,10 @@
 			<div class="blk">
 				<div class="blkCont bdrT0 contbrd-btnArea-box">
 					<p>
-						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen');" title="æŠ•ç¨¿ã™ã‚‹" class="btn btn01 btnL">æŠ•ç¨¿ã™ã‚‹</a>
+						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen');" title="“Še‚·‚é" class="btn btn01 btnL">“Še‚·‚é</a>
 					</p>
 					<p class="mt-16">
-						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="æˆ»ã‚‹" class="btn btn03 btnL">æˆ»ã‚‹</a>
+						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="–ß‚é" class="btn btn03 btnL">–ß‚é</a>
 					</p>
 				</div>
 			</div>
@@ -1197,33 +1668,33 @@
 <div id="inqInputScreen" class="contents no-title-h1" style="display:none;">
 	<div class="blk">
 		<div class="blkCont layout-form layout-form-normal">
-			<div>
-				<p class="input-title">ãŠå•ã„åˆã‚ã›ç¨®é¡ž</p>
+			<div id="modalText">
+				<p class="input-title">‚¨–â‚¢‡‚í‚¹Ží—Þ</p>
 				<p class="inputSelectWrap pulldown">
-					<a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">é¸æŠžã—ã¦ãã ã•ã„</a>
+					<a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢</a>
 				</p>
 				<div class="modalWrap pulldown modalWrap-aaa">
 					<div class="modalOuter">
-						<div class="modal__headArea">ãŠå•ã„åˆã‚ã›ç¨®é¡ž</div>
+						<div class="modal__headArea">‚¨–â‚¢‡‚í‚¹Ží—Þ</div>
 						<div class="modal__bodyArea">
 							<ul id="aaa" class="wrap-label-list">
-								<li name="aaa"><label class="label-radio" for="aaa01"><input type="radio" name="aaa" value="1" id="aaa01" class="x-data-aaa"><span>ç™»éŒ²æƒ…å ±ã®å¤‰æ›´</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa02"><input type="radio" name="aaa" value="2" id="aaa02" class="x-data-aaa"><span>ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚«ãƒ¼ãƒ‰ãƒ»ãƒˆãƒ¼ã‚¯ãƒ³</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa03"><input type="radio" name="aaa" value="3" id="aaa03" class="x-data-aaa"><span>æŒ¯è¾¼</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa04"><input type="radio" name="aaa" value="4" id="aaa04" class="x-data-aaa"><span>å£åº§è‡ªå‹•æŒ¯æ›¿</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa05"><input type="radio" name="aaa" value="5" id="aaa05" class="x-data-aaa"><span>å„ç¨®è¨¼æ˜Žæ›¸ï¼ˆå–å¼•æ˜Žç´°ãƒ»æ®‹é«˜è¨¼æ˜Žãªã©ï¼‰</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa06"><input type="radio" name="aaa" value="6" id="aaa06" class="x-data-aaa"><span>ãã®ä»–</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa07"><input type="radio" name="aaa" value="7" id="aaa07" class="x-data-aaa"><span>ç™»éŒ²æƒ…å ±ã®å¤‰æ›´</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa08"><input type="radio" name="aaa" value="8" id="aaa08" class="x-data-aaa"><span>ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚«ãƒ¼ãƒ‰ãƒ»ãƒˆãƒ¼ã‚¯ãƒ³</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa09"><input type="radio" name="aaa" value="9" id="aaa09" class="x-data-aaa"><span>æŒ¯è¾¼</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa10"><input type="radio" name="aaa" value="10" id="aaa10" class="x-data-aaa"><span>å£åº§è‡ªå‹•æŒ¯æ›¿</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa11"><input type="radio" name="aaa" value="11" id="aaa11" class="x-data-aaa"><span>å„ç¨®è¨¼æ˜Žæ›¸ï¼ˆå–å¼•æ˜Žç´°ãƒ»æ®‹é«˜è¨¼æ˜Žãªã©ï¼‰</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa12"><input type="radio" name="aaa" value="12" id="aaa12" class="x-data-aaa"><span>BA-PLUS</span></label></li>
-								<li name="aaa"><label class="label-radio" for="aaa13"><input type="radio" name="aaa" value="13" id="aaa13" class="x-data-aaa"><span>ãã®ä»–</span></label></li>
+								<li id="dial01" name="aaa"><label class="label-radio" for="aaa01"><input type="radio" name="aaa" value="1" id="aaa01" class="x-data-aaa"><span>“o˜^î•ñ‚Ì•ÏX</span></label></li>
+								<li id="dial02" name="aaa"><label class="label-radio" for="aaa02"><input type="radio" name="aaa" value="2" id="aaa02" class="x-data-aaa"><span>ƒLƒƒƒbƒVƒ…ƒJ[ƒhEƒg[ƒNƒ“</span></label></li>
+								<li id="dial03" name="aaa"><label class="label-radio" for="aaa03"><input type="radio" name="aaa" value="3" id="aaa03" class="x-data-aaa"><span>Už</span></label></li>
+								<li id="dial04" name="aaa"><label class="label-radio" for="aaa04"><input type="radio" name="aaa" value="4" id="aaa04" class="x-data-aaa"><span>ŒûÀŽ©“®U‘Ö</span></label></li>
+								<li id="dial05" name="aaa"><label class="label-radio" for="aaa05"><input type="radio" name="aaa" value="5" id="aaa05" class="x-data-aaa"><span>ŠeŽíØ–¾‘iŽæˆø–¾×EŽc‚Ø–¾‚È‚Çj</span></label></li>
+								<li id="dial06" name="aaa"><label class="label-radio" for="aaa06"><input type="radio" name="aaa" value="6" id="aaa06" class="x-data-aaa"><span>‚»‚Ì‘¼</span></label></li>
+								<li id="dial07" name="aaa"><label class="label-radio" for="aaa07"><input type="radio" name="aaa" value="7" id="aaa07" class="x-data-aaa"><span>“o˜^î•ñ‚Ì•ÏX</span></label></li>
+								<li id="dial08" name="aaa"><label class="label-radio" for="aaa08"><input type="radio" name="aaa" value="8" id="aaa08" class="x-data-aaa"><span>ƒLƒƒƒbƒVƒ…ƒJ[ƒhEƒg[ƒNƒ“</span></label></li>
+								<li id="dial09" name="aaa"><label class="label-radio" for="aaa09"><input type="radio" name="aaa" value="9" id="aaa09" class="x-data-aaa"><span>Už</span></label></li>
+								<li id="dial10" name="aaa"><label class="label-radio" for="aaa10"><input type="radio" name="aaa" value="10" id="aaa10" class="x-data-aaa"><span>ŒûÀŽ©“®U‘Ö</span></label></li>
+								<li id="dial11" name="aaa"><label class="label-radio" for="aaa11"><input type="radio" name="aaa" value="11" id="aaa11" class="x-data-aaa"><span>ŠeŽíØ–¾‘iŽæˆø–¾×EŽc‚Ø–¾‚È‚Çj</span></label></li>
+								<li id="dial12" name="aaa"><label class="label-radio" for="aaa12"><input type="radio" name="aaa" value="12" id="aaa12" class="x-data-aaa"><span>BA-PLUS</span></label></li>
+								<li id="dial13" name="aaa"><label class="label-radio" for="aaa13"><input type="radio" name="aaa" value="13" id="aaa13" class="x-data-aaa"><span>‚»‚Ì‘¼</span></label></li>
 							</ul>
 						</div><!--/modal__bodyArea-->
 						<p>
-							<a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">é–‰ã˜ã‚‹</a>
+							<a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">•Â‚¶‚é</a>
 						</p>
 					</div><!--/modalOuter-->
 				</div>
@@ -1233,37 +1704,38 @@
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div class="input-textarea">
-			<label for="textInput" class="input-title">ãŠå•ã„åˆã‚ã›è©³ç´°</label>
+			<label for="textInput" class="input-title">‚¨–â‚¢‡‚í‚¹Ú×</label>
 			<div class="textinput-box">
-				<!--<textarea type="text" id="inqTextInput" oninput="inqtextinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry" placeholder="ã”è¨˜å…¥ãã ã•ã„"></textarea>-->
-				<textarea type="text" id="inqTextInput" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry" placeholder="ã”è¨˜å…¥ãã ã•ã„"></textarea>
-				<span class="InputClear inputClear">Ã—</span>
+				<!--<textarea type="text" id="inqTextInput" oninput="inqtextinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry" placeholder="‚²‹L“ü‚­‚¾‚³‚¢"></textarea>-->
+				<textarea type="text" id="inqTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry" placeholder="‚²‹L“ü‚­‚¾‚³‚¢" style="overflow: auto;"></textarea>
+				<span class="InputClear inputClear">~</span>
 			</div>
-			<span class="input-message">2000æ–‡å­—ä»¥å†…ã§å…¥åŠ›</span>
+			<span class="input-message">2000•¶ŽšˆÈ“à‚Å“ü—Í</span>
 		</div>
 	</div>
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div>
-			<p class="input-title">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</p>
+			<p class="input-title">ƒ[ƒ‹ƒAƒhƒŒƒX</p>
 			<p id="newInqMail"></p>
 		</div>
 	</div>
 	
 	<div class="blkCont mt-16">
 		<div class="note">
-			<p>å½“ç¤¾ã‹ã‚‰ã®å›žç­”ãŒãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ã«æŠ•ç¨¿ã•ã‚Œã‚‹ã¨ã€ä¸Šè¨˜ã®ç™»éŒ²ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹å®›ã«ãŠçŸ¥ã‚‰ã›ã—ã¾ã™ã€‚å›žç­”å†…å®¹ã¯ãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ã«ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã”ç¢ºèªãã ã•ã„ã€‚</p>
+			<p>“–ŽÐ‚©‚ç‚Ì‰ñ“š‚ª‚¨–â‚¢‡‚í‚¹ƒtƒH[ƒ€‚É“Še‚³‚ê‚é‚ÆAã‹L‚Ì“o˜^ƒ[ƒ‹ƒAƒhƒŒƒXˆ¶‚É‚¨’m‚ç‚¹‚µ‚Ü‚·B‰ñ“š“à—e‚Í‚¨–â‚¢‡‚í‚¹ƒtƒH[ƒ€‚ÉƒƒOƒCƒ“‚µ‚Ä‚²Šm”F‚­‚¾‚³‚¢B</p>
 		</div>
 	</div>
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div class="wrap-input upfile-wrap">
-			<label class="input-title">ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ï¼ˆä»»æ„ï¼‰
-				<span class="upfileLink">ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠžï¼ˆ24MBã¾ã§ï¼‰</span>
+			<label class="input-title">ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒhi”CˆÓj
+				<span class="upfileLink">ƒtƒ@ƒCƒ‹‚ð‘I‘ði24MB‚Ü‚Åj</span>
 				<input type="file" name="fileName" id="inqFileName" class="dn" multiple="multiple">
 				<input type="text" id="inqFileText" name="fileText" value="">
 			</label>
-			<p class="upfile-text"><span class="InputClear inputClear">Ã—</span></p>
+			<div id="inqFileAlert" style="font-weight:bold;color:red;"></div>
+			<div id="inqFileList"></div>
 		</div>
 	</div>
 	
@@ -1271,11 +1743,11 @@
 		<div class="modalOuter_error">
 			<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
 			<div class="modal__bodyArea">
-				<p class="fBold">å…¥åŠ›ã—ãŸå†…å®¹ã¯å¤±ã‚ã‚Œã¾ã™ã€‚<br>ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ</p>
+				<p class="fBold">“ü—Í‚µ‚½“à—e‚ÍŽ¸‚í‚ê‚Ü‚·B<br>‚æ‚ë‚µ‚¢‚Å‚·‚©H</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">æˆ»ã‚‹</a></p>
-				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">OK</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">–ß‚é</a></p>
+				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close" onclick="inqClearInput();">OK</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
 	</div><!--/modalWrap_error-->
@@ -1286,11 +1758,11 @@
 				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 			</div>
 			<div class="modal__bodyArea">
-				<p class="fBold">å…¥åŠ›ã•ã‚ŒãŸå†…å®¹ãŒå¤±ã‚ã‚Œã¾ã™ã€‚<br>ãã‚Œã§ã‚‚å•é¡Œãªã„å ´åˆã¯ã€Œå‰Šé™¤ã™ã‚‹ã€ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚</p>
+				<p class="fBold">“ü—Í‚³‚ê‚½“à—e‚ªŽ¸‚í‚ê‚Ü‚·B<br>‚»‚ê‚Å‚à–â‘è‚È‚¢ê‡‚Íuíœ‚·‚év‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢B</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">å‰Šé™¤ã™ã‚‹</a></p>
-				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">é–‰ã˜ã‚‹</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqReqCheck();">íœ‚·‚é</a></p>
+				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">•Â‚¶‚é</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
 	</div><!--/modalWrap_error-->
@@ -1301,18 +1773,18 @@
 				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 			</div>
 			<div class="modal__bodyArea">
-				<p class="fBold">ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚<br>ãã‚Œã§ã‚‚å•é¡Œãªã„å ´åˆã¯ã€Œå‰Šé™¤ã™ã‚‹ã€ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚</p>
+				<p class="fBold">ƒAƒbƒvƒ[ƒh‚µ‚½ƒtƒ@ƒCƒ‹‚ªíœ‚³‚ê‚Ü‚·B<br>‚»‚ê‚Å‚à–â‘è‚È‚¢ê‡‚Íuíœ‚·‚év‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢B</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">å‰Šé™¤ã™ã‚‹</a></p>
-				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">é–‰ã˜ã‚‹</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqDeleteFile();">íœ‚·‚é</a></p>
+				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">•Â‚¶‚é</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
 	</div><!--/modalWrap_error-->
 	
 	<div class="blkCont contbrd-btnArea-box">
-		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');" class="btn btn01 btnL" value="ç¢ºèªã™ã‚‹"></p>
-		<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inquiryForm')" class="btn btn03 btnL prevBtn">æˆ»ã‚‹</a></p>
+		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');" class="btn btn01 btnL" value="Šm”F‚·‚é"></p>
+		<p class="mt-16"><a href="javascript:void(0);" onclick="inqPrevAction();" class="btn btn03 btnL prevBtn">–ß‚é</a></p>
 	</div>
 </div>
 
@@ -1321,35 +1793,35 @@
 
 	<div class="blk">
 		<div class="blkTitle">
-			<h2 id="inqConfType" class="h201">ãŠå•ã„åˆã‚ã›ç¨®é¡ž</h2>
+			<h2 id="inqConfType" class="h201">‚¨–â‚¢‡‚í‚¹Ží—Þ</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfTypeText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 id="inqConfDtails" class="h201">ãŠå•ã„åˆã‚ã›è©³ç´°</h2>
+			<h2 id="inqConfDtails" class="h201">‚¨–â‚¢‡‚í‚¹Ú×</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfDtailsText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 class="h201">ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹</h2>
+			<h2 class="h201">ƒ[ƒ‹ƒAƒhƒŒƒX</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfMailText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 class="h201">ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰</h2>
+			<h2 class="h201">ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒh</h2>
 		</div>
 		<div class="blkCont bdrT0">
-			<p>ãªã—</p>
+			<p>‚È‚µ</p>
 			<p></p>
 			<p></p>
 			<p></p>
 			<p></p>
 			<div class="contbrd-btnArea-box">
-				<p><a href="javascript:void(0);" onclick="registInquery();changeDisp('compScreen')" class="btn btn01 btnL">æŠ•ç¨¿ã™ã‚‹</a></p>
-				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">æˆ»ã‚‹</a></p>
+				<p><a href="javascript:void(0);" onclick="registInquery();changeDisp('compScreen')" class="btn btn01 btnL">“Še‚·‚é</a></p>
+				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">–ß‚é</a></p>
 			</div>
 		</div>
 	</div>
@@ -1359,24 +1831,24 @@
 <div id="replyInputScreen" class="contents no-title-h1 contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont layout-form layout-form-normal">
-			<p class="contbrd-title">æŠ•ç¨¿å†…å®¹</p>
+			<p class="contbrd-title">“Še“à—e</p>
 			<div class="input-textarea">
 				<div class="textinput-box">
-					<!--<textarea type="text" id="cbdTextInput" oninput="textinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry inputTextItem" placeholder="ã”è¨˜å…¥ãã ã•ã„"></textarea>-->
-					<textarea type="text" id="cbdTextInput" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry inputTextItem" placeholder="ã”è¨˜å…¥ãã ã•ã„"></textarea>
-					<span class="InputClear inputClear">Ã—</span>
+					<!--<textarea type="text" id="cbdTextInput" oninput="textinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry inputTextItem" placeholder="‚²‹L“ü‚­‚¾‚³‚¢"></textarea>-->
+					<textarea type="text" id="cbdTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry inputTextItem" placeholder="‚²‹L“ü‚­‚¾‚³‚¢" style="overflow: auto;"></textarea>
+					<span class="InputClear inputClear">~</span>
 				</div>
 			</div>
 			<div class="blkCont layout-form layout-form-normal">
 				<div class="mt-16">
 					<div class="wrap-input upfile-wrap">
-						<label class="input-title">ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ï¼ˆä»»æ„ï¼‰
-							<span class="upfileLink">ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠžï¼ˆ24MBã¾ã§ï¼‰</span>
+						<label class="input-title">ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒhi”CˆÓj
+							<span class="upfileLink">ƒtƒ@ƒCƒ‹‚ð‘I‘ði24MB‚Ü‚Åj</span>
 							<input type="file" name="fileName" id="cbdFileName" class="dn" multiple="multiple">
 							<input type="text" id="cbdFileText" name="fileText" value="">
 						</label>
-						<p class="upfile-text"><span class="InputClear inputClear">Ã—</span></p>
-						-->
+						<div id="cbdFileAlert" style="font-weight:bold;color:red;"></div>
+						<div id="cbdFileList"></div>
 					</div>
 				</div>
 				<div class="modalWrap_error error-type1">
@@ -1385,11 +1857,11 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">å…¥åŠ›ã—ãŸå†…å®¹ã¯å¤±ã‚ã‚Œã¾ã™ã€‚<br>ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ</p>
+							<p class="fBold">“ü—Í‚µ‚½“à—e‚ÍŽ¸‚í‚ê‚Ü‚·B<br>‚æ‚ë‚µ‚¢‚Å‚·‚©H</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">æˆ»ã‚‹</a></p>
-							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">OK</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">–ß‚é</a></p>
+							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close" onclick="cbdClearInput();">OK</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
 				</div><!--/modalWrap_error-->
@@ -1400,11 +1872,11 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">å…¥åŠ›ã•ã‚ŒãŸå†…å®¹ãŒå¤±ã‚ã‚Œã¾ã™ã€‚<br>ãã‚Œã§ã‚‚å•é¡Œãªã„å ´åˆã¯ã€Œå‰Šé™¤ã™ã‚‹ã€ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚</p>
+							<p class="fBold">“ü—Í‚³‚ê‚½“à—e‚ªŽ¸‚í‚ê‚Ü‚·B<br>‚»‚ê‚Å‚à–â‘è‚È‚¢ê‡‚Íuíœ‚·‚év‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢B</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">å‰Šé™¤ã™ã‚‹</a></p>
-							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">é–‰ã˜ã‚‹</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdReqCheck()">íœ‚·‚é</a></p>
+							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">•Â‚¶‚é</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
 				</div><!--/modalWrap_error-->
@@ -1415,21 +1887,21 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå‰Šé™¤ã•ã‚Œã¾ã™ã€‚<br>ãã‚Œã§ã‚‚å•é¡Œãªã„å ´åˆã¯ã€Œå‰Šé™¤ã™ã‚‹ã€ã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚</p>
+							<p class="fBold">ƒAƒbƒvƒ[ƒh‚µ‚½ƒtƒ@ƒCƒ‹‚ªíœ‚³‚ê‚Ü‚·B<br>‚»‚ê‚Å‚à–â‘è‚È‚¢ê‡‚Íuíœ‚·‚év‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢B</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">å‰Šé™¤ã™ã‚‹</a></p>
-							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">é–‰ã˜ã‚‹</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdDeleteFile();">íœ‚·‚é</a></p>
+							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">•Â‚¶‚é</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
 				</div><!--/modalWrap_error-->
 				
 				<div class="contbrd-btnArea-box">
 					<p class="mt-24">
-						<input type="button" id="cbdConfButton" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="ç¢ºèªã™ã‚‹" disabled>
+						<input type="button" id="cbdConfButton" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="Šm”F‚·‚é" disabled>
 					</p>
 					<p class="mt-16">
-						<a href="javascript:void(0);" onclick="changeDisp('detailsScreen')" class="btn btn03 btnL prevBtn">æˆ»ã‚‹</a>
+						<a href="javascript:void(0);" onclick="cbdPrevAction();" class="btn btn03 btnL prevBtn">–ß‚é</a>
 					</p>
 				</div>
 			</div>
@@ -1441,19 +1913,19 @@
 <div id="replyConfirmScreen" class="contents no-title-h1 contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont bdrT0">
-			<p class="contbrd-title">æŠ•ç¨¿å†…å®¹</p>
+			<p class="contbrd-title">“Še“à—e</p>
 			<p id="cbdConfDtailsText"></p>
-			<h3 class="h301 mt-24">ãƒ•ã‚¡ã‚¤ãƒ«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰</h3>
+			<h3 class="h301 mt-24">ƒtƒ@ƒCƒ‹ƒAƒbƒvƒ[ƒh</h3>
 			<!--
 			<p>aaaaaaaaaaaa.pdf</p>
 			<p>bbbb.jpg</p>
 			-->
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="registContactBoard();changeDisp('compScreen')" class="btn btn01 btnL" value="æŠ•ç¨¿ã™ã‚‹">
+					<input type="submit" id="" onclick="registContactBoard();changeDisp('compScreen')" class="btn btn01 btnL" value="“Še‚·‚é">
 				</p>
 				<p class="mt-16">
-					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">æˆ»ã‚‹</a>
+					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">–ß‚é</a>
 				</p>
 			</div>
 		</div>
@@ -1465,18 +1937,18 @@
 	<div class="blk">
 		<div class="blkCont">
 			<p class="compDescription">
-				<span class="compDescriptionIcon">å—ä»˜å®Œäº†ã—ã¾ã—ãŸ</span>
+				<span class="compDescriptionIcon">Žó•tŠ®—¹‚µ‚Ü‚µ‚½</span>
 			</p>
 		</div>
 		<div class="blkCont mt-24">
-			<p>å—ä»˜å®Œäº†ã®ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã—ã¾ã—ãŸã€‚</p>
+			<p>Žó•tŠ®—¹‚Ìƒ[ƒ‹‚ð‘—M‚µ‚Ü‚µ‚½B</p>
 			<p class="faqLink">
-				<a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">ãƒ¡ãƒ¼ãƒ«ãŒå±Šã‹ãªã„å ´åˆ</a>
+				<a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">ƒ[ƒ‹‚ª“Í‚©‚È‚¢ê‡</a>
 			</p>
-			<p>å½“ç¤¾ã‹ã‚‰ã®å›žç­”ã¯åŽŸå‰‡ç¿Œå–¶æ¥­æ—¥ã«ãƒ¡ãƒ¼ãƒ«ã§ãŠçŸ¥ã‚‰ã›ã—ã¾ã™ã€‚å›žç­”å†…å®¹ã¯ãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ã«ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã”ç¢ºèªãã ã•ã„ã€‚</p>
+			<p>“–ŽÐ‚©‚ç‚Ì‰ñ“š‚ÍŒ´‘¥—‚‰c‹Æ“ú‚Éƒ[ƒ‹‚Å‚¨’m‚ç‚¹‚µ‚Ü‚·B‰ñ“š“à—e‚Í‚¨–â‚¢‡‚í‚¹ƒtƒH[ƒ€‚ÉƒƒOƒCƒ“‚µ‚Ä‚²Šm”F‚­‚¾‚³‚¢B</p>
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="ãŠå•ã„åˆã‚ã›ãƒ•ã‚©ãƒ¼ãƒ ">
+					<input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="‚¨–â‚¢‡‚í‚¹ƒtƒH[ƒ€">
 				</p>
 				<p class="mt-16">
 					<input type="submit" id="" class="btn btn03 btnL" value="Welcome Page">
