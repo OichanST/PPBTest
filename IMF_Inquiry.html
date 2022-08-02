@@ -1,6 +1,7 @@
 <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+
 <script type="text/javascript">
-<!-- PPB����̂����X�N���v�g�𔽉f
+<!-- PPBより受領したスクリプトを反映
 	/*** NewInquiry_InputScreen ***/
 /*
 	$(function(){
@@ -12,32 +13,32 @@
 			},100);
 		});
 	});
-	//textarea������������
+	//textarea自動高さ調整
 	function inqtextinputAfter(argObj){
 		argObj.style.height = "42px";
 		var wSclollHeight = parseInt(argObj.scrollHeight);
-		// 1�s�̒������擾����
+		// 1行の長さを取得する
 		var wLineH = parseInt(argObj.style.lineHeight.replace(/px/, ''));
-		// �Œ�2�s�̕\���G���A�ɂ���
+		// 最低2行の表示エリアにする
 		if(wSclollHeight < (wLineH * 2)){wSclollHeight=(wLineH * 2);}
-		// �e�L�X�g�G���A�̍�����ݒ肷��
+		// テキストエリアの高さを設定する
 		argObj.style.height = wSclollHeight + "px";
 	}
 */
 	$(function(){
-		//���[�_����������
+		//モーダル高さ調整
 		/*
 		$(window).on("load orientationchange resize", function() {
 			ModalWinLoad();
 		});
 		*/
 		
-		//���[�_���J��
+		//モーダル開閉
 		$(".ModalBtn").on("click", function(){
 			$(".modalOverlay,.modalWrap").fadeIn();
 			$("body").css({position:"fixed",top:-1});
 			selectId = $(this).attr("id").slice(6);
-			//���Y���������͌Ăь��̏���������ł��Ȃ��������߁A�R�����g�A�E�g���Ă���
+			//当該処理だけは呼び元の処理が特定できなかったため、コメントアウトしている
 			//ModalOpen(selectId);
 		});
 		
@@ -49,7 +50,7 @@
 		$(".x-data-aaa").change(function(){
 			SelectRadio(selectId);
 		});
-		//���[�_���J�@�߂�A���O�A�E�g��
+		//モーダル開閉　戻る、ログアウト時
 		$(".prevBtn, .logout").on("click", function(){
 			if ($("body").find(".data-on").length) {
 				var CurrentScrollY = $(window).scrollTop();
@@ -76,7 +77,7 @@
 			$(".modalOverlay,.modalWrap_error").fadeOut();
 			$("body").css({position:"",top:0 * CurrentScrollY});
 		});
-		//���͒l�N���A
+		//入力値クリア
 		$(".InputClear").on({
 			"click":function(){
 				$(this).prev().val("");
@@ -86,7 +87,7 @@
 				NextBtnActivity();
 			}
 		});
-		//input����
+		//input入力
 		$("#inqTextInput").on("keydown keyup keypress change blur", function() {
 			if ($(this).val().length) {
 				$(this).next(".inputClear").css("opacity", 1);
@@ -98,7 +99,7 @@
 			}
 			NextBtnActivity();
 		});
-		//���͎��̉�������
+		//入力時の下線制御
 		setReqCls("#Modal-aaa, #inqTextInput");
 	});
 	function SelectRadio(id){
@@ -106,11 +107,11 @@
 		var selectValue = $("input[name='"+childName+"']:checked").next().html();
 		$("#Modal-"+ id).html(selectValue);
 		var defValue = $("#Modal-"+ id).html();
-		var defValueMsg = "�I�����Ă�������";
+		var defValueMsg = "選択してください";
 		if(defValue == defValueMsg){
 			if(!$("#Modal-"+ id).hasClass("reqEntry")){$("#Modal-"+ id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");}
 		}else if(defValue == ""){
-			$('#Modal-'+ id).add().html("�I�����Ă�������");
+			$('#Modal-'+ id).add().html("選択してください");
 		}else{
 			$("#Modal-"+ id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
 		}
@@ -123,7 +124,7 @@
 			$("p").find("#nextBtn").prop("disabled", true);
 		}
 	}
-	/* �t�@�C�����쏈����USE�Ŏ���
+	/* ファイル操作処理はUSEで実装
 	$(function(){
 		$("#fileName").change(function(){
 			var file = document.getElementById("fileName").value;
@@ -146,27 +147,27 @@
 			},100);
 		});
 	});
-	//textarea������������
+	//textarea自動高さ調整
 	function textinputAfter(argObj){
 		argObj.style.height = "42px";
 		var wSclollHeight = parseInt(argObj.scrollHeight);
-		// 1�s�̒������擾����
+		// 1行の長さを取得する
 		var wLineH = parseInt(argObj.style.lineHeight.replace(/px/, ''));
-		// �Œ�2�s�̕\���G���A�ɂ���
+		// 最低2行の表示エリアにする
 		if(wSclollHeight < (wLineH * 2)){wSclollHeight=(wLineH * 2);}
-		// �e�L�X�g�G���A�̍�����ݒ肷��
+		// テキストエリアの高さを設定する
 		argObj.style.height = wSclollHeight + "px";
 	}
 */
 	$(function(){
-		//���[�_����������
+		//モーダル高さ調整
 		/*
 		$(window).on("load orientationchange resize", function() {
 			ModalWinLoad();
 		});
 		*/
 		
-		//���[�_���J��
+		//モーダル開閉
 		$(".ModalBtn").on("click", function(){
 			$(".modalOverlay,.modalWrap").fadeIn();
 			$("body").css({position:"fixed",top:-1});
@@ -182,7 +183,7 @@
 		$(".x-data-aaa").change(function(){
 			SelectRadio(selectId);
 		});
-		//���[�_���J�@�߂�A���O�A�E�g��
+		//モーダル開閉　戻る、ログアウト時
 		$(".prevBtn, .logout").on("click", function(){
 			if ($("body").find(".data-on").length) {
 				var CurrentScrollY = $(window).scrollTop();
@@ -209,7 +210,7 @@
 			$(".modalOverlay,.modalWrap_error").fadeOut();
 			$("body").css({position:"",top:0 * CurrentScrollY});
 		});
-		//���͒l�N���A
+		//入力値クリア
 		$(".InputClear").on({
 			"click":function(){
 				$(this).prev().val("");
@@ -219,7 +220,7 @@
 				NextBtnActivity();
 			}
 		});
-		//input����
+		//input入力
 		$("#cbdTextInput").on("keydown keyup keypress change blur", function() {
 			if ($(this).val().length) {
 				$(this).next(".inputClear").css("opacity", 1);
@@ -231,7 +232,7 @@
 			}
 			NextBtnActivity();
 		});
-		//���͎��̉�������
+		//入力時の下線制御
 		setReqCls("#Modal-aaa, #cbdTextInput");
 	});
 	function SelectRadio(id){
@@ -239,13 +240,13 @@
 		var selectValue = $("input[name='"+childName+"']:checked").next().html();
 		$("#Modal-"+ id).html(selectValue);
 		var defValue = $("#Modal-"+ id).html();
-		var defValueMsg = "�I�����Ă�������";
+		var defValueMsg = "選択してください";
 		if(defValue == defValueMsg){
 			if(!$("#Modal-"+ id).hasClass("reqEntry")){
 				$("#Modal-"+ id).addClass("reqEntry").removeClass("inputSelectItem-on data-on");
 			}
 		}else if(defValue == ""){
-			$('#Modal-'+ id).add().html("�I�����Ă�������");
+			$('#Modal-'+ id).add().html("選択してください");
 		}else{
 			$("#Modal-"+ id).removeClass("reqEntry").addClass("inputSelectItem-on data-on");
 		}
@@ -258,7 +259,7 @@
 			$("p").find("#nextBtn").prop("disabled", true);
 		}
 	}
-	/* �t�@�C�����쏈����USE���Ŏ���
+	/* ファイル操作処理はUSE側で実装
 	$(function(){
 		$("#fileName").change(function(){
 			var file = document.getElementById("fileName").value;
@@ -290,8 +291,8 @@
 					<p class="list-qa-cont cbd-content"></p>
 				</div>
 				<p class="list-qa-time inq-createdate"></p>
-				<p class="list-qa-txt"><span>���₢���킹���</span><span class="inq-type"></span></p>
-				<p class="list-qa-txt"><span>�X�e�[�^�X</span><span class="txt-not-fin inq-status"></span></p>
+				<p class="list-qa-txt"><span>お問い合わせ種類</span><span class="inq-type"></span></p>
+				<p class="list-qa-txt"><span>ステータス</span><span class="txt-not-fin inq-status"></span></p>
 			</dd>
 		</a>
 	</dl>
@@ -326,48 +327,48 @@
 
 <!-- uploadFileTemplate -->
 <template id="fileUpTemplate">
-	<p class="upfile-text"><a></a><span class="InputClear inputClear">�~</span></p>
+	<p class="upfile-text"><a></a><span class="InputClear inputClear">×</span></p>
 </template>
 
 <script type="text/javascript">
-	// �ʐM��URL�@�����ɕ����ĕύX����K�v����I
+	// 通信先URL　※環境に併せて変更する必要あり！
 	const REQUEST_DOMAIN = 'https://paypay-bank--pt49.sandbox.my.salesforce.com';
 	const CLIENT_ID = '3MVG99S6MzYiT5k.KkcZzmtcXubr_J8l8N8473VR.oFizQeVyWXFV5ARIiXmwhmXqjuNU.K6Pk9mc9M3btLBQ';
 	const REFLESH_TOKEN = '5Aep861hjC52juQoBcsFRsbEALR2k2PEkuCJTzezJjsxYDFcfM3Xu_8fN.OBDlZ6BJFv9GwwXc8hH5doNmlIiVu';
 	
-	// �ʐM�������ʂ�ޔ����邽�߂̕ϐ�
+	// 通信処理結果を退避するための変数
 	let res;
-	// �A�g�p������
+	// 連携用文字列
 	let linkedStr;
-	// ���[���A�h���X
+	// メールアドレス
 	let eMail;
-	// �t�@�C���A�b�v���[�h�p�t�@�C��
+	// ファイルアップロード用ファイル
 	let inputFiles = new Array();
-	// �A�b�v���[�h�t�@�C������p�F�I��Index
+	// アップロードファイル操作用：選択Index
 	let selectFileIndex;
-	// �A�b�v���[�h�t�@�C������p�F�A�b�v���[�h�t�@�C����
+	// アップロードファイル操作用：アップロードファイル数
 	let uploadedFileSize = 0;
 	
-	// �G���[�i�[�p
+	// エラー格納用
 	let errorInfo = {
-		data: '', // �f�[�^
-		errorThrown: '', // ��O���
-		status: '' // �G���[���
+		data: '', // データ
+		errorThrown: '', // 例外情報
+		status: '' // エラー情報
 	};
-	// �V�K���e�p�f�[�^�n�b�V��
+	// 新規投稿用データハッシュ
 	const inqRegistData = {
 		EncryptedData:null,
 		Subject:null,
 		Content:null,
 		LinkedDial:null
 	};
-	// �ǉ����e�p�f�[�^�n�b�V��
+	// 追加投稿用データハッシュ
 	const cbdRegistData = {
 		EncryptedData:null,
 		CaseId:null,	
 		Content:null
 	};
-	// ���ID
+	// 画面ID
 	const screenNameList = [
 		'inquiryForm',
 		'noInq',
@@ -378,24 +379,24 @@
 		'replyConfirmScreen',
 		'compScreen'
 	];
-	// �e��葱���_�C�����ݒ�Ώ�
+	// 各種手続きダイヤル設定対象
 	const procedureDialList = [
-		'�o�^���̕ύX', 
-		'�L���b�V���J�[�h�E�g�[�N��', 
-		'�U��', 
-		'���������U��', 
-		'�e��ؖ����i������ׁE�c���ؖ��Ȃǁj'
+		'登録情報の変更', 
+		'キャッシュカード・トークン', 
+		'振込', 
+		'口座自動振替', 
+		'各種証明書（取引明細・残高証明など）'
 	];
 	
 	/**
-	 * �����\������
+	 * 初期表示処理
 	 */
 	$(function(){
-		// �A�g������擾
+		// 連携文字列取得
 		linkedStr = $('input[name="SFConnectParam"]').val();
-		// �z�[����ʂ�\��
+		// ホーム画面を表示
 		document.getElementById('inquiryForm').style.display = 'block';
-		// ����ȊO���\��
+		// それ以外を非表示
 		document.getElementById('noInq').style.display = 'none';
 		document.getElementById('detailsScreen').style.display = 'none';
 		document.getElementById('inqInputScreen').style.display = 'none';
@@ -408,8 +409,8 @@
 			$(this).toggleClass("open");
 		});
 		
-		/*** �m�F����{�^���������� ***/
-		//�K�{���ڂɉ����ύX��������ꂽ��i�����͂��ꂽ��j�Acheck�֐����쓮����
+		/*** 確認するボタン活性処理 ***/
+		//必須項目に何か変更が加えられたら（＝入力されたら）、check関数が作動する
 		$('#confButton').prop("disabled", true);
 		
 		$('#modalText').change( function(){
@@ -429,16 +430,16 @@
 		
 		const jinkakuCode = $('input[name="JinkakuCode"]').val();
 		if(jinkakuCode){
-			// �l�i�R�[�h���l�܂��͔񋏏Z�҂̏ꍇ
-			if(jinkakuCode == '�l' || jinkakuCode == '�񋏏Z��'){
-				// �l�p��\��
+			// 人格コードが個人または非居住者の場合
+			if(jinkakuCode == '個人' || jinkakuCode == '非居住者'){
+				// 個人用を表示
 				document.getElementById('dial01').style.display = '';
 				document.getElementById('dial02').style.display = '';
 				document.getElementById('dial03').style.display = '';
 				document.getElementById('dial04').style.display = '';
 				document.getElementById('dial05').style.display = '';
 				document.getElementById('dial06').style.display = '';
-				// �@�l�p���\��
+				// 法人用を非表示
 				document.getElementById('dial07').style.display = 'none';
 				document.getElementById('dial08').style.display = 'none';
 				document.getElementById('dial09').style.display = 'none';
@@ -447,14 +448,14 @@
 				document.getElementById('dial12').style.display = 'none';
 				document.getElementById('dial13').style.display = 'none';
 			}else{
-				// �l�p���\��
+				// 個人用を非表示
 				document.getElementById('dial01').style.display = 'none';
 				document.getElementById('dial02').style.display = 'none';
 				document.getElementById('dial03').style.display = 'none';
 				document.getElementById('dial04').style.display = 'none';
 				document.getElementById('dial05').style.display = 'none';
 				document.getElementById('dial06').style.display = 'none';
-				// �@�l�p��\��
+				// 法人用を表示
 				document.getElementById('dial07').style.display = '';
 				document.getElementById('dial08').style.display = '';
 				document.getElementById('dial09').style.display = '';
@@ -478,7 +479,7 @@
 			existFiles = $("#inqFileList").children().length;
 			
 			if(selectFiles + existFiles > 5){
-				$("#inqFileAlert").text("�t�@�C������5�t�@�C���ȓ��ŃA�b�v���[�h���Ă��������B");
+				$("#inqFileAlert").text("ファイル数は5ファイル以内でアップロードしてください。");
 				return;
 			}
 			
@@ -493,7 +494,7 @@
 				const extension = extensionSplit[extensionSplit.length - 1];
 				
 				if(extensionList.indexOf(extension) < 0){
-					$("#inqFileAlert").html("�ȉ��̃t�@�C���`���̂݃A�b�v���[�h�\�ł��B<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
+					$("#inqFileAlert").html("以下のファイル形式のみアップロード可能です。<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
 					return;
 				}
 				
@@ -501,7 +502,7 @@
 			}
 			
 			if(uploadedFileSize + fileSize > 24 * 1024 * 1024){
-				$("#inqFileAlert").text("�t�@�C���T�C�Y��24MB�ȓ��ŃA�b�v���[�h���Ă��������B");
+				$("#inqFileAlert").text("ファイルサイズは24MB以内でアップロードしてください。");
 				return;
 			}
 			
@@ -544,7 +545,7 @@
 			existFiles = $("#cbdFileList").children().length;
 			
 			if(selectFiles + existFiles > 5){
-				$("#cbdFileAlert").text("�t�@�C������5�t�@�C���ȓ��ŃA�b�v���[�h���Ă��������B");
+				$("#cbdFileAlert").text("ファイル数は5ファイル以内でアップロードしてください。");
 				return;
 			}
 			
@@ -559,7 +560,7 @@
 				const extension = extensionSplit[extensionSplit.length - 1];
 				
 				if(extensionList.indexOf(extension) < 0){
-					$("#cbdFileAlert").html("�ȉ��̃t�@�C���`���̂݃A�b�v���[�h�\�ł��B<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
+					$("#cbdFileAlert").html("以下のファイル形式のみアップロード可能です。<BR>.heic, .xls, .xlsx, .doc, .docx, .png, .jpg, .jpeg, .pdf");
 					return;
 				}
 				
@@ -567,7 +568,7 @@
 			}
 			
 			if(uploadedFileSize + fileSize > 24 * 1024 * 1024){
-				$("#cbdFileAlert").text("�t�@�C���T�C�Y��24MB�ȓ��ŃA�b�v���[�h���Ă��������B");
+				$("#cbdFileAlert").text("ファイルサイズは24MB以内でアップロードしてください。");
 				return;
 			}
 			
@@ -598,184 +599,184 @@
 			recursiveFileRead(elemFile, files, 0);
 		});
 
-		// Ajax�ɂ��Salesforce����\���f�[�^���擾
+		// AjaxによりSalesforceから表示データを取得
 		getAllCase();
 	});
 	
 	/**
-	 * ��������
+	 * 初期処理
 	 */
 	function init(){
-		// RestApex�Ƃ̒ʐM��erorr�������ꍇ�ɃG���[�̃��[�_����\�����鏈���ɕύX����
+		// RestApexとの通信時erorrだった場合にエラーのモーダルを表示する処理に変更する
 		if(res.result == 'SUCCESS'){
-			if(!res.caseList){ // ���₢���킹0��(null)�̏ꍇ
-				// �z�[����ʁi�����Ȃ��j��\��
+			if(!res.caseList){ // お問い合わせ0件(null)の場合
+				// ホーム画面（履歴なし）を表示
 				changeDisp('noInq');
 				return;
 			}else{
-				// �������Ȃ�
+				// 何もしない
 			}
-		}else if(res.result == 'TIMED_CHECK'){ // �����`�F�b�N�G���[
-			// �z�[����ʁi�����Ȃ��j��\��
+		}else if(res.result == 'TIMED_CHECK'){ // 時限チェックエラー
+			// ホーム画面（履歴なし）を表示
 			changeDisp('noInq');
-			// ���[�_����\��
+			// モーダルを表示
 
 			return;
-		}else{ // �V�X�e���G���[ 
+		}else{ // システムエラー 
 			changeDisp('noInq');
 
 			return;
 		}
-		// ���͉�ʏo�͗p
+		// 入力画面出力用
 		eMail = res.accMail;
-		// �V�K���͉�ʂɔ��f
+		// 新規入力画面に反映
 		document.getElementById('newInqMail').innerHTML = eMail;
-		// �R���e���c�o�[�V�����擾�̂��߂�Promise����
+		// コンテンツバーション取得のためのPromise生成
 		const fileGetPromise = new Promise((resolve) => {
-			// �t�@�C��ID�̃��X�g
+			// ファイルIDのリスト
 			const fileIdList = new Array();
-			// �P�[�X�̃��X�g�T�C�Y��0�łȂ�
+			// ケースのリストサイズが0でない
 			if(res.caseList.length != 0){
-				// �P�[�X�����[�v
+				// ケースをループ
 				for(i = 0; i < res.caseList.length; i++){
-					// �R���^�N�g�{�[�h���ׂ��擾
+					// コンタクトボード明細を取得
 					const cbdFileList = res.caseList[i].cbdFileList;
-					// �R���^�N�g�{�[�h���ׂ����[�v
+					// コンタクトボード明細をループ
 					for(j = 0; j < cbdFileList.length; j++){
-						// �Y�t�t�@�C�������[�v
+						// 添付ファイルをループ
 						for(k = 0; k < cbdFileList[j].contentVersions.length; k++){
-							// �v�f���C���X�^���X��
+							// 要素をインスタンス化
 							const cv = cbdFileList[j].contentVersions[k];
-							// �擾�ł��Ă���ꍇ
+							// 取得できている場合
 							if(cv){
-								// ID�����X�g�ɑޔ�
+								// IDをリストに退避
 								fileIdList.push(cv.Id);
 							}
 						}
 					}
 				}
 			}
-			// �Y�t�t�@�C��������ꍇ
+			// 添付ファイルがある場合
 			if(fileIdList.length > 0){
-				// �Y�t�t�@�C�����擾
+				// 添付ファイルを取得
 				getContentVersion(fileIdList, resolve, 0);
-			// �Y�t�t�@�C���Ȃ�
+			// 添付ファイルなし
 			}else{
-				// ���̏������Ăяo��
+				// 次の処理を呼び出す
 				resolve();
 			}
-		// promise���������ׂĊ������Ă�����s�@���Y�t�t�@�C��������ꍇ�Aresolve�̃R�[����getContentVersion���ōs��
+		// promise処理がすべて完了してから実行　※添付ファイルがある場合、resolveのコールはgetContentVersion内で行う
 		}).then(() => {
-			// Cookie�擾�������Ăяo��
+			// Cookie取得処理を呼び出す
 			const cookieList = getCookie();
-			// NEW�t�^�Ώۂ�ID���i�[����z��
+			// NEW付与対象のIDを格納する配列
 			let newTargetList = [];
-			// �P�[�X�����[�v
+			// ケースをループ
 			for(let c = 0; c < res.caseList.length; c++){
-				// �R���^�N�g�{�[�h���ׂ��擾
+				// コンタクトボード明細を取得
 				const cbdFileList = res.caseList[c].cbdFileList;
-				// �R���^�N�g�{�[�h���ׂ����[�v
+				// コンタクトボード明細をループ
 				for(let i = 0; i < cbdFileList.length; i++){
-					// NEW�\���t���O��true�ŏ�����
+					// NEW表示フラグをtrueで初期化
 					let newDisplayFlag = true;
-					// 1�����O�̓��t�p�ϐ��Ɍ��ݓ����擾����-1��������
+					// 1ヶ月前の日付用変数に現在日を取得して-1ヶ月する
 					let nowDateTime = new Date();
-					// ���ݔN���擾
+					// 現在年を取得
 					const year = nowDateTime.getFullYear();
-					// �����擾���āA1�������₵��
+					// 月を取得して、1ヶ月増やして
 					const month = nowDateTime.getMonth() + 1;
-					// �����擾����
+					// 日を取得する
 					const date = nowDateTime.getDate();
-					// �擪������'0'�ɁA1�j���玞��(h)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+					// 先頭文字列'0'に、1）から時間(h)を取得して結合した値を最後から2文字までを変数に格納
 					const hour = (`0` + (nowDateTime.getHours())).slice(-2);
-					// �擪������'0'�ɁA1�j���番(m)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+					// 先頭文字列'0'に、1）から分(m)を取得して結合した値を最後から2文字までを変数に格納
 					const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
-					// Date�ɕϊ�
+					// Dateに変換
 					nowDateTIme = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
-					// �R���^�N�g�{�[�h���ׂ̎���
+					// コンタクトボード明細の時間
 					let cbdDateTime = new Date(cbdFileList[i].CreatedDate);
-					// �R���^�N�g�{�[�h���ׂ̍ŏI�X�V�������ݓ���-1�������Â��i�l���܂ށj�ꍇ
+					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より古い（値を含む）場合
 					if(cbdDateTime >= nowDateTIme){
-						// Cookie��CbdId�̌�����
+						// CookieのCbdIdの件数分
 						for(j = 0; j < cookieList.length; j++){
-							// �R���^�N�g�{�[�h���ׂ�ID��Cookie��ID����v���Ă���ꍇ
-							if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "�₢���킹"){
-								// NEW�\���t���O��false�ɐݒ�
+							// コンタクトボード明細のIDとCookieのIDが一致している場合
+							if(cbdFileList[i].Id == cookieList[j] || cbdFileList[i].Classification__c == "問い合わせ"){
+								// NEW表示フラグをfalseに設定
 								newDisplayFlag = false;
 							}
 						}
 					}else{
-						// NEW�\���t���O��false�ɐݒ�
+						// NEW表示フラグをfalseに設定
 						newDisplayFlag = false;
 					}
-					// �R���^�N�g�{�[�h���ׂ̃��R�\�h��NEW�A�C�R������p�̃v���p�e�B������ꍇ
+					// コンタクトボード明細のレコ―ドにNEWアイコン制御用のプロパティがある場合
 					if("newIconDisp" in cbdFileList[i]){
-						// NEW�A�C�R������p�̃v���p�e�B�ɒl��ǉ�
+						// NEWアイコン制御用のプロパティに値を追加
 						cbdFileList[i].newIconDisp = newDisplayFlag;
-					// �v���p�e�B���Ȃ��ꍇ
+					// プロパティがない場合
 					}else{
-						// NEW�A�C�R������p�̃v���p�e�B��t�^���A�l��ݒ�
+						// NEWアイコン制御用のプロパティを付与し、値を設定
 						cbdFileList[i]["newIconDisp"] = newDisplayFlag;
 					}
 				}
 			}
-			/*** �^�O�𐶐� ***/
-			// Case template�v�f���擾
+			/*** タグを生成 ***/
+			// Case template要素を取得
 			let caseTemplate = document.getElementById('caseTemplate');
-			// newIcon template�v�f���擾
+			// newIcon template要素を取得
 			let iconTemplate = document.getElementById('newIconTemplate');
-			// �P�[�X�̃��X�g�̌�����
+			// ケースのリストの件数分
 			for(let i = 0; i < res.caseList.length; i++){
-				// �v�f���擾
+				// 要素を取得
 				const c = res.caseList[i];
-				// case template�v�f�̓��e�𕡐�
+				// case template要素の内容を複製
 				let clone = caseTemplate.content.cloneNode(true);
-				// ���₢���킹���e���擾
+				// お問い合わせ内容を取得
 				let content = c.content;
-				// ���₢���킹�ڍׂ�null�łȂ�
+				// お問い合わせ詳細がnullでない
 				if(content != null){
-					// 12�����𒴂���ꍇ
+					// 12文字を超える場合
 					if(content.length > 30){
-						// �ȗ�����
+						// 省略する
 						content = content.substring(0, 30) + "...";
 					}
 				}
-				// ��������template�v�f�Ƀf�[�^��}��
-				// �P�[�X��Id��ݒ�
+				// 複製したtemplate要素にデータを挿入
+				// ケースのIdを設定
 				clone.querySelector('.inq-id').dataset.cId = c.record.Id;
-				// �P�[�X�ԍ���ݒ肷��
+				// ケース番号を設定する
 				clone.querySelector('.inq-title').textContent = 'No.' + c.record.CaseNumber;
-				// ���₢���킹���e��ݒ肷��
+				// お問い合わせ内容を設定する
 				clone.querySelector('.cbd-content').textContent = content;
-				// �P�[�X�̍쐬����JST���t���X���b�V���ɕϊ����āA�ݒ�
+				// ケースの作成日をJST日付かつスラッシュに変換して、設定
 				clone.querySelector('.inq-createdate').textContent = changeSlashDate(c.record.CreatedDate);
-				// ���₢���킹��ނ�ݒ肷��
+				// お問い合わせ種類を設定する
 				clone.querySelector('.inq-type').textContent = c.record.SubjectIMF__c;
-				// �P�[�X�̃X�e�[�^�X��ݒ肷��
+				// ケースのステータスを設定する
 				clone.querySelector('.inq-status').textContent = c.record.StatusClient__c;
-				// �u�񓚊����v�A�u�񓚂ɏ��������Ԃ����������Ă���܂��B�v�̏ꍇ
-				if(c.record.StatusClient__c == '�񓚊���' || c.record.StatusClient__c == '�񓚂ɏ��������Ԃ����������Ă���܂��B'){
-					// CSS�N���X���폜�i�O���[�j
+				// 「回答完了」、「回答に少しお時間をいただいております。」の場合
+				if(c.record.StatusClient__c == '回答完了' || c.record.StatusClient__c == '回答に少しお時間をいただいております。'){
+					// CSSクラスを削除（グレー）
 					clone.querySelector('.inq-status').classList.remove('txt-not-fin');
-					// CSS�N���X��ǉ��i�O���[���j
+					// CSSクラスを追加（グリーン）
 					clone.querySelector('.inq-status').classList.add('txt-fin');
 				}
 				// 
 				clone.querySelector('.inq-outputNew').id = c.record.Id;
-				// case����ʂɏo��
+				// caseを画面に出力
 				document.getElementById('listQa').appendChild(clone);
-				// �R���^�N�g�{�[�h���ׂ��擾
+				// コンタクトボード明細を取得
 				const cbdFileList = c.cbdFileList;
-				// �P�[�X��NEW�A�C�R����\���p�v���p�e�B��false�̏ꍇ�ANEW�A�C�R����\������
-				// �R���^�N�g�{�[�h���ׂ̌�����
+				// ケースのNEWアイコン非表示用プロパティがfalseの場合、NEWアイコンを表示する
+				// コンタクトボード明細の件数分
 				for(let j = 0; j < cbdFileList.length; j++){
-					// New��True�̏ꍇ
+					// NewがTrueの場合
 					if(cbdFileList[j].newIconDisp){
-						// newIcon template�v�f�𕡐�
+						// newIcon template要素を複製
 						let newIconClone = newIconTemplate.content.cloneNode(true);
-						// newIcon����ʂɏo��
+						// newIconを画面に出力
 						document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
-						// �Ȍ㏈���s�v
+						// 以後処理不要
 						break;
 					}
 				}
@@ -784,26 +785,26 @@
 	}
 	
 	/***
-	 * ��ʂ̕\����\���؂�ւ�
-	 * �����F�J�ڐ���(div)Id
+	 * 画面の表示非表示切り替え
+	 * 引数：遷移先画面(div)Id
 	 ***/
 	function changeDisp(nextScreen){
-		// ���ID���X�g���[�v
+		// 画面IDリストループ
 		for(i = 0; i < screenNameList.length; i++){
-			// �w��ID�̏ꍇ
+			// 指定IDの場合
 			if(screenNameList[i] == nextScreen){
-				// �\��
+				// 表示
 				document.getElementById(screenNameList[i]).style.display = 'block';
-			// ����ȊO
+			// それ以外
 			}else{
-				// ��\��
+				// 非表示
 				document.getElementById(screenNameList[i]).style.display = 'none';
 			}
 		}
 	}
 	
 	/**
-	 * �����\�����f�[�^�擾
+	 * 初期表示時データ取得
 	 */
 	function getAllCase(){
 		$.ajax({
@@ -847,10 +848,10 @@
 	}
 	
     /**
-	 * �����\�����f�[�^�擾
+	 * 初期表示時データ取得
 	 */
 	function registInquery(){
-		// �A�N�Z�X�g�[�N���擾�i���t���b�V���g�[�N���t���[�j Ajax
+		// アクセストークン取得（リフレッシュトークンフロー） Ajax
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -913,7 +914,7 @@
 												dataType:"json",
 												data:JSON.stringify(linkJson),
 												success:function(res){
-													//console.log("�Y�t�t�@�C���o�^����");
+													//console.log("添付ファイル登録完了");
 												},
 												error:function(data, errorThrown,status) {
 													console.log(data);
@@ -954,10 +955,10 @@
 	}
 	
 	/**
-	 * �����\�����f�[�^�擾
+	 * 初期表示時データ取得
 	 */
 	function registContactBoard(){
-		// �A�N�Z�X�g�[�N���擾�i���t���b�V���g�[�N���t���[�j Ajax
+		// アクセストークン取得（リフレッシュトークンフロー） Ajax
 		$.ajax({
 			type: 'POST',
 			crossOrigin: true,
@@ -1023,7 +1024,7 @@
 												dataType:"json",
 												data:JSON.stringify(linkJson),
 												success:function(res){
-													console.log("�Y�t�t�@�C���o�^����");
+													console.log("添付ファイル登録完了");
 												},
 												error:function(data, errorThrown,status) {
 													console.log(data);
@@ -1064,9 +1065,9 @@
 	}
 	
 	/***
-	 * �R���e���c�o�[�W�����i�t�@�C���j�擾����
-	 * �����@�F�R���e���c�o�[�W����Id
-	 * �ԋp�l�F�t�@�C���̒��g
+	 * コンテンツバージョン（ファイル）取得処理
+	 * 引数　：コンテンツバージョンId
+	 * 返却値：ファイルの中身
 	 ***/
 	function getContentVersion(fileIdList, resolve, index){
 		
@@ -1093,50 +1094,50 @@
 					headers:{"Authorization":accToken},
 					xhrFields:{responseType:'blob'},
 					success:function(fileContent){
-						// �P�[�X�̃��X�g�T�C�Y��0�łȂ�
+						// ケースのリストサイズが0でない
 						if(res.caseList.length != 0){
-							// �t�@�C���̕R�t���L��
+							// ファイルの紐付け有無
 							let fileAttached = false;
-							// �P�[�X�����[�v
+							// ケースをループ
 							for(let i = 0; i < res.caseList.length; i++){
-								// �R���^�N�g�{�[�h���ׂ��擾
+								// コンタクトボード明細を取得
 								const cbdFileList = res.caseList[i].cbdFileList;
-								// �R���^�N�g�{�[�h���ׂ����[�v
+								// コンタクトボード明細をループ
 								for(let j = 0; j < cbdFileList.length; j++){
-									// �Y�t�t�@�C�������[�v
+									// 添付ファイルをループ
 									for(let k = 0; k < cbdFileList[j].contentVersions.length; k++){
-										// �v�f���C���X�^���X��
+										// 要素をインスタンス化
 										const cv = cbdFileList[j].contentVersions[k];
 										
 										if(cv.Id == fileId){
-											// ID�������ɓY�t�t�@�C����Blob�f�[�^���擾
+											// IDを条件に添付ファイルのBlobデータを取得
 											res.caseList[i].cbdFileList[j].contentVersions[k]["versionData"] = fileContent;
-											// �R�t���ςɂ���
+											// 紐付け済にする
 											fileAttached = true;
-											// �Ȍ㏈���s�v
+											// 以後処理不要
 											break;
 										}
 									}
-									// �R�t���ς̏ꍇ
+									// 紐付け済の場合
 									if(fileAttached){
-										// �Ȍ㏈���s�v
+										// 以後処理不要
 										break;
 									}
 								}
-								// �R�t���ς̏ꍇ
+								// 紐付け済の場合
 								if(fileAttached){
-									// �Ȍ㏈���s�v
+									// 以後処理不要
 									break;
 								}
 							}
 						}
-						// �S�ĕR�t���I�������
+						// 全て紐付け終わったら
 						if(fileIdList.length - 1 == index){
-							// ���̏������Ă�
+							// 次の処理を呼ぶ
 							resolve();
-						// �܂��I����ĂȂ��ꍇ
+						// まだ終わってない場合
 						}else{
-							// �ċA���s����
+							// 再帰実行する
 							getContentVersion(fileIdList, resolve, index + 1);
 						}
 					},
@@ -1156,173 +1157,173 @@
 	}
 	
 	/**
-	 * �����\�������i�R���^�N�g�{�[�h���ׁj
+	 * 初期表示処理（コンタクトボード明細）
 	 */
 	function sendDetailsScreen(selectedCaseId){
-		// ��ʓ��e���N���A����
+		// 画面内容をクリアする
 		document.getElementById('outputCbdTemp').innerHTML = null;
-		// ���e����{�^���ɃP�[�XId��ݒ�
+		// 投稿するボタンにケースIdを設定
 		document.getElementById('replyButton').dataset.cId = selectedCaseId;
-		// Cookie�擾�������Ăяo��
+		// Cookie取得処理を呼び出す
 		const CookieList = getCookie();
-		// NEW�t�^�Ώۂ�ID���i�[����z��
+		// NEW付与対象のIDを格納する配列
 		let newTargetList = [];
 		
 		let cbdFileList;
-		// �P�[�X�̌�����
+		// ケースの件数分
 		for(i = 0; i < res.caseList.length; i++){
 		
 			const rec = res.caseList[i].record;
-			// URL�̃P�[�XId�ƃZ�b�V�����X�g���[�W����擾�����P�[�XId����v����ꍇ
+			// URLのケースIdとセッションストレージから取得したケースIdが一致する場合
 			if(selectedCaseId == rec.Id){
-				// �y�[�W�^�C�g����ݒ�
-				document.getElementById('contbrdTitle').textContent = '���₢���킹�ԍ��FNo.' + rec.CaseNumber;
+				// ページタイトルを設定
+				document.getElementById('contbrdTitle').textContent = 'お問い合わせ番号：No.' + rec.CaseNumber;
 				
 				cbdFileList = res.caseList[i].cbdFileList;
-				// �R���^�N�g�{�[�h���׃��R�[�h�ƃt�@�C���̑g�ݍ��킹���X�g�̌�����
+				// コンタクトボード明細レコードとファイルの組み合わせリストの件数分
 				for(j = 0; j < cbdFileList.length; j++){
 				
 					let idFlg = {};
-					// NEW�\���t���O��true�ŏ�����
+					// NEW表示フラグをtrueで初期化
 					let newDisplayFlag = true;
-					// 1�����O�̓��t�p�ϐ��Ɍ��ݓ����擾����-1��������
+					// 1ヶ月前の日付用変数に現在日を取得して-1ヶ月する
 					let nowDateTime = new Date();
 					const year = nowDateTime.getFullYear();
-					// �����擾���āA1�������₵��
+					// 月を取得して、1ヶ月増やして
 					const month = nowDateTime.getMonth() + 1;
-					// �����擾����
+					// 日を取得する
 					const date = nowDateTime.getDate();
-					// �擪������'0'�ɁA1�j���玞��(h)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+					// 先頭文字列'0'に、1）から時間(h)を取得して結合した値を最後から2文字までを変数に格納
 					const hour = (`0` + (nowDateTime.getHours())).slice(-2);
-					// �擪������'0'�ɁA1�j���番(m)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+					// 先頭文字列'0'に、1）から分(m)を取得して結合した値を最後から2文字までを変数に格納
 					const minute = (`0` + (nowDateTime.getMinutes())).slice(-2);
 					nowDateTime = new Date(`${year}/${month-1}/${date} ${hour}:${minute}`);
-					// �R���^�N�g�{�[�h���ׂ̎���
+					// コンタクトボード明細の時間
 					let cbdDateTime = new Date(cbdFileList[j].CreatedDate);
-					// cbd���t����J���O���傫��
-					// �R���^�N�g�{�[�h���ׂ̍ŏI�X�V�������ݓ���-1�������V�����i�l���܂ށj�ꍇ
+					// cbd日付が一カ月前より大きい
+					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より新しい（値を含む）場合
 					if(cbdDateTime >= nowDateTime){
-						// Cookie��CbdId�̌�����
+						// CookieのCbdIdの件数分
 						for(k = 0; k < CookieList.length; k++){
-							// �R���^�N�g�{�[�h���ׂ�ID��Cookie��ID����v���Ă���ꍇ
+							// コンタクトボード明細のIDとCookieのIDが一致している場合
 							if(cbdFileList[j].Id == CookieList[k]){
-								// NEW�\���t���O��false�ɐݒ�
+								// NEW表示フラグをfalseに設定
 								newDisplayFlag = false;
 							}
 						}
-					// �R���^�N�g�{�[�h���ׂ̍ŏI�X�V�������ݓ���-1�������Â��i�l���܂ށj�ꍇ
+					// コンタクトボード明細の最終更新日が現在日時-1ヶ月より古い（値を含む）場合
 					}else{
-						// NEW�\���t���O��false�ɐݒ�
+						// NEW表示フラグをfalseに設定
 						newDisplayFlag = false;
 					}
-					// �R���^�N�g�{�[�h���ׂ̃��R�\�h��NEW�A�C�R������p�̃v���p�e�B������ꍇ
+					// コンタクトボード明細のレコ―ドにNEWアイコン制御用のプロパティがある場合
 					if('newIconDisp' in cbdFileList[j]){
-						// NEW�A�C�R������p�̃v���p�e�B�ɒl��ǉ�
+						// NEWアイコン制御用のプロパティに値を追加
 						cbdFileList[j].newIconDisp = newDisplayFlag;
-					// �v���p�e�B���Ȃ��ꍇ
+					// プロパティがない場合
 					}else{
-						// NEW�A�C�R������p�̃v���p�e�B��t�^���A�l��ݒ�
+						// NEWアイコン制御用のプロパティを付与し、値を設定
 						cbdFileList[j]["newIconDisp"] = newDisplayFlag;
 					}
 				}
 			}
 		}
-		// �R���^�N�g�{�[�h����template���擾
+		// コンタクトボード明細templateを取得
 		let caseTemplate = document.getElementById('cbdTemplate');
-		// newIcon template�v�f���擾
+		// newIcon template要素を取得
 		let iconTemplate = document.getElementById('newIconTemplate');
-		// �R���^�N�g�{�[�h���ׂ̃��X�g�̌�����
+		// コンタクトボード明細のリストの件数分
 		for(let i = 0; i < cbdFileList.length; i++){
-			// �v�f���擾
+			// 要素を取得
 			const cbd = cbdFileList[i].cbd;
-			// �R�t���Y�t�t�@�C�����擾
+			// 紐付く添付ファイルを取得
 			const cvList = cbdFileList[i].contentVersions;
-			// �R���^�N�g�{�[�h����template�̓��e�𕡐�
+			// コンタクトボード明細templateの内容を複製
 			let clone = cbdTemplate.content.cloneNode(true);
-			// ��������template�v�f�Ƀf�[�^��}��	
-			// ���R�[�h��ʂ��A���q���܂̏ꍇ
-			if(cbd.Classification__c == '�₢���킹'){
-				// ���q���܃N���X��t�^
+			// 複製したtemplate要素にデータを挿入	
+			// レコード種別が、お客さまの場合
+			if(cbd.Classification__c == '問い合わせ'){
+				// お客さまクラスを付与
 				clone.querySelector('.contbrd-head').classList.add('customer');
-				// �A�N�^�[�����u���q���܁v�ɐݒ�
-				clone.querySelector('.actor-text').textContent = '���q����';
-				// �R���^�N�g�{�[�h���ׂ̓��e���e�����̂܂ܐݒ�
+				// アクター名を「お客さま」に設定
+				clone.querySelector('.actor-text').textContent = 'お客さま';
+				// コンタクトボード明細の投稿内容をそのまま設定
 				clone.querySelector('.contbrd-content').textContent = cbd.Content__c;
-			// PayPay��s�̏ꍇ
+			// PayPay銀行の場合
 			}else{
-				// �񓚃N���X��t�^
+				// 回答クラスを付与
 				clone.querySelector('.contbrd-head').classList.add('answer');
-				// �A�N�^�[�����uPayPay��s�v�ɐݒ�
-				clone.querySelector('.actor-text').textContent = 'PayPay��s';
-				// �R���^�N�g�{�[�h���ׂ̓��e���e��������URL�����N���������Ăяo��
+				// アクター名を「PayPay銀行」に設定
+				clone.querySelector('.actor-text').textContent = 'PayPay銀行';
+				// コンタクトボード明細の投稿内容を引数にURLリンク化処理を呼び出し
 				let content = AutoLink(cbd.Content__c);
-				// �l��Null�ł͂Ȃ��ꍇ
+				// 値がNullではない場合
 				if(content != null){
-					// �����N���������e���e��ݒ�
-					// textContent�ɓ�����HTML�G���e�B�e�B�ɕϊ�����邽�߁AinnerHTML�ɓ����
+					// リンク化した投稿内容を設定
+					// textContentに入れるとHTMLエンティティに変換されるため、innerHTMLに入れる
 					clone.querySelector('.contbrd-content').innerHTML = content;
-				// �l��Null�̏ꍇ
+				// 値がNullの場合
 				}else{
-					// �R���^�N�g�{�[�h���ׂ̓��e���e�����̂܂ܐݒ�
+					// コンタクトボード明細の投稿内容をそのまま設定
 					clone.querySelector('.contbrd-content').innerHTML = cbd.Content__c;
 				}
 			}
-			// �R���^�N�g�{�[�h���ׂ̍쐬������t��JST�ɕϊ����鏈�����Ăяo���āA�ݒ肷��
+			// コンタクトボード明細の作成日を日付をJSTに変換する処理を呼び出して、設定する
 			clone.querySelector('.createddate').textContent = changeSlashDate(cbd.CreatedDate);
 			clone.querySelector('.outputNew').id = 'new' + cbd.Id;
 			clone.querySelector('.contbrd-txt').id = 'file' + cbd.Id;
-			// �J��Ԃ�����̏ꍇ
+			// 繰り返し初回の場合
 			if(i == 0){
-				// ����̑S�\���p�N���X��t�^
+				// 初回の全表示用クラスを付与
 				clone.querySelector('.contbrd-body').classList.add('first');
 			}
-			// �R���^�N�g�{�[�h���ׂ���ʂɏo��
+			// コンタクトボード明細を画面に出力
 			document.getElementById('outputCbdTemp').appendChild(clone);
-			// �R���^�N�g�{�[�h���ׂ�NEW�A�C�R���\������p�v���p�e�B��true�̏ꍇ���� PPB�̉񓚂̏ꍇ�ANEW�A�C�R����\������
-			if(cbdFileList[i].newIconDisp && cbd.Classification__c == '��'){
-// TODO:�����Ȃ��̂ňꎞ�R�����g�A�E�g
-				// newIcon template�v�f�𕡐�
+			// コンタクトボード明細のNEWアイコン表示制御用プロパティがtrueの場合かつ PPBの回答の場合、NEWアイコンを表示する
+			if(cbdFileList[i].newIconDisp && cbd.Classification__c == '回答'){
+// TODO:動かないので一時コメントアウト
+				// newIcon template要素を複製
 				let newIconClone = newIconTemplate.content.cloneNode(true);
 				
-				// �ʏڍ׉�ʗp��CSS�N���X��ǉ�
+				// 個別詳細画面用のCSSクラスを追加
 				newIconClone.querySelector('.list-qa-ic').classList.add('new-icon');
-				// ���N���X���폜
+				// 元クラスを削除
 				newIconClone.querySelector('.list-qa-ic').classList.remove('list-qa-ic');
 				
-				// newIcon����ʂɏo��
+				// newIconを画面に出力
 				document.getElementById(res.caseList[i].Id).appendChild(newIconClone);
 //
 			}
-			//�t�@�C��������ꍇ
+			//ファイルがある場合
 			if(cbdFileList[i].contentVersions.length > 0){
-				// file template�v�f���擾
+				// file template要素を取得
 				let fileTemplate = document.getElementById('fileTemplate');
-				// �u�t�@�C���v�Œ蕶���^�O�𐶐�
+				// 「ファイル」固定文言タグを生成
 				let fileFixedText = document.createElement('p');
 				
-				fileFixedText.innerHTML = '�t�@�C��';
+				fileFixedText.innerHTML = 'ファイル';
 				
 				fileFixedText.style = 'font-weight: bold;margin-top: 10px'
-				// ��ʂɒǉ�
+				// 画面に追加
 				document.getElementById('file' + cbd.Id).appendChild(fileFixedText);
-				// �Y�t�t�@�C�����X�g���擾
+				// 添付ファイルリストを取得
 				const cvList = cbdFileList[i].contentVersions;
-				// �t�@�C���̌�����
+				// ファイルの件数分
 				for(j = 0; j < cvList.length; j++){
-					// file template�v�f�̓��e�𕡐�
+					// file template要素の内容を複製
 					let fileClone = fileTemplate.content.cloneNode(true);
-					// �t�@�C���̒��g����_�E�����[�h�p�����N�𐶐�
+					// ファイルの中身からダウンロード用リンクを生成
 					let fileUrl = URL.createObjectURL(new Blob(
 						[cvList[j].versionData],
 						{type: "application/octet-stream"}
 					));
-					// ��ʏo�͂���t�@�C������ݒ肷��
+					// 画面出力するファイル名を設定する
 					fileClone.querySelector('.fileLink').textContent = cvList[j].Name;
-					// �_�E�����[�h�����ۂ̃t�@�C������ݒ肷��
+					// ダウンロードされる際のファイル名を設定する
 					fileClone.querySelector('.fileLink').download = cvList[j].Name;
-					// �_�E�����[�h�p�����N��ݒ肷��
+					// ダウンロード用リンクを設定する
 					fileClone.querySelector('.fileLink').href = fileUrl;
-					// �t�@�C������ʂɏo��
+					// ファイルを画面に出力
 					document.getElementById('file' + cbd.Id).appendChild(fileClone);
 				}
 			}
@@ -1330,13 +1331,13 @@
 	}
 	
 	/***
-	 * URL�����N������
-	 * �����@�F������
-	 * �ԋp�m�FURL�����������N������������
+	 * URLリンク化処理
+	 * 引数　：文字列
+	 * 返却知：URL部分をリンク化した文字列
 	 ***/
 	function AutoLink(str) {
 		if(!str){return;}
-		// ���K�\��
+		// 正規表現
 		let regexp_url = /((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#',()*!]+))/g; // ']))/;
 		let regexp_makeLink = function(all, url, h, href) {
 		return '<a href="h' + href + '" target="_blank">' + url + '</a>';
@@ -1344,64 +1345,64 @@
 		return str.replace(regexp_url, regexp_makeLink);
 	}
 	/*** 
-	 * Cookie�擾����
-	 * �����@�F�Ȃ�
-	 * �ԋp�l�FId���X�g
+	 * Cookie取得処理
+	 * 引数　：なし
+	 * 返却値：Idリスト
 	 ***/
 	function getCookie(){
-		// Cookie�擾�L�[
+		// Cookie取得キー
 		let key = 'IMFCookie';
-		// �L�[�Ƀ}�b�`����Cookie��ԋp�A�}�b�`���Ȃ���΋�z���Ԃ�
+		// キーにマッチするCookieを返却、マッチしなければ空配列を返す
 		let cookieValue = ((document.cookie + ';').match(key + '=([^\S;]*)')||[])[1];
-		// ��łȂ��ꍇ
+		// 空でない場合
 		if(cookieValue){
-			// �l���f�R�[�h
+			// 値をデコード
 			let decodedStr = decodeURIComponent(cookieValue);
-			// JSON��ǂݎ��l���擾
+			// JSONを読み取り値を取得
 			let jsonCookie = JSON.parse(decodedStr);
 			//console.log('jsonCookie: ' + jsonCookie);
-			// Id�z���ԋp
+			// Id配列を返却
 			return jsonCookie;
-		// ��̏ꍇ
+		// 空の場合
 		}else{
 			//console.log('cookieValue: ' + cookieValue);
-			// ���ԋp
+			// 空を返却
 			return cookieValue;
 		}
 	}
 	/***
-	 * �ʖ₢���킹 �ڍ׉�ʂ̑J�ڏ���
-	 * �����@�F�P�[�XId
-	 * �ԋp�l�F�Ȃ�
+	 * 個別問い合わせ 詳細画面の遷移処理
+	 * 引数　：ケースId
+	 * 返却値：なし
 	 ***/
 	 function inquiryDetailScreenTransition(caseId){
 		sendDetailsScreen(caseId);
 		changeDisp("detailsScreen");
 	}
 	/*** 
-	 * ���t��JST�ɕϊ����鏈��
-	 * �����@�F2022-06-06T04:43:08.000+0000
-	 * �ԋp�l�F2022/06/06 04:43
+	 * 日付をJSTに変換する処理
+	 * 引数　：2022-06-06T04:43:08.000+0000
+	 * 返却値：2022/06/06 04:43
 	 ***/
 	function changeSlashDate(dateTime){
-		// ���t�I�u�W�F�N�g�Ɉ����̓��t��ݒ肵�ď���
+		// 日付オブジェクトに引数の日付を設定して準備
 		const newDate = new Date(dateTime);
-		// �N���擾
+		// 年を取得
 		const year = newDate.getFullYear();
-		// �����擾��1�����Z
+		// 月を取得し1を加算
 		const month = (`0` + (newDate.getMonth() + 1)).slice(-2);
-		// �����擾
+		// 日を取得
 		const day = (`0` + (newDate.getDate())).slice(-2);
-		// �擪������'0'�ɁA1�j���玞��(h)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+		// 先頭文字列'0'に、1）から時間(h)を取得して結合した値を最後から2文字までを変数に格納
 		const hour = (`0` + (newDate.getHours())).slice(-2);
-		// �擪������'0'�ɁA1�j���番(m)���擾���Č��������l���Ōォ��2�����܂ł�ϐ��Ɋi�[
+		// 先頭文字列'0'に、1）から分(m)を取得して結合した値を最後から2文字までを変数に格納
 		const minute = (`0` + (newDate.getMinutes())).slice(-2);
-		// �l��ԋp
+		// 値を返却
 		return `${year}/${month}/${day} ${hour}:${minute}`;
 	}
 	
 	/**
-	 * ���͉�ʂœ��͂��ꂽ�����m�F��ʂ̗v�f�ɔ��f
+	 * 入力画面で入力された情報を確認画面の要素に反映
 	 */
 	function outputValueInqConf(){
 		inqRegistData.EncryptedData = linkedStr;
@@ -1411,25 +1412,25 @@
 		document.getElementById('inqConfMailText').innerHTML = eMail;
 		document.getElementById('inqConfTypeText').innerHTML = inqRegistData.Subject;
 		document.getElementById('inqConfDtailsText').innerHTML = inqRegistData.Content;
-		// �I��l���擾
+		// 選択値を取得
 		const jinkakuCode = $('input[name="JinkakuCode"]').val();
 		let selectedItem = document.getElementById('Modal-aaa').innerHTML;
-		// ��ʓ��͂��ꂽ���₢���킹���
-		if(jinkakuCode == '�l' || jinkakuCode == '�񋏏Z��'){
-			// �e��葱���_�C�����ݒ�Ώۂ̏ꍇ
+		// 画面入力されたお問い合わせ種類
+		if(jinkakuCode == '個人' || jinkakuCode == '非居住者'){
+			// 各種手続きダイヤル設定対象の場合
 			if(procedureDialList.includes(selectedItem)){
-				inqRegistData.LinkedDial = '�e��葱���_�C����';
+				inqRegistData.LinkedDial = '各種手続きダイヤル';
 			}else{
-				inqRegistData.LinkedDial = '���̑��_�C����';
+				inqRegistData.LinkedDial = 'その他ダイヤル';
 			}
-			// �l�i�R�[�h���@�l�̏ꍇ
+			// 人格コードが法人の場合
 		}else{
-			inqRegistData.LinkedDial = '�@�l�_�C����';
+			inqRegistData.LinkedDial = '法人ダイヤル';
 		}
 	}
 	
 	/**
-	 * ���͉�ʂœ��͂��ꂽ�����m�F��ʂ̗v�f�ɔ��f
+	 * 入力画面で入力された情報を確認画面の要素に反映
 	 */
 	function outputValueCbdConf(){
 		cbdRegistData.EncryptedData = linkedStr;
@@ -1439,11 +1440,11 @@
 	}
 	
 	/**
-	 * ���͂��ꂽ��{�^��������������
+	 * 入力されたらボタンを活性化する
 	 */
 	function inqReqCheck(){
 	
-		const itype_flg = ( $('#Modal-aaa').html() == "�I�����Ă�������" ) ? false : true;
+		const itype_flg = ( $('#Modal-aaa').html() == "選択してください" ) ? false : true;
 		const idtail_flg = ($('#inqTextInput').val() === "") ? false : true;
 		
 		let isBtnActive;
@@ -1458,7 +1459,7 @@
 	}
 	
 	/**
-	 * ���͂��ꂽ��{�^��������������
+	 * 入力されたらボタンを活性化する
 	 */	
 	function cbdReqCheck () {
 	
@@ -1490,7 +1491,7 @@
 	
 	function inqClearInput(){
 		$('input[name="aaa"]:checked').prop("checked", false);
-		$("#Modal-aaa").html("�I�����Ă�������");
+		$("#Modal-aaa").html("選択してください");
 		if(!$("#Modal-aaa").hasClass("reqEntry")){
 			$("#Modal-aaa").addClass("reqEntry").removeClass("inputSelectItem-on data-on");
 		}
@@ -1517,21 +1518,21 @@
 	}
 	
 	/**
-	 * �V�K���e���̃t�@�C���폜
+	 * 新規投稿時のファイル削除
 	 */
 	function inqDeleteFile(){
 		$("#inqFileList").children()[selectFileIndex].remove();
 		inputFiles.splice(selectFileIndex, 1);
 	}
 	/**
-	 * �ǉ����e���̃t�@�C���폜
+	 * 追加投稿時のファイル削除
 	 */
 	function cbdDeleteFile(){
 		$("#cbdFileList").children()[selectFileIndex].remove();
 		inputFiles.splice(selectFileIndex, 1);
 	}
 	/**
-	 * �t�@�C���A�b�v���[�h�����i�ċA�j
+	 * ファイルアップロード処理（再帰）
 	 */
 	function recursiveFileRead(elemFile, files, index){
 	
@@ -1564,16 +1565,16 @@
 	<div class="blk">
 		<div class="blkCont bdrT0">
 			<div class="note">
-				<p>���₢���킹�̉񓚖ڈ��͌����A���c�Ɠ��ł��B</p>
+				<p>お問い合わせの回答目安は原則、翌営業日です。</p>
 			</div>
 			<p class="txtR mt-16">
-				<a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">�V�K���₢���킹</a>
+				<a id="newInq" href="javascript:void(0)" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a>
 			</p>
 			<div class="list-qa">
 				<dl id="listQa"></dl>
 			</div>
 			<p>
-				<a href="javascript:commonSubmit('ln0001')" title="Welcome Page�ɖ߂�" class="btn btn02 btnL">Welcome Page</a>
+				<a href="javascript:commonSubmit('ln0001')" title="Welcome Pageに戻る" class="btn btn02 btnL">Welcome Page</a>
 			</p>
 		</div>
 	</div>
@@ -1584,9 +1585,9 @@
 	<div class="blk">
 		<div class="blkCont bdrT0">
 			<p class="contbrd-formBtn">
-				<a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">�V�K���₢���킹</a>
+				<a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn02">新規お問い合わせ</a>
 			</p>
-			<p class="contbrd-formTitle">���₢���킹�t�H�[���̎g����</p>
+			<p class="contbrd-formTitle">お問い合わせフォームの使い方</p>
 			<div class="stepCont">
 				<div class="stepBox">
 					<dl>
@@ -1596,10 +1597,10 @@
 								<img src="./commontpl/images/category/contact_img001.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								�m�V�K���₢���킹�n<br class="smtOnlyBr">��蓊�e
+								［新規お問い合わせ］<br class="smtOnlyBr">より投稿
 							</p>
 							<p>
-								��Visa�f�r�b�g�E���[���EFX�E�����M���E�O�ݗa���͑ΏۊO�ł�
+								※Visaデビット・ローン・FX・投資信託・外貨預金は対象外です
 							</p>
 						</dd>
 					</dl>
@@ -1610,10 +1611,10 @@
 								<img src="./commontpl/images/category/contact_img002.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								�񓚂����e���ꂽ��<br>���[���ł��m�点
+								回答が投稿されたら<br>メールでお知らせ
 							</p>
 							<p>
-								�����A���c�Ɠ��ɉ񓚂��܂�
+								原則、翌営業日に回答します
 							</p>
 						</dd>
 					</dl>
@@ -1624,10 +1625,10 @@
 								<img src="./commontpl/images/category/contact_img003.png" alt="" width="180" height="192">
 							</div>
 							<p class="stepTxt">
-								���O�C�����ĉ񓚂��m�F
+								ログインして回答を確認
 							</p>
 							<p>
-								�D���ȃ^�C�~���O�ŉ񓚂��m�F�ł��܂�
+								好きなタイミングで回答を確認できます
 							</p>
 						</dd>
 					</dl>
@@ -1653,10 +1654,10 @@
 			<div class="blk">
 				<div class="blkCont bdrT0 contbrd-btnArea-box">
 					<p>
-						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen');" title="���e����" class="btn btn01 btnL">���e����</a>
+						<a id="replyButton" href="javascript:void(0)" onclick="changeDisp('replyInputScreen');" title="投稿する" class="btn btn01 btnL">投稿する</a>
 					</p>
 					<p class="mt-16">
-						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="�߂�" class="btn btn03 btnL">�߂�</a>
+						<a href="javascript:void(0)" onclick="changeDisp('inquiryForm')" title="戻る" class="btn btn03 btnL">戻る</a>
 					</p>
 				</div>
 			</div>
@@ -1669,32 +1670,32 @@
 	<div class="blk">
 		<div class="blkCont layout-form layout-form-normal">
 			<div id="modalText">
-				<p class="input-title">���₢���킹���</p>
+				<p class="input-title">お問い合わせ種類</p>
 				<p class="inputSelectWrap pulldown">
-					<a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">�I�����Ă�������</a>
+					<a href="javascript:void(0);" id="Modal-aaa" class="ModalBtn reqEntry">選択してください</a>
 				</p>
 				<div class="modalWrap pulldown modalWrap-aaa">
 					<div class="modalOuter">
-						<div class="modal__headArea">���₢���킹���</div>
+						<div class="modal__headArea">お問い合わせ種類</div>
 						<div class="modal__bodyArea">
 							<ul id="aaa" class="wrap-label-list">
-								<li id="dial01" name="aaa"><label class="label-radio" for="aaa01"><input type="radio" name="aaa" value="1" id="aaa01" class="x-data-aaa"><span>�o�^���̕ύX</span></label></li>
-								<li id="dial02" name="aaa"><label class="label-radio" for="aaa02"><input type="radio" name="aaa" value="2" id="aaa02" class="x-data-aaa"><span>�L���b�V���J�[�h�E�g�[�N��</span></label></li>
-								<li id="dial03" name="aaa"><label class="label-radio" for="aaa03"><input type="radio" name="aaa" value="3" id="aaa03" class="x-data-aaa"><span>�U��</span></label></li>
-								<li id="dial04" name="aaa"><label class="label-radio" for="aaa04"><input type="radio" name="aaa" value="4" id="aaa04" class="x-data-aaa"><span>���������U��</span></label></li>
-								<li id="dial05" name="aaa"><label class="label-radio" for="aaa05"><input type="radio" name="aaa" value="5" id="aaa05" class="x-data-aaa"><span>�e��ؖ����i������ׁE�c���ؖ��Ȃǁj</span></label></li>
-								<li id="dial06" name="aaa"><label class="label-radio" for="aaa06"><input type="radio" name="aaa" value="6" id="aaa06" class="x-data-aaa"><span>���̑�</span></label></li>
-								<li id="dial07" name="aaa"><label class="label-radio" for="aaa07"><input type="radio" name="aaa" value="7" id="aaa07" class="x-data-aaa"><span>�o�^���̕ύX</span></label></li>
-								<li id="dial08" name="aaa"><label class="label-radio" for="aaa08"><input type="radio" name="aaa" value="8" id="aaa08" class="x-data-aaa"><span>�L���b�V���J�[�h�E�g�[�N��</span></label></li>
-								<li id="dial09" name="aaa"><label class="label-radio" for="aaa09"><input type="radio" name="aaa" value="9" id="aaa09" class="x-data-aaa"><span>�U��</span></label></li>
-								<li id="dial10" name="aaa"><label class="label-radio" for="aaa10"><input type="radio" name="aaa" value="10" id="aaa10" class="x-data-aaa"><span>���������U��</span></label></li>
-								<li id="dial11" name="aaa"><label class="label-radio" for="aaa11"><input type="radio" name="aaa" value="11" id="aaa11" class="x-data-aaa"><span>�e��ؖ����i������ׁE�c���ؖ��Ȃǁj</span></label></li>
+								<li id="dial01" name="aaa"><label class="label-radio" for="aaa01"><input type="radio" name="aaa" value="1" id="aaa01" class="x-data-aaa"><span>登録情報の変更</span></label></li>
+								<li id="dial02" name="aaa"><label class="label-radio" for="aaa02"><input type="radio" name="aaa" value="2" id="aaa02" class="x-data-aaa"><span>キャッシュカード・トークン</span></label></li>
+								<li id="dial03" name="aaa"><label class="label-radio" for="aaa03"><input type="radio" name="aaa" value="3" id="aaa03" class="x-data-aaa"><span>振込</span></label></li>
+								<li id="dial04" name="aaa"><label class="label-radio" for="aaa04"><input type="radio" name="aaa" value="4" id="aaa04" class="x-data-aaa"><span>口座自動振替</span></label></li>
+								<li id="dial05" name="aaa"><label class="label-radio" for="aaa05"><input type="radio" name="aaa" value="5" id="aaa05" class="x-data-aaa"><span>各種証明書（取引明細・残高証明など）</span></label></li>
+								<li id="dial06" name="aaa"><label class="label-radio" for="aaa06"><input type="radio" name="aaa" value="6" id="aaa06" class="x-data-aaa"><span>その他</span></label></li>
+								<li id="dial07" name="aaa"><label class="label-radio" for="aaa07"><input type="radio" name="aaa" value="7" id="aaa07" class="x-data-aaa"><span>登録情報の変更</span></label></li>
+								<li id="dial08" name="aaa"><label class="label-radio" for="aaa08"><input type="radio" name="aaa" value="8" id="aaa08" class="x-data-aaa"><span>キャッシュカード・トークン</span></label></li>
+								<li id="dial09" name="aaa"><label class="label-radio" for="aaa09"><input type="radio" name="aaa" value="9" id="aaa09" class="x-data-aaa"><span>振込</span></label></li>
+								<li id="dial10" name="aaa"><label class="label-radio" for="aaa10"><input type="radio" name="aaa" value="10" id="aaa10" class="x-data-aaa"><span>口座自動振替</span></label></li>
+								<li id="dial11" name="aaa"><label class="label-radio" for="aaa11"><input type="radio" name="aaa" value="11" id="aaa11" class="x-data-aaa"><span>各種証明書（取引明細・残高証明など）</span></label></li>
 								<li id="dial12" name="aaa"><label class="label-radio" for="aaa12"><input type="radio" name="aaa" value="12" id="aaa12" class="x-data-aaa"><span>BA-PLUS</span></label></li>
-								<li id="dial13" name="aaa"><label class="label-radio" for="aaa13"><input type="radio" name="aaa" value="13" id="aaa13" class="x-data-aaa"><span>���̑�</span></label></li>
+								<li id="dial13" name="aaa"><label class="label-radio" for="aaa13"><input type="radio" name="aaa" value="13" id="aaa13" class="x-data-aaa"><span>その他</span></label></li>
 							</ul>
 						</div><!--/modal__bodyArea-->
 						<p>
-							<a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">����</a>
+							<a href="javascript:void(0);" class="modal__bottomArea btn btn03 btnL">閉じる</a>
 						</p>
 					</div><!--/modalOuter-->
 				</div>
@@ -1704,33 +1705,33 @@
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div class="input-textarea">
-			<label for="textInput" class="input-title">���₢���킹�ڍ�</label>
+			<label for="textInput" class="input-title">お問い合わせ詳細</label>
 			<div class="textinput-box">
-				<!--<textarea type="text" id="inqTextInput" oninput="inqtextinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry" placeholder="���L����������"></textarea>-->
-				<textarea type="text" id="inqTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry" placeholder="���L����������" style="overflow: auto;"></textarea>
-				<span class="InputClear inputClear">�~</span>
+				<!--<textarea type="text" id="inqTextInput" oninput="inqtextinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry" placeholder="ご記入ください"></textarea>-->
+				<textarea type="text" id="inqTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry" placeholder="ご記入ください" style="overflow: auto;"></textarea>
+				<span class="InputClear inputClear">×</span>
 			</div>
-			<span class="input-message">2000�����ȓ��œ���</span>
+			<span class="input-message">2000文字以内で入力</span>
 		</div>
 	</div>
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div>
-			<p class="input-title">���[���A�h���X</p>
+			<p class="input-title">メールアドレス</p>
 			<p id="newInqMail"></p>
 		</div>
 	</div>
 	
 	<div class="blkCont mt-16">
 		<div class="note">
-			<p>���Ђ���̉񓚂����₢���킹�t�H�[���ɓ��e�����ƁA��L�̓o�^���[���A�h���X���ɂ��m�点���܂��B�񓚓��e�͂��₢���킹�t�H�[���Ƀ��O�C�����Ă��m�F���������B</p>
+			<p>当社からの回答がお問い合わせフォームに投稿されると、上記の登録メールアドレス宛にお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
 		</div>
 	</div>
 	
 	<div class="blkCont layout-form layout-form-normal">
 		<div class="wrap-input upfile-wrap">
-			<label class="input-title">�t�@�C���A�b�v���[�h�i�C�Ӂj
-				<span class="upfileLink">�t�@�C����I���i24MB�܂Łj</span>
+			<label class="input-title">ファイルアップロード（任意）
+				<span class="upfileLink">ファイルを選択（24MBまで）</span>
 				<input type="file" name="fileName" id="inqFileName" class="dn" multiple="multiple">
 				<input type="text" id="inqFileText" name="fileText" value="">
 			</label>
@@ -1743,10 +1744,10 @@
 		<div class="modalOuter_error">
 			<div class="modal__headArea"><img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64"></div>
 			<div class="modal__bodyArea">
-				<p class="fBold">���͂������e�͎����܂��B<br>��낵���ł����H</p>
+				<p class="fBold">入力した内容は失われます。<br>よろしいですか？</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">�߂�</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">戻る</a></p>
 				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close" onclick="inqClearInput();">OK</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
@@ -1758,11 +1759,11 @@
 				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 			</div>
 			<div class="modal__bodyArea">
-				<p class="fBold">���͂��ꂽ���e�������܂��B<br>����ł����Ȃ��ꍇ�́u�폜����v��I�����Ă��������B</p>
+				<p class="fBold">入力された内容が失われます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqReqCheck();">�폜����</a></p>
-				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">����</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqReqCheck();">削除する</a></p>
+				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">閉じる</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
 	</div><!--/modalWrap_error-->
@@ -1773,18 +1774,18 @@
 				<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 			</div>
 			<div class="modal__bodyArea">
-				<p class="fBold">�A�b�v���[�h�����t�@�C�����폜����܂��B<br>����ł����Ȃ��ꍇ�́u�폜����v��I�����Ă��������B</p>
+				<p class="fBold">アップロードしたファイルが削除されます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 			</div><!--/modal__bodyArea-->
 			<div class="modal_error_btnArea">
-				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqDeleteFile();">�폜����</a></p>
-				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">����</a></p>
+				<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="inqDeleteFile();">削除する</a></p>
+				<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">閉じる</a></p>
 			</div><!--/modal_error_btnArea-->
 		</div><!--/modalOuter_error-->
 	</div><!--/modalWrap_error-->
 	
 	<div class="blkCont contbrd-btnArea-box">
-		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');" class="btn btn01 btnL" value="�m�F����"></p>
-		<p class="mt-16"><a href="javascript:void(0);" onclick="inqPrevAction();" class="btn btn03 btnL prevBtn">�߂�</a></p>
+		<p><input id="confButton" type="button" onclick="outputValueInqConf();changeDisp('inqConfirmScreen');" class="btn btn01 btnL" value="確認する"></p>
+		<p class="mt-16"><a href="javascript:void(0);" onclick="inqPrevAction();" class="btn btn03 btnL prevBtn">戻る</a></p>
 	</div>
 </div>
 
@@ -1793,35 +1794,35 @@
 
 	<div class="blk">
 		<div class="blkTitle">
-			<h2 id="inqConfType" class="h201">���₢���킹���</h2>
+			<h2 id="inqConfType" class="h201">お問い合わせ種類</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfTypeText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 id="inqConfDtails" class="h201">���₢���킹�ڍ�</h2>
+			<h2 id="inqConfDtails" class="h201">お問い合わせ詳細</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfDtailsText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 class="h201">���[���A�h���X</h2>
+			<h2 class="h201">メールアドレス</h2>
 		</div>
 		<div class="blkCont bdrT0">
 			<p id="inqConfMailText"></p>
 		</div>
 		<div class="blkTitle">
-			<h2 class="h201">�t�@�C���A�b�v���[�h</h2>
+			<h2 class="h201">ファイルアップロード</h2>
 		</div>
 		<div class="blkCont bdrT0">
-			<p>�Ȃ�</p>
+			<p>なし</p>
 			<p></p>
 			<p></p>
 			<p></p>
 			<p></p>
 			<div class="contbrd-btnArea-box">
-				<p><a href="javascript:void(0);" onclick="registInquery();changeDisp('compScreen')" class="btn btn01 btnL">���e����</a></p>
-				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">�߂�</a></p>
+				<p><a href="javascript:void(0);" onclick="registInquery();changeDisp('compScreen')" class="btn btn01 btnL">投稿する</a></p>
+				<p class="mt-16"><a href="javascript:void(0);" onclick="changeDisp('inqInputScreen')" class="btn btn03 btnL">戻る</a></p>
 			</div>
 		</div>
 	</div>
@@ -1831,19 +1832,19 @@
 <div id="replyInputScreen" class="contents no-title-h1 contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont layout-form layout-form-normal">
-			<p class="contbrd-title">���e���e</p>
+			<p class="contbrd-title">投稿内容</p>
 			<div class="input-textarea">
 				<div class="textinput-box">
-					<!--<textarea type="text" id="cbdTextInput" oninput="textinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry inputTextItem" placeholder="���L����������"></textarea>-->
-					<textarea type="text" id="cbdTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry inputTextItem" placeholder="���L����������" style="overflow: auto;"></textarea>
-					<span class="InputClear inputClear">�~</span>
+					<!--<textarea type="text" id="cbdTextInput" oninput="textinputAfter(this)" name="textInput" maxlength="" rows="" wrap="soft" class="reqEntry inputTextItem" placeholder="ご記入ください"></textarea>-->
+					<textarea type="text" id="cbdTextInput" name="textInput" maxlength="" rows="10" wrap="soft" class="reqEntry inputTextItem" placeholder="ご記入ください" style="overflow: auto;"></textarea>
+					<span class="InputClear inputClear">×</span>
 				</div>
 			</div>
 			<div class="blkCont layout-form layout-form-normal">
 				<div class="mt-16">
 					<div class="wrap-input upfile-wrap">
-						<label class="input-title">�t�@�C���A�b�v���[�h�i�C�Ӂj
-							<span class="upfileLink">�t�@�C����I���i24MB�܂Łj</span>
+						<label class="input-title">ファイルアップロード（任意）
+							<span class="upfileLink">ファイルを選択（24MBまで）</span>
 							<input type="file" name="fileName" id="cbdFileName" class="dn" multiple="multiple">
 							<input type="text" id="cbdFileText" name="fileText" value="">
 						</label>
@@ -1857,10 +1858,10 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">���͂������e�͎����܂��B<br>��낵���ł����H</p>
+							<p class="fBold">入力した内容は失われます。<br>よろしいですか？</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">�߂�</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close">戻る</a></p>
 							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close" onclick="cbdClearInput();">OK</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
@@ -1872,11 +1873,11 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">���͂��ꂽ���e�������܂��B<br>����ł����Ȃ��ꍇ�́u�폜����v��I�����Ă��������B</p>
+							<p class="fBold">入力された内容が失われます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdReqCheck()">�폜����</a></p>
-							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">����</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdReqCheck()">削除する</a></p>
+							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">閉じる</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
 				</div><!--/modalWrap_error-->
@@ -1887,21 +1888,21 @@
 							<img src="commontpl/images/category/contact_error.png" alt="" width="128" height="64">
 						</div>
 						<div class="modal__bodyArea">
-							<p class="fBold">�A�b�v���[�h�����t�@�C�����폜����܂��B<br>����ł����Ȃ��ꍇ�́u�폜����v��I�����Ă��������B</p>
+							<p class="fBold">アップロードしたファイルが削除されます。<br>それでも問題ない場合は「削除する」を選択してください。</p>
 						</div><!--/modal__bodyArea-->
 						<div class="modal_error_btnArea">
-							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdDeleteFile();">�폜����</a></p>
-							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">����</a></p>
+							<p><a href="javascript:void(0);" class="btn btn01 btnL modal__close" onclick="cbdDeleteFile();">削除する</a></p>
+							<p><a href="javascript:void(0);" class="btn btn03 btnL modal__close">閉じる</a></p>
 						</div><!--/modal_error_btnArea-->
 					</div><!--/modalOuter_error-->
 				</div><!--/modalWrap_error-->
 				
 				<div class="contbrd-btnArea-box">
 					<p class="mt-24">
-						<input type="button" id="cbdConfButton" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="�m�F����" disabled>
+						<input type="button" id="cbdConfButton" onclick="outputValueCbdConf();changeDisp('replyConfirmScreen')" class="btn btn01 btnL" value="確認する" disabled>
 					</p>
 					<p class="mt-16">
-						<a href="javascript:void(0);" onclick="cbdPrevAction();" class="btn btn03 btnL prevBtn">�߂�</a>
+						<a href="javascript:void(0);" onclick="cbdPrevAction();" class="btn btn03 btnL prevBtn">戻る</a>
 					</p>
 				</div>
 			</div>
@@ -1913,19 +1914,19 @@
 <div id="replyConfirmScreen" class="contents no-title-h1 contbrd-pt-cont" style="display:none;">
 	<div class="blk">
 		<div class="blkCont bdrT0">
-			<p class="contbrd-title">���e���e</p>
+			<p class="contbrd-title">投稿内容</p>
 			<p id="cbdConfDtailsText"></p>
-			<h3 class="h301 mt-24">�t�@�C���A�b�v���[�h</h3>
+			<h3 class="h301 mt-24">ファイルアップロード</h3>
 			<!--
 			<p>aaaaaaaaaaaa.pdf</p>
 			<p>bbbb.jpg</p>
 			-->
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="registContactBoard();changeDisp('compScreen')" class="btn btn01 btnL" value="���e����">
+					<input type="submit" id="" onclick="registContactBoard();changeDisp('compScreen')" class="btn btn01 btnL" value="投稿する">
 				</p>
 				<p class="mt-16">
-					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">�߂�</a>
+					<a href="javascript:void(0);" onclick="changeDisp('replyInputScreen')" class="btn btn03 btnL">戻る</a>
 				</p>
 			</div>
 		</div>
@@ -1937,18 +1938,18 @@
 	<div class="blk">
 		<div class="blkCont">
 			<p class="compDescription">
-				<span class="compDescriptionIcon">��t�������܂���</span>
+				<span class="compDescriptionIcon">受付完了しました</span>
 			</p>
 		</div>
 		<div class="blkCont mt-24">
-			<p>��t�����̃��[���𑗐M���܂����B</p>
+			<p>受付完了のメールを送信しました。</p>
 			<p class="faqLink">
-				<a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">���[�����͂��Ȃ��ꍇ</a>
+				<a href="https://help.paypay-bank.co.jp/hc/ja/articles/900002658186" target="_blank">メールが届かない場合</a>
 			</p>
-			<p>���Ђ���̉񓚂͌������c�Ɠ��Ƀ��[���ł��m�点���܂��B�񓚓��e�͂��₢���킹�t�H�[���Ƀ��O�C�����Ă��m�F���������B</p>
+			<p>当社からの回答は原則翌営業日にメールでお知らせします。回答内容はお問い合わせフォームにログインしてご確認ください。</p>
 			<div class="contbrd-btnArea-box">
 				<p>
-					<input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="���₢���킹�t�H�[��">
+					<input type="submit" id="" onclick="changeDisp('inquiryForm')" class="btn btn02 btnL" value="お問い合わせフォーム">
 				</p>
 				<p class="mt-16">
 					<input type="submit" id="" class="btn btn03 btnL" value="Welcome Page">
